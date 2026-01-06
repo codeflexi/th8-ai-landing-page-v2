@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Invoice & Payment Exception Control System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .clip-path-slant { clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        th8: {
+                            red: '#D9232D',
+                            black: '#111111',
+                            dark: '#1A1A1A',
+                            gray: '#F3F4F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-th8-black antialiased selection:bg-th8-red selection:text-white">
+
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-th8-black text-white rounded-lg flex items-center justify-center font-bold text-xl tracking-tighter">TH8</div>
+                    <span class="font-bold text-lg tracking-tight">Enterprise AI</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-600">
+                    <a href="#problem" class="hover:text-th8-red transition">The Problem</a>
+                    <a href="#solution" class="hover:text-th8-red transition">Solution</a>
+                    <a href="#architecture" class="hover:text-th8-red transition">Architecture (IT)</a>
+                    <a href="#pilot" class="hover:text-th8-red transition">Pilot Plan</a>
+                </div>
+              <a href="demo.html" class="bg-th8-red hover:bg-red-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-lg shadow-red-100 inline-block">
+                    Run Demo
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-xs font-semibold uppercase tracking-wider text-gray-600 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-th8-red animate-pulse"></span>
+                    Now Available for Pilot
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-th8-black leading-tight mb-6">
+                    Stop Revenue Leakage <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-th8-red to-red-800">Before Payment Happens</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto font-light">
+                    ระบบ AI ตรวจสอบความผิดปกติของ Invoice เทียบกับสัญญาและ PO แบบอัตโนมัติ 
+                    <span class="font-medium text-th8-black">Integration แบบ Read-only กับ ERP</span> 
+                    เพื่อลดความเสี่ยง 100% ก่อนเงินออกจากบริษัท
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-th8-black text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition flex items-center justify-center gap-2">
+                        Start Pilot Program
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                    <button class="bg-white text-gray-700 border border-gray-200 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition">
+                        View Technical Specs
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-16 relative rounded-2xl border border-gray-200 shadow-2xl bg-gray-50 p-2 md:p-4 max-w-5xl mx-auto transform hover:scale-[1.01] transition duration-500">
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                    <div class="border-b border-gray-100 p-4 flex gap-4 bg-gray-50/50">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="text-xs font-mono text-gray-400">TH8.AI Executive Overview</div>
+                    </div>
+                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="p-4 rounded-xl bg-red-50 border border-red-100">
+                            <p class="text-xs uppercase tracking-wide text-red-600 font-bold">Amount at Risk</p>
+                            <p class="text-3xl font-bold text-th8-black mt-2">฿ 2.18M</p>
+                            <p class="text-xs text-gray-500 mt-1">Pending Invoice Totals</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-green-50 border border-green-100">
+                            <p class="text-xs uppercase tracking-wide text-green-700 font-bold">Prevented Leakage</p>
+                            <p class="text-3xl font-bold text-th8-black mt-2">฿ 203k</p>
+                            <p class="text-xs text-gray-500 mt-1">Rejected / Corrected Deltas</p>
+                        </div>
+                        <div class="col-span-2 p-4 rounded-xl border border-gray-100 bg-white shadow-sm flex flex-col justify-center">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-semibold text-gray-900">Top Violation: INV-02</span>
+                                <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-bold">HIGH SEVERITY</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Invoice price > Contract price (+4.7%)</p>
+                            <div class="w-full bg-gray-100 rounded-full h-2 mt-3">
+                                <div class="bg-th8-red h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute top-0 left-0 right-0 h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] -z-10 opacity-50"></div>
+    </section>
+
+    <section id="problem" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">ทำไม ERP อย่างเดียวถึงไม่พอ?</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-xl shadow-sm shrink-0">⚠️</div>
+                            <div>
+                                <h3 class="font-bold text-lg">Post-Payment Audit</h3>
+                                <p class="text-gray-600 text-sm mt-1">การตรวจสอบมักเกิดขึ้น "หลังจาก" จ่ายเงินไปแล้ว ทำให้การเรียกเงินคืนทำได้ยากและเสียเวลา</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-xl shadow-sm shrink-0">📄</div>
+                            <div>
+                                <h3 class="font-bold text-lg">Manual Match Limitations</h3>
+                                <p class="text-gray-600 text-sm mt-1">คนไม่สามารถจำเงื่อนไขสัญญา (Contract Terms) ทุกฉบับได้แม่นยำเมื่อเทียบกับ Invoice จำนวนมหาศาล</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center text-xl shadow-sm shrink-0">🔍</div>
+                            <div>
+                                <h3 class="font-bold text-lg">Lack of Evidence Context</h3>
+                                <p class="text-gray-600 text-sm mt-1">ผู้บริหารอนุมัติจ่ายโดยไม่เห็น "หลักฐาน" (PDF/Snippet) เทียบกันในหน้าเดียว ต้องเสียเวลาค้นหาเอกสาร</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-th8-red/20 to-transparent rounded-3xl transform rotate-3"></div>
+                    <div class="relative bg-white p-8 rounded-3xl border border-gray-200 shadow-xl">
+                        <h3 class="text-xl font-bold mb-4 border-b pb-4">The Gap in Current Process</h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex items-center justify-between text-gray-500">
+                                <span>ERP Data (PO/GR)</span>
+                                <span class="text-green-600">✅ Structured</span>
+                            </li>
+                            <li class="flex items-center justify-between text-gray-500">
+                                <span>Paper Contracts</span>
+                                <span class="text-red-500">❌ Unstructured PDF</span>
+                            </li>
+                            <li class="flex items-center justify-between text-gray-500">
+                                <span>Complex Logic (Tolerances)</span>
+                                <span class="text-red-500">❌ Manual Excel</span>
+                            </li>
+                            <li class="flex items-center justify-between font-semibold bg-gray-50 p-2 rounded">
+                                <span>TH8 Solution</span>
+                                <span class="text-th8-red">Bridge the Gap</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-th8-red font-bold uppercase tracking-widest text-sm">The Solution</p>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2">Invoice & Payment Exception Control</h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">เปลี่ยนกระบวนการอนุมัติจ่ายเงินให้เป็น Data-Driven Decision ด้วย 4 ฟีเจอร์หลัก</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-th8-red/50 hover:shadow-lg transition cursor-default">
+                    <div class="h-12 w-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-th8-red group-hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">1. Smart Ingestion</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        ดึงข้อมูลจาก SAP (PO, GR, Invoice) และ Document Store (Contract PDF) แบบ <span class="font-semibold text-th8-black">Read-only</span> เพื่อเตรียมพร้อมสำหรับการตรวจสอบ
+                    </p>
+                </div>
+
+                <div class="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-th8-red/50 hover:shadow-lg transition cursor-default">
+                    <div class="h-12 w-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-th8-red group-hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">2. Policy Engine</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        ตรวจสอบกฎอัตโนมัติ เช่น <span class="font-semibold">INV-02 (Invoice > Contract)</span> หรือ INV-01 (Invoice > PO) พร้อมระบุระดับความรุนแรง (Severity)
+                    </p>
+                </div>
+
+                <div class="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-th8-red/50 hover:shadow-lg transition cursor-default">
+                    <div class="h-12 w-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-th8-red group-hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">3. Evidence View</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        หน้าจอ Decision แสดงข้อมูล Invoice คู่กับ <span class="font-semibold">Snippet จากสัญญาจริง</span> (PDF Page Reference) ทำให้ตัดสินใจได้ทันที ไม่ต้องค้นหาเอกสาร
+                    </p>
+                </div>
+
+                <div class="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-th8-red/50 hover:shadow-lg transition cursor-default">
+                    <div class="h-12 w-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-th8-red group-hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">4. Immutable Audit</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        บังคับใส่เหตุผล (Mandatory Reason) ทุกการตัดสินใจ (Approve/Hold/Reject) และบันทึกลงใน Audit Log ที่ไม่สามารถแก้ไขได้ พร้อม Export เป็น CSV/JSON
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="py-24 bg-th8-dark text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <h2 class="text-3xl font-bold">C4 System Architecture</h2>
+                    <p class="text-gray-400 mt-2">ออกแบบมาเพื่อความปลอดภัยสูงสุดและไม่กระทบระบบหลัก (Non-Intrusive)</p>
+                </div>
+                <div class="flex gap-3">
+                    <span class="px-3 py-1 rounded-full border border-gray-600 bg-gray-800 text-xs font-mono">Read-only to SAP</span>
+                    <span class="px-3 py-1 rounded-full border border-gray-600 bg-gray-800 text-xs font-mono">Encrypted Data</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-3 space-y-4">
+                    <div class="p-4 rounded-xl border border-gray-700 bg-gray-800/50">
+                        <p class="text-xs uppercase tracking-widest text-gray-500 mb-3">External Systems</p>
+                        <div class="space-y-3">
+                            <div class="bg-gray-700 p-3 rounded-lg border-l-4 border-blue-500">
+                                <p class="font-bold text-sm">SAP / ERP</p>
+                                <p class="text-xs text-gray-400">PO, Invoice, Vendor Master</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded-lg border-l-4 border-yellow-500">
+                                <p class="font-bold text-sm">Doc Store</p>
+                                <p class="text-xs text-gray-400">Contract PDFs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1 flex lg:flex-col justify-center items-center py-4 lg:py-0">
+                    <svg class="w-8 h-8 text-gray-500 animate-pulse transform rotate-90 lg:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div class="p-6 rounded-2xl border border-gray-600 bg-gray-900 shadow-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <p class="font-bold text-lg">TH8.AI Core Containers</p>
+                            <span class="text-xs bg-th8-red px-2 py-1 rounded text-white">Pilot Scope</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-xl bg-gray-800 border border-gray-700 hover:border-gray-500 transition">
+                                <div class="flex justify-between">
+                                    <h4 class="font-bold text-sm text-blue-300">1. Ingestion Service</h4>
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Pull & Normalize data. Daily batch or Near-real-time.</p>
+                            </div>
+                            
+                            <div class="p-4 rounded-xl bg-gray-800 border border-gray-700 hover:border-gray-500 transition">
+                                <div class="flex justify-between">
+                                    <h4 class="font-bold text-sm text-yellow-300">2. Policy Engine</h4>
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Evaluate Rules (INV-01..05). Deterministic output.</p>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-gray-800 border border-gray-700 hover:border-gray-500 transition">
+                                <div class="flex justify-between">
+                                    <h4 class="font-bold text-sm text-green-300">3. Decision Service</h4>
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Human-in-the-loop. Hold/Approve routing + SLA.</p>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-gray-800 border border-gray-700 hover:border-gray-500 transition">
+                                <div class="flex justify-between">
+                                    <h4 class="font-bold text-sm text-purple-300">4. Audit & Report</h4>
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Immutable event timeline. Export for Board/Audit.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-sm text-gray-400 bg-gray-800 inline-block px-4 py-2 rounded-lg">
+                    <span class="text-th8-red font-bold">Safe for Pilot:</span> No write-back to SAP. Payment Hold is a "Recommendation" for human approval.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pilot" class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-8">Start with a "Controlled Pilot"</h2>
+            <div class="bg-gray-50 rounded-2xl border border-gray-200 p-8 shadow-sm text-left">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex-1 space-y-6">
+                        <h3 class="font-bold text-xl text-th8-black">Pilot Scope (1-2 Months)</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs mt-0.5">✓</div>
+                                <p class="text-sm text-gray-600"><strong>Data:</strong> Invoice, PO, Contract (Select Vendors)</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs mt-0.5">✓</div>
+                                <p class="text-sm text-gray-600"><strong>Rules:</strong> INV-01 (Vs PO), INV-02 (Vs Contract)</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs mt-0.5">✓</div>
+                                <p class="text-sm text-gray-600"><strong>Users:</strong> AP, Finance Manager, CFO (Approval Flow)</p>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs mt-0.5">✓</div>
+                                <p class="text-sm text-gray-600"><strong>Output:</strong> Payment Hold Recommendations + Audit Log</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w-px bg-gray-200 hidden md:block"></div>
+                    <div class="flex-1 flex flex-col justify-center items-center text-center space-y-4">
+                        <p class="text-sm font-semibold text-gray-500 uppercase tracking-widest">IT Requirement</p>
+                        <p class="text-3xl font-bold text-th8-black">Minimal</p>
+                        <p class="text-sm text-gray-600">
+                            We only need <span class="font-semibold text-th8-black">Read Access</span> (API/CSV) <br>and PDF Document Path.
+                        </p>
+                        <button class="w-full bg-th8-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-red-100 transition mt-4">
+                            Schedule Technical Assessment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 bg-th8-black text-white rounded flex items-center justify-center font-bold text-sm">TH8</div>
+                <span class="font-bold text-gray-900">TH8.AI</span>
+            </div>
+            <p class="text-sm text-gray-500">© 2026 TH8.AI. All rights reserved. | <a href="#" class="hover:underline">Privacy Policy</a></p>
+            <div class="flex gap-4">
+                <a href="#" class="text-gray-400 hover:text-th8-red transition"><span class="sr-only">LinkedIn</span>LinkedIn</a>
+                <a href="#" class="text-gray-400 hover:text-th8-red transition"><span class="sr-only">Contact</span>Contact</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

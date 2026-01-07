@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI: Procurement Decision Control Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 400px; 
+        }
+        @media (min-width: 768px) { 
+            .chart-container { height: 350px; } 
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+    </style>
+    <!-- Chosen Palette: Corporate Trust (Slate, Blue, Emerald, Amber) -->
+    <!-- Application Structure Plan:
+         1. Hero Section: Executive Summary targeting C-Level (Revenue > 500M context).
+         2. Interactive Rules Engine: Hands-on demo of the 2 key rules (3M THB & 6hr SLA) to show "How it works".
+         3. Operational Dashboard: A mock interface showing the "End Result" for users (CFO/Manager view).
+         4. Business & Tech Insights: Data visualization of the value proposition (Risk Reduction, Speed).
+         5. Technology Stack: Addressing Head of IT concerns (Audit, Logs).
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold">TH8</div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Procurement AI</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                    <a href="#hero" class="hover:text-blue-600 transition">วิสัยทัศน์</a>
+                    <a href="#rules" class="hover:text-blue-600 transition">กฎการตัดสินใจ</a>
+                    <a href="#dashboard" class="hover:text-blue-600 transition">Dashboard</a>
+                    <a href="#insights" class="hover:text-blue-600 transition">Business Impact</a>
+                </div>
+                <button class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition">
+                    ติดต่อ Demo
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section: The "Why" for C-Level -->
+    <section id="hero" class="relative pt-20 pb-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-blue-600 uppercase bg-blue-50 rounded-full border border-blue-100">
+                สำหรับองค์กรรายได้ > 500 ล้านบาท
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6">
+                เปลี่ยนการจัดซื้อเป็น <span class="gradient-text">Decision Control Center</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-500 max-w-3xl mx-auto">
+                หยุดความเสี่ยงและคอขวดในกระบวนการจัดซื้อ ด้วย AI Agent ที่ตรวจสอบกฎและตัดสินใจแทนคุณ 
+                แม่นยำ รวดเร็ว และตรวจสอบได้ 100%
+            </p>
+            
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="text-blue-600 text-3xl font-bold mb-2">100%</div>
+                    <div class="text-sm font-semibold text-slate-900">Compliance</div>
+                    <p class="text-xs text-slate-500 mt-1">ทุกกฎถูกตรวจสอบ ไม่มีการยกเว้น</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="text-emerald-600 text-3xl font-bold mb-2">24/7</div>
+                    <div class="text-sm font-semibold text-slate-900">Monitoring</div>
+                    <p class="text-xs text-slate-500 mt-1">เฝ้าระวัง SLA และความเสี่ยงตลอดเวลา</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="text-amber-600 text-3xl font-bold mb-2">Zero</div>
+                    <div class="text-sm font-semibold text-slate-900">Leakage</div>
+                    <p class="text-xs text-slate-500 mt-1">ปิดช่องโหว่การอนุมัติวงเงินสูง</p>
+                </div>
+            </div>
+        </div>
+        <!-- Background decoration -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 bg-gradient-to-b from-blue-50/50 to-transparent"></div>
+    </section>
+
+    <!-- Interactive Rules Engine: The "How" -->
+    <section id="rules" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">AI Decision Logic</h2>
+                <p class="mt-4 text-lg text-slate-500">ทดลองปรับค่าตัวแปรเพื่อดูการทำงานของกฎอัจฉริยะ (Smart Rules)</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Rule 1: High Amount Escalation -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 relative overflow-hidden group hover:border-blue-300 transition-colors">
+                    <div class="absolute top-0 right-0 bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-bl-xl">Finance Risk</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">กฎ: วงเงินสูง (High Amount)</h3>
+                    <p class="text-sm text-slate-500 mb-6">ป้องกันการอนุมัติรายการมูลค่าสูงโดยไม่มีผู้รับผิดชอบระดับผู้จัดการ</p>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm mb-6">
+                        <label class="block text-sm font-medium text-slate-700 mb-2">มูลค่าการจัดซื้อ (Amount Total)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="range" id="amountRange" min="0" max="10000000" step="100000" value="1500000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                            <span class="text-lg font-mono font-bold text-slate-700 min-w-[120px]" id="amountValue">1,500,000</span> <span class="text-xs text-slate-400">THB</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-400 mt-2">
+                            <span>0</span>
+                            <span class="text-red-500 font-semibold">Threshold: 3,000,000</span>
+                            <span>10M</span>
+                        </div>
+                    </div>
+
+                    <div id="amountResult" class="flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200 transition-all duration-300">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Status</p>
+                            <p class="text-lg font-bold text-emerald-800">AUTO / STANDARD</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Action Owner</p>
+                            <p class="text-sm font-semibold text-emerald-900">System / Officer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rule 2: SLA Risk -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 relative overflow-hidden group hover:border-amber-300 transition-colors">
+                    <div class="absolute top-0 right-0 bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-bl-xl">Operational Risk</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">กฎ: ความเสี่ยง SLA</h3>
+                    <p class="text-sm text-slate-500 mb-6">ลดเคสหลุด SLA โดยเตือนล่วงหน้าให้ทีมเร่งปิดงาน</p>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm mb-6">
+                        <label class="block text-sm font-medium text-slate-700 mb-2">เวลาที่เหลือ (Hours Remaining)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="range" id="slaRange" min="0" max="24" step="1" value="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500" style="direction: rtl">
+                            <span class="text-lg font-mono font-bold text-slate-700 min-w-[80px]" id="slaValue">10</span> <span class="text-xs text-slate-400">Hours</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-400 mt-2">
+                            <span>24h</span>
+                            <span class="text-amber-500 font-semibold">Critical: 6h</span>
+                            <span>0h</span>
+                        </div>
+                    </div>
+
+                    <div id="slaResult" class="flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200 transition-all duration-300">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Status</p>
+                            <p class="text-lg font-bold text-emerald-800">ON TRACK</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Action</p>
+                            <p class="text-sm font-semibold text-emerald-900">Monitor</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Operational Dashboard Mockup -->
+    <section id="dashboard" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">Case Monitoring Dashboard</h2>
+                <p class="mt-2 text-slate-500">มุมมองสำหรับ CFO และ Procurement Manager เพื่อการตัดสินใจที่รวดเร็ว</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+                <!-- Mock Header -->
+                <div class="bg-slate-900 px-6 py-4 flex justify-between items-center">
+                    <div class="text-white font-semibold flex items-center gap-2">
+                        <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span> Live System Status
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="bg-slate-800 text-slate-300 px-3 py-1 rounded-lg text-xs">Rule Engine: Active</div>
+                        <div class="bg-slate-800 text-slate-300 px-3 py-1 rounded-lg text-xs">Audit Log: Recording</div>
+                    </div>
+                </div>
+
+                <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- List of Active Cases -->
+                    <div class="lg:col-span-2 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recent Escalations</h3>
+                        
+                        <!-- Case Item 1 -->
+                        <div class="flex items-center justify-between p-4 bg-red-50 border border-red-100 rounded-xl">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-lg border border-red-100">
+                                    <span class="text-2xl">🚨</span>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-slate-900">REQ-2024-001</div>
+                                    <div class="text-xs text-red-600 font-semibold">High Value Escalation (3.2M THB)</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm transition">
+                                    Approve / Reject
+                                </button>
+                                <div class="text-[10px] text-slate-400 mt-1">Assigned: Procurement Manager</div>
+                            </div>
+                        </div>
+
+                        <!-- Case Item 2 -->
+                        <div class="flex items-center justify-between p-4 bg-amber-50 border border-amber-100 rounded-xl">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-lg border border-amber-100">
+                                    <span class="text-2xl">⚠️</span>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-slate-900">REQ-2024-005</div>
+                                    <div class="text-xs text-amber-600 font-semibold">SLA Warning (4h remaining)</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button class="bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm transition">
+                                    Notify Owner
+                                </button>
+                                <div class="text-[10px] text-slate-400 mt-1">Assigned: Procurement Officer</div>
+                            </div>
+                        </div>
+
+                        <!-- Case Item 3 -->
+                        <div class="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl opacity-60">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-lg border border-slate-200">
+                                    <span class="text-2xl">✅</span>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-slate-900">REQ-2024-008</div>
+                                    <div class="text-xs text-slate-500">Standard Approval (Auto)</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs font-bold text-emerald-600">Completed</div>
+                                <div class="text-[10px] text-slate-400 mt-1">Logged: 10:42 AM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Panel -->
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Today's Metrics</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-600">SLA Compliance</span>
+                                    <span class="font-bold text-emerald-600">98.5%</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div class="bg-emerald-500 h-2 rounded-full" style="width: 98.5%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-600">High Value Cases</span>
+                                    <span class="font-bold text-blue-600">12</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 35%"></div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-200">
+                                <div class="text-xs text-slate-400 mb-2">Audit Stream</div>
+                                <div class="space-y-2 font-mono text-[10px] text-slate-500">
+                                    <p>> Rule: HIGH_AMOUNT checked (ID:001)</p>
+                                    <p>> Rule: SLA_RISK evaluated (ID:005)</p>
+                                    <p>> Audit Log saved to Immutable Ledger</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business & Tech Insights: Visualization -->
+    <section id="insights" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                
+                <!-- Business Insight: The "Pareto" of Procurement Risk -->
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">ทำไมต้องจับตา "3 ล้านบาท"?</h3>
+                    <p class="text-slate-500 mb-6">
+                        ข้อมูลชี้ชัดว่า รายการจัดซื้อส่วนใหญ่ (80%) มีมูลค่าต่ำและเสี่ยงน้อย แต่รายการที่มีมูลค่าสูง (>3M) เพียงไม่กี่รายการ (20%) กลับสร้างความเสี่ยงสูงสุดต่องบประมาณ ระบบเราจึงออกแบบมาเพื่อ "แยกแยะ" และ "จัดการ" อย่างชาญฉลาด
+                    </p>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-inner">
+                        <!-- Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="paretoChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-slate-400 mt-4">กราฟแสดงจำนวนเคส (Bars) เทียบกับมูลค่าความเสี่ยงสะสม (Line)</p>
+                    </div>
+                </div>
+
+                <!-- Tech Insight: Architecture & Trust -->
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Technology Trust</h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold">
+                                01
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Rule-Based Determinism</h4>
+                                <p class="text-sm text-slate-500">ไม่ใช้ "ความน่าจะเป็น" ในการตัดสินใจเรื่องเงิน แต่ใช้ Logic ที่ตายตัวและตรวจสอบได้ 100% (No Hallucination)</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 font-bold">
+                                02
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Immutable Audit Logs</h4>
+                                <p class="text-sm text-slate-500">ทุกการตัดสินใจของ AI และมนุษย์ จะถูกบันทึกแบบ Read-only เพื่อการตรวจสอบย้อนหลังที่โปร่งใส</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 font-bold">
+                                03
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Seamless Integration</h4>
+                                <p class="text-sm text-slate-500">ออกแบบให้ทำงานร่วมกับระบบ ERP เดิมได้โดยไม่ต้องรื้อระบบใหม่ เพียงส่ง Data Feed เข้ามาประมวลผล</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-4 bg-slate-900 rounded-xl text-white">
+                        <div class="text-xs font-mono text-slate-400 mb-2">Example Audit Log Structure</div>
+                        <pre class="text-xs overflow-x-auto whitespace-pre-wrap text-emerald-400">
+{
+  "event": "RULE_EVALUATED",
+  "rule_id": "HIGH_AMOUNT_ESCALATION",
+  "input": { "amount": 3200000 },
+  "result": "ESCALATE",
+  "timestamp": "2023-10-25T14:30:00Z"
+}
+                        </pre>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="text-2xl font-bold text-white mb-4">TH8.AI</div>
+            <p class="mb-6">Empowering Enterprise Decisions with Intelligent Control</p>
+            <div class="text-sm">
+                &copy; 2023 TH8 Company Limited. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Interactivity for Rule 1: Amount ---
+        const amountRange = document.getElementById('amountRange');
+        const amountValue = document.getElementById('amountValue');
+        const amountResult = document.getElementById('amountResult');
+
+        amountRange.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            amountValue.textContent = val.toLocaleString();
+
+            if (val > 3000000) {
+                // Escalate State
+                amountResult.className = "flex items-center justify-between p-4 rounded-xl bg-red-50 border border-red-200 transition-all duration-300";
+                amountResult.innerHTML = `
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-red-700 mb-1">Status</p>
+                        <p class="text-lg font-bold text-red-800">⚠️ ESCALATE</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold uppercase tracking-wider text-red-700 mb-1">Action Owner</p>
+                        <p class="text-sm font-semibold text-red-900">Procurement Manager</p>
+                    </div>
+                `;
+            } else {
+                // Normal State
+                amountResult.className = "flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200 transition-all duration-300";
+                amountResult.innerHTML = `
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Status</p>
+                        <p class="text-lg font-bold text-emerald-800">AUTO / STANDARD</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Action Owner</p>
+                        <p class="text-sm font-semibold text-emerald-900">System / Officer</p>
+                    </div>
+                `;
+            }
+        });
+
+        // --- Interactivity for Rule 2: SLA ---
+        const slaRange = document.getElementById('slaRange');
+        const slaValue = document.getElementById('slaValue');
+        const slaResult = document.getElementById('slaResult');
+
+        slaRange.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            slaValue.textContent = val;
+
+            if (val <= 6) {
+                // Warning State
+                slaResult.className = "flex items-center justify-between p-4 rounded-xl bg-amber-50 border border-amber-200 transition-all duration-300";
+                slaResult.innerHTML = `
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">Status</p>
+                        <p class="text-lg font-bold text-amber-800">⚡ WARNING</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">Action</p>
+                        <p class="text-sm font-semibold text-amber-900">Notify Officer</p>
+                    </div>
+                `;
+            } else {
+                // Normal State
+                slaResult.className = "flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200 transition-all duration-300";
+                slaResult.innerHTML = `
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Status</p>
+                        <p class="text-lg font-bold text-emerald-800">ON TRACK</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">Action</p>
+                        <p class="text-sm font-semibold text-emerald-900">Monitor</p>
+                    </div>
+                `;
+            }
+        });
+
+        // --- Chart.js Visualization: Pareto Concept ---
+        /* <!-- Visualization & Content Choices: 
+           - Pareto Chart to show "High Value, Low Volume" concept.
+           - Justification: This explains WHY the 3M rule is important (focusing effort where risk is highest).
+           - Confirming NO SVG used, Canvas used via Chart.js. 
+        --> */
+        const ctx = document.getElementById('paretoChart').getContext('2d');
+        const paretoChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Items < 500k', 'Items 500k-1M', 'Items 1M-3M', 'Items > 3M'],
+                datasets: [{
+                    label: 'Volume (จำนวนเคส)',
+                    data: [800, 150, 40, 10],
+                    backgroundColor: 'rgba(203, 213, 225, 0.5)', // Slate 300
+                    borderColor: 'rgba(203, 213, 225, 1)',
+                    borderWidth: 1,
+                    order: 2,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Total Value Risk (มูลค่าความเสี่ยง)',
+                    data: [10, 25, 60, 95], // Cumulative percentage-like for demo visual
+                    type: 'line',
+                    borderColor: '#ef4444', // Red for Risk
+                    backgroundColor: '#ef4444',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    order: 1,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + (context.dataset.type === 'line' ? '%' : '');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Volume' },
+                        grid: { display: false }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        title: { display: true, text: 'Risk Impact %' },
+                        grid: { borderDash: [2, 4] }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</body>
+</html>

@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TH8.AI — End-to-End UX Flow (Policy → Decision → Audit)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: "Prompt", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+  <div class="max-w-7xl mx-auto px-6 py-10 space-y-10">
+
+    <!-- HEADER -->
+    <header class="space-y-3">
+      <div class="flex items-start justify-between gap-6">
+        <div class="space-y-1">
+          <p class="text-sm text-slate-500">TH8.AI — Enterprise Decision Control Layer</p>
+          <h1 class="text-3xl font-bold tracking-tight">UX Flow: Input → Decision (Explainable) → Human Action → Audit</h1>
+          <p class="text-slate-600">
+            ภาพเดียวจบสำหรับ demo: Policy (YAML) + Deterministic Rules + RAG-as-Evidence (mock) + Approve/Reject + Unified Audit Timeline
+          </p>
+        </div>
+
+        <div class="hidden md:flex items-center gap-2">
+          <span class="px-3 py-1 rounded-full text-xs bg-rose-50 text-rose-700 border border-rose-200">Deterministic</span>
+          <span class="px-3 py-1 rounded-full text-xs bg-indigo-50 text-indigo-700 border border-indigo-200">Policy Versioned</span>
+          <span class="px-3 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 border border-emerald-200">Audit-first</span>
+        </div>
+      </div>
+
+      <!-- FLOW BAR -->
+      <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <div class="grid grid-cols-2 md:grid-cols-7 gap-3 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">0</span>
+            <div>
+              <p class="font-semibold">Policy</p>
+              <p class="text-slate-500">YAML + version</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">1</span>
+            <div>
+              <p class="font-semibold">Ingest</p>
+              <p class="text-slate-500">event → case</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">2</span>
+            <div>
+              <p class="font-semibold">Case</p>
+              <p class="text-slate-500">external vs decision</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">3</span>
+            <div>
+              <p class="font-semibold">Trigger</p>
+              <p class="text-slate-500">manual/auto</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">4</span>
+            <div>
+              <p class="font-semibold">Evidence</p>
+              <p class="text-slate-500">RAG-as-proof</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">5</span>
+            <div>
+              <p class="font-semibold">Approve</p>
+              <p class="text-slate-500">reason required</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold">6</span>
+            <div>
+              <p class="font-semibold">Audit</p>
+              <p class="text-slate-500">timeline API</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- KEY INSIGHTS -->
+    <section class="grid md:grid-cols-3 gap-4">
+      <div class="bg-white border border-slate-200 rounded-xl p-5">
+        <p class="text-xs text-slate-500">Insight #1</p>
+        <h3 class="font-semibold mt-1">RAG ไม่ได้ตอบแทนคน แต่ “ดึงหลักฐาน”</h3>
+        <p class="text-sm text-slate-600 mt-2">Evidence ถูก snapshot เข้า decision + audit → ตรวจย้อนหลังได้ ไม่ใช่ black box.</p>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5">
+        <p class="text-xs text-slate-500">Insight #2</p>
+        <h3 class="font-semibold mt-1">Deterministic Decision = repeatable</h3>
+        <p class="text-sm text-slate-600 mt-2">Input เดิม + policy เดิม → ผลลัพธ์เดิม เหมาะกับองค์กรที่ต้อง audit/ISO/SOX.</p>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5">
+        <p class="text-xs text-slate-500">Insight #3</p>
+        <h3 class="font-semibold mt-1">Human Action แยกจาก AI Recommendation</h3>
+        <p class="text-sm text-slate-600 mt-2">Approve/Reject เป็น event คนละตัว → accountability ชัดเจน.</p>
+      </div>
+    </section>
+
+    <!-- MAIN: END-TO-END SCREENS -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold">Demo Screens (End-to-End)</h2>
+        <div class="text-xs text-slate-500">All screens are mock UI; map ตรงกับ API ที่ใช้งานจริง</div>
+      </div>
+
+      <!-- SCREEN 0: POLICY -->
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-500">Step 0</p>
+            <h3 class="text-lg font-semibold">Policy Console (Admin)</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">Immutable binding</span>
+            <button class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm">Publish Policy</button>
+          </div>
+        </div>
+
+        <div class="p-6 grid lg:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium">PROCUREMENT-001</p>
+                <p class="text-xs text-slate-500">version: <span class="font-semibold text-slate-700">v3</span> • effective: 2025-01-01</p>
+              </div>
+              <span class="px-2 py-1 rounded-lg text-xs bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="border border-slate-200 rounded-xl p-4">
+                <p class="text-xs text-slate-500">Threshold</p>
+                <p class="mt-1 font-semibold">amount.medium</p>
+                <p class="mono text-sm mt-1">200,000 THB</p>
+              </div>
+              <div class="border border-slate-200 rounded-xl p-4">
+                <p class="text-xs text-slate-500">SLA</p>
+                <p class="mt-1 font-semibold">approval_due_hours</p>
+                <p class="mono text-sm mt-1">24</p>
+              </div>
+            </div>
+
+            <div class="border border-slate-200 rounded-xl p-4">
+              <p class="text-xs text-slate-500">Authority rules (first match wins)</p>
+              <div class="mt-2 space-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                  <span class="mono">amount &gt; 500000</span>
+                  <span class="px-2 py-1 text-xs rounded-lg bg-rose-50 text-rose-700 border border-rose-200">CFO</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="mono">amount &gt; 200000</span>
+                  <span class="px-2 py-1 text-xs rounded-lg bg-amber-50 text-amber-700 border border-amber-200">COO</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="mono">amount ≤ 200000</span>
+                  <span class="px-2 py-1 text-xs rounded-lg bg-slate-50 text-slate-700 border border-slate-200">Procurement_Manager</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+              <p class="text-sm font-semibold">What makes this “enterprise”</p>
+              <ul class="list-disc ml-5 mt-2 text-sm text-slate-600 space-y-1">
+                <li>Policy เป็นเอกสารควบคุม ไม่ฝังใน code</li>
+                <li>version binding → audit อธิบายย้อนหลังได้</li>
+                <li>อนุญาต override ได้ แต่บังคับ reason (ต่อยอดได้)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <p class="text-sm font-medium">YAML (editable)</p>
+            <pre class="mono text-xs bg-slate-900 text-slate-50 rounded-xl p-4 overflow-auto">
+policy_id: PROCUREMENT-001
+version: v3
+scope:
+  decision_type: PROCUREMENT
+thresholds:
+  amount:
+    medium: 200000
+sla:
+  approval_due_hours: 24
+rules:
+  - id: HIGH_AMOUNT_ESCALATION
+    when:
+      - field: amount
+        operator: "&gt;"
+        value: 200000
+    then: { decision: ESCALATE }
+  - id: SLA_RISK
+    when:
+      - field: hours_to_sla
+        operator: "&lt;"
+        value: 24
+    then: { decision: ESCALATE }
+            </pre>
+
+            <div class="border border-slate-200 rounded-xl p-4">
+              <p class="text-sm font-semibold">API mapping</p>
+              <div class="mt-2 grid md:grid-cols-2 gap-2 text-xs">
+                <div class="mono bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">GET /policies/{id}/{version}</div>
+                <div class="mono bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">POST /policies/{id}/{version}/publish</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 1: INGESTION -->
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-500">Step 1</p>
+            <h3 class="text-lg font-semibold">Event Ingestion (ERP / Workflow / Manual)</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2 py-1 rounded-lg bg-slate-50 text-slate-700 border border-slate-200">Fallback mode</span>
+            <button class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm">Send Event</button>
+          </div>
+        </div>
+
+        <div class="p-6 grid lg:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <p class="text-sm font-medium">Manual Event Form</p>
+            <div class="grid md:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-slate-500">Source</label>
+                <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm">SAP</div>
+              </div>
+              <div>
+                <label class="text-xs text-slate-500">Event type</label>
+                <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm">PO_CREATED</div>
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-xs text-slate-500">External ref</label>
+                <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm">PO-8891</div>
+              </div>
+              <div>
+                <label class="text-xs text-slate-500">Amount (THB)</label>
+                <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm">350,000</div>
+              </div>
+              <div>
+                <label class="text-xs text-slate-500">Hours to SLA</label>
+                <div class="mt-1 border border-slate-200 rounded-lg px-3 py-2 text-sm">12</div>
+              </div>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <p class="text-sm font-semibold text-amber-900">Key point</p>
+              <p class="text-sm text-amber-800 mt-1">Input = “Fact” ไม่ใช่ “Decision” → TH8 รับรู้ว่า “มีเรื่องต้องพิจารณา” แล้วค่อย trigger การตัดสินใจ.</p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <p class="text-sm font-medium">API payload</p>
+            <pre class="mono text-xs bg-slate-100 rounded-xl p-4 overflow-auto">
+POST /events/ingest
+{
+  "source": "SAP",
+  "event_type": "PO_CREATED",
+  "external_ref": "PO-8891",
+  "payload": {
+    "case_id": "CASE-999",
+    "amount": 350000,
+    "hours_to_sla": 12,
+    "vendor": "ABC",
+    "contract_id": "CON-2024-01"
+  }
+}
+            </pre>
+            <div class="border border-slate-200 rounded-xl p-4">
+              <p class="text-sm font-semibold">What TH8 does now</p>
+              <ul class="list-disc ml-5 mt-2 text-sm text-slate-600 space-y-1">
+                <li>Normalize fields → case context</li>
+                <li>Bind เข้ากับ Case (หลาย event → 1 case)</li>
+                <li>เขียน audit: EVENT_INGESTED (optional เพิ่มได้)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 2-6: APP MOCK (Case List + Detail + Decision + Approve Modal + Audit) -->
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-500">Steps 2–6</p>
+            <h3 class="text-lg font-semibold">Decision Center (Case → Decision → Approve/Reject → Audit)</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="hidden md:flex items-center gap-2 text-xs">
+              <span class="px-2 py-1 rounded-lg bg-slate-50 border border-slate-200">External: OPEN</span>
+              <span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">Decision: PENDING</span>
+            </div>
+            <button class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm">Run Decision</button>
+          </div>
+        </div>
+
+        <div class="p-6 grid lg:grid-cols-12 gap-6">
+
+          <!-- LEFT: CASE LIST -->
+          <aside class="lg:col-span-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold">Cases</p>
+              <span class="text-xs text-slate-500">Filter: Pending decisions</span>
+            </div>
+
+            <div class="space-y-2">
+              <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <p class="font-semibold">CASE-999</p>
+                    <p class="text-xs text-slate-500">PO-8891 • Vendor ABC</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">Pending</span>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <div class="bg-white border border-slate-200 rounded-lg px-3 py-2">
+                    <p class="text-slate-500">Amount</p>
+                    <p class="mono text-slate-900">350,000</p>
+                  </div>
+                  <div class="bg-white border border-slate-200 rounded-lg px-3 py-2">
+                    <p class="text-slate-500">Hours to SLA</p>
+                    <p class="mono text-slate-900">12</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border border-slate-200 rounded-xl p-4">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <p class="font-semibold">CASE-1002</p>
+                    <p class="text-xs text-slate-500">PO-8892 • Vendor XYZ</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">No action</span>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                    <p class="text-slate-500">Amount</p>
+                    <p class="mono text-slate-900">95,000</p>
+                  </div>
+                  <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                    <p class="text-slate-500">Hours to SLA</p>
+                    <p class="mono text-slate-900">72</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+              <p class="text-sm font-semibold">API mapping</p>
+              <div class="mt-2 space-y-2 text-xs">
+                <div class="mono bg-white border border-slate-200 rounded-lg px-3 py-2">GET /cases?decision_status=pending</div>
+                <div class="mono bg-white border border-slate-200 rounded-lg px-3 py-2">GET /cases/{case_id}</div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- RIGHT: CASE DETAIL + DECISION -->
+          <main class="lg:col-span-8 space-y-6">
+
+            <!-- CASE DETAIL -->
+            <div class="border border-slate-200 rounded-2xl overflow-hidden">
+              <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-500">Step 2</p>
+                  <h4 class="font-semibold">Case Detail — CASE-999</h4>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="px-2 py-1 rounded-lg bg-slate-50 border border-slate-200">External: OPEN</span>
+                  <span class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">Decision: PENDING</span>
+                </div>
+              </div>
+
+              <div class="p-5 grid md:grid-cols-3 gap-3">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                  <p class="text-xs text-slate-500">External Ref</p>
+                  <p class="mono text-sm mt-1">PO-8891</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                  <p class="text-xs text-slate-500">Amount</p>
+                  <p class="mono text-sm mt-1">350,000 THB</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                  <p class="text-xs text-slate-500">Hours to SLA</p>
+                  <p class="mono text-sm mt-1">12</p>
+                </div>
+              </div>
+
+              <div class="px-5 pb-5">
+                <div class="bg-white border border-slate-200 rounded-xl p-4">
+                  <p class="text-sm font-semibold">Key separation</p>
+                  <p class="text-sm text-slate-600 mt-1">
+                    TH8 แยก <span class="font-semibold text-slate-900">external status</span> (ใน SAP/Workflow)
+                    ออกจาก <span class="font-semibold text-slate-900">decision status</span> (ใน TH8) เพื่อให้การอนุมัติ/ปฏิเสธ “ตรวจสอบได้”
+                    และไม่ไปแทน execution ของระบบหลัก
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- DECISION PANEL -->
+            <div class="border border-slate-200 rounded-2xl overflow-hidden">
+              <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-500">Steps 3–5</p>
+                  <h4 class="font-semibold">Decision Panel — Explainable Recommendation</h4>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-1 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">Policy: PROCUREMENT-001 / v3</span>
+                  <span class="text-xs px-2 py-1 rounded-lg bg-slate-50 border border-slate-200">Engine: deterministic</span>
+                </div>
+              </div>
+
+              <div class="p-5 grid lg:grid-cols-2 gap-4">
+                <!-- Recommendation -->
+                <div class="bg-rose-50 border border-rose-200 rounded-2xl p-5 space-y-3">
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <p class="text-xs text-rose-700">Recommended decision</p>
+                      <p class="text-2xl font-bold text-rose-900">ESCALATE</p>
+                    </div>
+                    <span class="px-2 py-1 rounded-lg text-xs bg-white/70 border border-rose-200 text-rose-700">decision_required = true</span>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white/70 border border-rose-200 rounded-xl p-3">
+                      <p class="text-xs text-rose-700">Required role</p>
+                      <p class="font-semibold mt-1">COO</p>
+                    </div>
+                    <div class="bg-white/70 border border-rose-200 rounded-xl p-3">
+                      <p class="text-xs text-rose-700">Decision ID</p>
+                      <p class="mono text-sm mt-1">DEC-d5eb312b</p>
+                    </div>
+                  </div>
+
+                  <div class="bg-white/70 border border-rose-200 rounded-xl p-3">
+                    <p class="text-xs text-rose-700">Rule hits</p>
+                    <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                      <span class="px-2 py-1 rounded-lg bg-white border border-rose-200 mono">HIGH_AMOUNT_ESCALATION</span>
+                      <span class="px-2 py-1 rounded-lg bg-white border border-rose-200 mono">SLA_RISK</span>
+                    </div>
+                  </div>
+
+                  <div class="bg-white/70 border border-rose-200 rounded-xl p-3">
+                    <p class="text-xs text-rose-700">Rule formula (concept)</p>
+                    <pre class="mono text-xs bg-white border border-rose-200 rounded-lg p-3 overflow-auto">IF amount &gt; 200,000
+AND hours_to_sla &lt; 24
+THEN decision = ESCALATE
+required_role = authority(amount)</pre>
+                  </div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="space-y-3">
+                  <div class="bg-white border border-slate-200 rounded-2xl p-5">
+                    <div class="flex items-center justify-between">
+                      <p class="text-sm font-semibold">Evidence (RAG-as-Evidence)</p>
+                      <button class="text-xs px-3 py-1.5 rounded-lg bg-slate-900 text-white">Open PDF</button>
+                    </div>
+
+                    <div class="mt-4 border border-slate-200 rounded-xl p-4 bg-slate-50">
+                      <div class="flex items-start justify-between gap-3">
+                        <div>
+                          <p class="text-xs text-slate-500">Document</p>
+                          <p class="font-semibold">procurement_policy.pdf</p>
+                          <p class="text-xs text-slate-500 mt-1">Clause <span class="mono font-semibold text-slate-700">2.3</span></p>
+                        </div>
+                        <div class="text-right">
+                          <p class="text-xs text-slate-500">Confidence</p>
+                          <p class="mono font-semibold">0.88</p>
+                        </div>
+                      </div>
+                      <p class="text-sm text-slate-700 mt-3">
+                        “High-value procurement must be escalated”
+                      </p>
+                      <div class="mt-3">
+                        <p class="text-xs text-slate-500">Matched reason</p>
+                        <p class="text-sm text-slate-700 mono mt-1">amount 350000 &gt; policy medium threshold 200000</p>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                      <p class="text-sm font-semibold text-emerald-900">Why this matters</p>
+                      <p class="text-sm text-emerald-800 mt-1">
+                        Evidence ถูก snapshot เข้า decision และถูกบันทึกใน audit → เปิดตรวจได้ในอนาคตแม้ policy/เอกสารถูกแก้เวอร์ชันใหม่
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <p class="text-sm font-semibold">API mapping</p>
+                    <div class="mt-2 grid md:grid-cols-2 gap-2 text-xs">
+                      <div class="mono bg-white border border-slate-200 rounded-lg px-3 py-2">POST /decisions/trigger</div>
+                      <div class="mono bg-white border border-slate-200 rounded-lg px-3 py-2">GET /evidence?case_id=CASE-999</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Approve/Reject actions -->
+              <div class="px-5 pb-5">
+                <div class="border border-slate-200 rounded-2xl p-5 bg-white">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <p class="text-xs text-slate-500">Step 6</p>
+                      <p class="text-sm font-semibold">Human Action (Approve / Reject)</p>
+                      <p class="text-sm text-slate-600 mt-1">บังคับใส่เหตุผล → ลด risk และเพิ่ม accountability</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button class="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm bg-white">Reject</button>
+                      <button class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm">Approve</button>
+                    </div>
+                  </div>
+
+                  <!-- modal mock -->
+                  <div class="mt-4 border border-slate-200 rounded-xl p-4 bg-slate-50">
+                    <div class="flex items-center justify-between">
+                      <p class="text-sm font-semibold">Approve modal</p>
+                      <span class="text-xs px-2 py-1 rounded-lg bg-slate-900 text-white">actor_role: COO</span>
+                    </div>
+                    <div class="mt-3 grid md:grid-cols-2 gap-3 text-sm">
+                      <div class="bg-white border border-slate-200 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Decision ID</p>
+                        <p class="mono mt-1">DEC-d5eb312b</p>
+                      </div>
+                      <div class="bg-white border border-slate-200 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Action</p>
+                        <p class="mt-1 font-semibold">APPROVE</p>
+                      </div>
+                      <div class="md:col-span-2 bg-white border border-slate-200 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Reason (required)</p>
+                        <p class="mt-1">Approved due to supplier urgency</p>
+                      </div>
+                    </div>
+
+                    <div class="mt-3 text-xs text-slate-500">
+                      API: <span class="mono">POST /decisions/{id}/approve</span> (writes <span class="mono">DECISION_APPROVED</span> audit event)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AUDIT TIMELINE -->
+            <div class="border border-slate-200 rounded-2xl overflow-hidden">
+              <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-500">Step 7</p>
+                  <h4 class="font-semibold">Unified Audit Timeline (Read-only)</h4>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 mono">GET /api/v1/audit/case/CASE-999</span>
+                </div>
+              </div>
+
+              <div class="p-5">
+                <ol class="relative border-l border-slate-200 ml-3 space-y-6">
+                  <li class="ml-6">
+                    <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">1</span>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <p class="text-sm font-semibold">DECISION_RECOMMENDED</p>
+                          <p class="text-xs text-slate-500">actor: SYSTEM • 2025-12-31 14:11:28</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200">Policy v3</span>
+                      </div>
+                      <div class="mt-3 grid md:grid-cols-2 gap-3 text-sm">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <p class="text-xs text-slate-500">Decision</p>
+                          <p class="mt-1 font-semibold">ESCALATE • required_role: COO</p>
+                          <p class="mono text-xs text-slate-600 mt-2">rule_hits: HIGH_AMOUNT_ESCALATION, SLA_RISK</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                          <p class="text-xs text-slate-500">Evidence</p>
+                          <p class="mt-1">procurement_policy.pdf • clause 2.3</p>
+                          <p class="mono text-xs text-slate-600 mt-2">amount 350000 &gt; 200000</p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="ml-6">
+                    <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-semibold">2</span>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <p class="text-sm font-semibold">DECISION_APPROVED</p>
+                          <p class="text-xs text-slate-500">actor: COO • 2025-12-31 14:15:49</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">Human action</span>
+                      </div>
+                      <div class="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm">
+                        <p class="text-xs text-slate-500">Reason</p>
+                        <p class="mt-1">Approved due to supplier urgency</p>
+                      </div>
+                    </div>
+                  </li>
+                </ol>
+
+                <div class="mt-5 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                  <p class="text-sm font-semibold">Why this screen convinces executives</p>
+                  <ul class="list-disc ml-5 mt-2 text-sm text-slate-600 space-y-1">
+                    <li>เห็น “เรื่องราวครบวงจร” ไม่ใช่ log เทคนิค</li>
+                    <li>ย้อนกลับไป policy version + หลักฐานได้ทันที</li>
+                    <li>แยกชัดว่า AI แนะนำ vs คนตัดสิน</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </main>
+        </div>
+      </div>
+    </section>
+
+    <!-- INPUT FLEXIBILITY + DEMO SCRIPT -->
+    <section class="grid lg:grid-cols-2 gap-6">
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-lg font-semibold">Demo Script (Step-by-step)</h3>
+        <ol class="mt-4 space-y-3 text-sm">
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">0</span>
+            <div>
+              <p class="font-semibold">เลือก policy + version</p>
+              <p class="text-slate-600">โชว์ว่า policy ไม่ฝังใน code และ bind แบบ immutable</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">1</span>
+            <div>
+              <p class="font-semibold">Ingest event (manual fallback)</p>
+              <p class="text-slate-600">ยิงเคสที่ amount สูง + SLA ใกล้ → ให้เกิด escalation แน่นอน</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">2</span>
+            <div>
+              <p class="font-semibold">เปิด Case detail</p>
+              <p class="text-slate-600">เน้น external status vs decision status</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">3</span>
+            <div>
+              <p class="font-semibold">กด Run Decision</p>
+              <p class="text-slate-600">โชว์ rule hits + required_role ที่ออกแบบไว้</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">4</span>
+            <div>
+              <p class="font-semibold">เปิด Evidence</p>
+              <p class="text-slate-600">คลิก PDF/Clause → ย้ำ RAG-as-Evidence ไม่ใช่ AI answer</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">5</span>
+            <div>
+              <p class="font-semibold">Approve / Reject + reason</p>
+              <p class="text-slate-600">เหตุผลถูกบันทึกเป็น audit event (accountability)</p>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-semibold text-xs">6</span>
+            <div>
+              <p class="font-semibold">เปิด Audit timeline</p>
+              <p class="text-slate-600">เรียก API `/audit/case/{id}` → timeline ครบวงจร</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-lg font-semibold">Input Flexibility (สำหรับ demo)</h3>
+        <p class="text-sm text-slate-600 mt-2">
+          ระบบรับเคสเป็น JSON/dict แบบยืดหยุ่น แต่ต้องมี “field หลัก” ที่ policy ใช้จริง
+        </p>
+
+        <div class="mt-4 grid md:grid-cols-2 gap-4">
+          <div class="border border-slate-200 rounded-xl p-4">
+            <p class="text-sm font-semibold">Minimum fields</p>
+            <ul class="mt-2 list-disc ml-5 text-sm text-slate-600 space-y-1">
+              <li><span class="mono">case_id</span></li>
+              <li><span class="mono">amount</span></li>
+              <li><span class="mono">hours_to_sla</span></li>
+            </ul>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl p-4">
+            <p class="text-sm font-semibold">Optional fields (ต่อยอดได้)</p>
+            <ul class="mt-2 list-disc ml-5 text-sm text-slate-600 space-y-1">
+              <li><span class="mono">vendor_risk</span></li>
+              <li><span class="mono">discount_percent</span></li>
+              <li><span class="mono">credit_days</span></li>
+              <li><span class="mono">contract_id</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+          <p class="text-sm font-semibold">Rule safety behavior</p>
+          <p class="text-sm text-slate-600 mt-1">
+            ถ้า policy อ้าง field ไหน แต่ case ไม่มี field นั้น → rule นั้น “ไม่ match” (ปลอดภัย) และ decision ยังคง deterministic
+          </p>
+        </div>
+
+        <pre class="mono text-xs bg-slate-100 rounded-xl p-4 overflow-auto mt-4">
+Example case (flexible):
+{
+  "case_id": "CASE-999",
+  "amount": 350000,
+  "hours_to_sla": 12,
+  "vendor": "ABC",
+  "contract_id": "CON-2024-01"
+}</pre>
+      </div>
+    </section>
+
+    <footer class="text-center text-xs text-slate-500 pt-4">
+      TH8.AI — Decision + Policy + Evidence + Audit • Designed for enterprise trust (not workflow replacement)
+    </footer>
+
+  </div>
+</body>
+</html>

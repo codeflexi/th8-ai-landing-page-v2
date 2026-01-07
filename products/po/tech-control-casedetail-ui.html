@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TH8 – Case Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+
+<div class="max-w-7xl mx-auto px-6 py-8 space-y-6">
+
+  <!-- ================= Header ================= -->
+  <section class="bg-white border border-slate-200 rounded-2xl p-6">
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-slate-500">Decision Case</p>
+        <h1 class="text-2xl font-semibold mono mt-1">
+          CASE-PO-OVT-2025-006
+        </h1>
+        <p class="text-sm text-slate-600 mt-1">
+          Procurement • Vendor: <span class="font-medium">OVALTINE-TH</span>
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="px-3 py-1 text-xs rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+          Decision: Pending
+        </span>
+        <span class="px-3 py-1 text-xs rounded-full bg-slate-100 text-slate-700 border">
+          External: OPEN
+        </span>
+        <span class="px-3 py-1 text-xs rounded-full bg-red-50 text-red-700 border border-red-200">
+          High Risk
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Main Grid ================= -->
+  <div class="grid grid-cols-12 gap-6">
+
+    <!-- ================= LEFT COLUMN ================= -->
+    <aside class="col-span-4 space-y-6">
+
+      <!-- Snapshot -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-sm font-semibold text-slate-700 mb-4">
+          Case Snapshot
+        </h3>
+
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p class="text-slate-500">Amount</p>
+            <p class="font-semibold mono">350,000 THB</p>
+          </div>
+          <div>
+            <p class="text-slate-500">SLA Remaining</p>
+            <p class="font-semibold mono text-red-600">12 hrs</p>
+          </div>
+          <div>
+            <p class="text-slate-500">Priority</p>
+            <p class="font-medium">High</p>
+          </div>
+          <div>
+            <p class="text-slate-500">Source</p>
+            <p class="font-medium">Manual Ingest</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 text-sm">
+        <p class="text-slate-500">Created</p>
+        <p class="mono">2026-01-01 16:10</p>
+
+        <p class="text-slate-500 mt-3">Last Evaluated</p>
+        <p class="mono">2026-01-01 16:12</p>
+      </div>
+
+    </aside>
+
+    <!-- ================= RIGHT COLUMN ================= -->
+    <main class="col-span-8 space-y-6">
+
+      <!-- Decision Summary -->
+      <section class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-sm font-semibold text-slate-700 mb-4">
+          Decision Summary
+        </h3>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-slate-500 text-sm">Recommended Action</p>
+            <p class="text-2xl font-bold text-red-700 mt-1">
+              ESCALATE
+            </p>
+          </div>
+          <div>
+            <p class="text-slate-500 text-sm">Required Role</p>
+            <p class="text-lg font-semibold mt-1">
+              COO Approval
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 text-sm">
+          <p class="text-slate-500">Policy</p>
+          <p class="mono mt-1">
+            PROCUREMENT-001 • Version 3 (Immutable)
+          </p>
+
+          <div class="mt-4">
+            <p class="text-slate-500 mb-2">Triggered Rules</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 text-xs rounded bg-slate-100 mono">
+                HIGH_AMOUNT_ESCALATION
+              </span>
+              <span class="px-2 py-1 text-xs rounded bg-slate-100 mono">
+                SLA_RISK
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Evidence -->
+      <section class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-sm font-semibold text-slate-700 mb-4">
+          Evidence (RAG-as-Evidence)
+        </h3>
+
+        <div class="space-y-4">
+          <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-medium text-sm">
+                  procurement_policy.pdf
+                </p>
+                <p class="text-xs text-slate-500">
+                  Clause 2.3 – High Value Procurement
+                </p>
+              </div>
+              <span class="text-xs px-2 py-1 rounded bg-slate-200">
+                Confidence: High
+              </span>
+            </div>
+
+            <p class="text-sm mt-3">
+              “Procurement exceeding THB 200,000 must be escalated to COO.”
+            </p>
+
+            <div class="mt-3 flex justify-between items-center">
+              <p class="text-xs text-slate-500">
+                Reason: amount 350,000 &gt; threshold
+              </p>
+              <button class="text-sm text-blue-600 hover:underline">
+                Open Document
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action -->
+      <section class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-sm font-semibold text-slate-700 mb-4">
+          Decision Action
+        </h3>
+
+        <textarea
+          class="w-full border border-slate-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-slate-900"
+          rows="3"
+          placeholder="Decision reason is required and will be recorded in audit log"
+        ></textarea>
+
+        <div class="flex justify-end gap-3 mt-4">
+          <button class="px-4 py-2 rounded-xl border text-sm">
+            Reject
+          </button>
+          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white text-sm">
+            Approve
+          </button>
+        </div>
+      </section>
+
+      <!-- Audit Timeline -->
+      <section class="bg-white border border-slate-200 rounded-2xl p-6">
+        <h3 class="text-sm font-semibold text-slate-700 mb-4">
+          Audit Timeline
+        </h3>
+
+        <div class="space-y-3 text-sm">
+          <div>
+            <p class="mono">
+              16:12 — DECISION_RECOMMENDED
+            </p>
+            <p class="text-slate-500">
+              System • Based on policy PROCUREMENT-001 v3
+            </p>
+          </div>
+          <div>
+            <p class="mono">
+              16:18 — DECISION_APPROVED
+            </p>
+            <p class="text-slate-500">
+              COO • “Urgent procurement close to SLA”
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

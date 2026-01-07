@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Enterprise Architecture & Technology Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px), linear-gradient(to bottom, #f1f5f9 1px, transparent 1px); }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body class="bg-white text-slate-900 antialiased selection:bg-red-100 selection:text-red-900">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="h-8 w-8 bg-black rounded flex items-center justify-center font-bold text-white mono text-xs">TH8</div>
+                <div>
+                    <span class="font-bold text-slate-900 tracking-tight">TH8.AI</span>
+                    <span class="ml-2 text-[10px] font-mono bg-red-50 text-red-600 px-2 py-0.5 rounded border border-red-100 font-semibold">ENT-ARCH v2.4</span>
+                </div>
+            </div>
+            <nav class="hidden lg:flex gap-8 text-xs font-medium text-slate-600 uppercase tracking-wide">
+                <a href="#engine" class="hover:text-red-600 transition-colors">The Technology Engine</a>
+                <a href="#architecture" class="hover:text-red-600 transition-colors">System Architecture</a>
+                <a href="#security" class="hover:text-red-600 transition-colors">Security & Compliance</a>
+                <a href="#integration" class="hover:text-red-600 transition-colors">ERP Integration</a>
+            </nav>
+            <div class="flex gap-3">
+                <a href="#" class="text-xs font-medium text-slate-500 hover:text-red-600 flex items-center px-3">Documentation</a>
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition-colors shadow-lg shadow-red-100">
+                    Client Portal Login
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative py-24 bg-white overflow-hidden border-b border-slate-200">
+        <div class="absolute inset-0 bg-grid opacity-60"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-mono mb-6">
+                        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                        Hybrid Neuro-Symbolic AI Architecture
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-6">
+                        Deterministic Governance for <br>
+                        <span class="text-red-600">Enterprise Procurement</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl font-light">
+                        A composable AI platform engineered for <strong>Head of IT</strong> and <strong>Architects</strong>. 
+                        We combine the flexibility of LLMs (RAG) with the strictness of Rule Engines to deliver auditable, hallucination-free decisions.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="px-6 py-3 bg-black hover:bg-slate-800 text-white rounded-lg text-sm font-semibold shadow-xl transition-all flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Download Whitepaper
+                        </button>
+                        <button class="px-6 py-3 bg-white border border-slate-300 hover:bg-red-50 hover:text-red-700 hover:border-red-200 text-slate-700 rounded-lg text-sm font-semibold transition-all">
+                            View API Specification (OpenAPI)
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="relative rounded-xl bg-slate-900 shadow-2xl border border-slate-800 p-1 overflow-hidden">
+                    <div class="bg-slate-900/50 backdrop-blur p-4 border-b border-slate-700 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-400">policy_engine_core.py</span>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+<pre class="font-mono text-xs text-slate-300 leading-relaxed">
+<span class="text-red-400">class</span> <span class="text-yellow-300">ProcurementGuardrail</span>(BaseModel):
+    <span class="text-slate-500">"""Deterministic Policy Enforcement Layer"""</span>
+    
+    <span class="text-red-400">async def</span> <span class="text-blue-400">evaluate_transaction</span>(self, po: PurchaseOrder, contract: Contract) -> Decision:
+        <span class="text-slate-500"># 1. Vector Search for Evidence (RAG)</span>
+        evidence = <span class="text-red-400">await</span> self.vector_store.similarity_search(
+            query=po.item_description, 
+            filter={<span class="text-green-400">"contract_id"</span>: contract.id}
+        )
+        
+        <span class="text-slate-500"># 2. Hard Rule Check (No LLM Hallucination here)</span>
+        violations = []
+        <span class="text-red-400">if</span> po.unit_price > contract.unit_price * (<span class="text-purple-400">1</span> + self.threshold):
+            violations.append(
+                RuleViolation(code=<span class="text-green-400">"R-01"</span>, severity=<span class="text-green-400">"HIGH"</span>, delta=po.unit_price - contract.unit_price)
+            )
+
+        <span class="text-slate-500"># 3. Decision Logic</span>
+        <span class="text-red-400">if not</span> violations:
+            <span class="text-red-400">return</span> Decision(status=<span class="text-green-400">"AUTO_PASS"</span>)
+        <span class="text-red-400">return</span> Decision(status=<span class="text-green-400">"PENDING"</span>, reason=violations, evidence=evidence)
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="engine" class="py-24 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-red-600 font-bold tracking-wider text-xs uppercase">Core Capabilities</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">The Technology Engine</h2>
+                <p class="text-slate-600 mt-4 font-light">
+                    Our "Engine" is not a single model, but an orchestrated pipeline of specialized components designed to handle complexity, ambiguity, and strict compliance simultaneously.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-shadow group">
+                    <div class="h-12 w-12 bg-red-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">1. Cognitive Extraction (OCR + LLM)</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        Handles unstructured data ingestion. We use optical character recognition (OCR) combined with LayoutLM models to understand complex tables in PDF contracts.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-2 border-t border-slate-100 pt-4">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Table Structure Recognition</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Multi-lingual Support (TH/EN)</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Evidence Snippet Generation</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-shadow group">
+                    <div class="h-12 w-12 bg-red-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">2. Context-Aware RAG</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        Retrieval-Augmented Generation that grounds every answer in your specific documents. We use hybrid search (Dense Vector + Sparse Keyword) for maximum accuracy.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-2 border-t border-slate-100 pt-4">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Qdrant / Milvus Vector Store</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Similarity Re-ranking</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Provenance Tracking (Source linking)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-red-600 shadow-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">CORE LOGIC</div>
+                    <div class="h-12 w-12 bg-red-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">3. Policy Engine (Symbolic)</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        Unlike pure LLMs, our Policy Engine is deterministic. It executes hard business rules (e.g., "Price > Contract + 5%") that cannot be bypassed by "prompt injection".
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-2 border-t border-slate-100 pt-4">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Code-based Rule Execution</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Zero Hallucination on Math</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Configurable Risk Thresholds</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-4">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">System Architecture</h2>
+                    <p class="text-sm text-slate-600 mb-6 leading-relaxed font-light">
+                        A decoupled, event-driven architecture designed for high throughput and fault tolerance. Heavy lifting (PDF Parsing) is offloaded to worker nodes, while the API Gateway remains responsive.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-xs text-slate-700 uppercase mb-2">Scalability Strategy</h4>
+                            <p class="text-xs text-slate-600">
+                                <strong>Horizontal Scaling:</strong> The API Layer and Worker Nodes (Celery) scale independently based on load (HTTP reqs vs. PDF ingestion queue).
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-xs text-slate-700 uppercase mb-2">Resilience</h4>
+                            <p class="text-xs text-slate-600">
+                                <strong>Circuit Breakers:</strong> Implemented on LLM API calls and Vector DB queries to prevent cascading failures.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 overflow-x-auto">
+                        <div class="min-w-[700px] flex flex-col gap-8">
+                            
+                            <div class="flex justify-center gap-8">
+                                <div class="w-32 py-3 bg-white border border-slate-300 rounded text-center text-xs font-bold shadow-sm">Web Dashboard</div>
+                                <div class="w-32 py-3 bg-white border border-slate-300 rounded text-center text-xs font-bold shadow-sm">Chat Client</div>
+                                <div class="w-32 py-3 bg-white border border-slate-300 rounded text-center text-xs font-bold shadow-sm">ERP (SAP/Oracle)</div>
+                            </div>
+
+                            <div class="flex justify-center"><svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg></div>
+
+                            <div class="mx-auto w-full max-w-2xl py-4 bg-black text-white rounded-lg text-center text-sm font-bold shadow-md relative border border-slate-800">
+                                API Gateway (FastAPI / GraphQL)
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] bg-red-600 px-2 py-1 rounded font-normal">Auth & Rate Limit</span>
+                            </div>
+
+                            <div class="flex justify-center"><svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg></div>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="p-4 bg-white border border-slate-300 rounded-lg shadow-sm flex flex-col items-center gap-2">
+                                    <span class="text-[10px] font-bold text-red-600 uppercase">Ingestion Svc</span>
+                                    <div class="text-xs text-center text-slate-600">OCR / Text Chunking<br>(Worker Queue)</div>
+                                </div>
+                                <div class="p-4 bg-white border-2 border-red-600 rounded-lg shadow-lg flex flex-col items-center gap-2 relative">
+                                    <span class="text-[10px] font-bold text-red-600 uppercase">Orchestrator</span>
+                                    <div class="text-xs text-center text-slate-600 font-bold">Policy Engine + RAG Logic</div>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-300 rounded-lg shadow-sm flex flex-col items-center gap-2">
+                                    <span class="text-[10px] font-bold text-red-600 uppercase">Audit Svc</span>
+                                    <div class="text-xs text-center text-slate-600">Event Logging / KPI<br>(Async Write)</div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-8 mt-4">
+                                <div class="py-4 bg-slate-900 text-slate-300 rounded-lg text-center text-xs font-mono border border-slate-800">
+                                    <strong>Vector DB</strong><br>(Embeddings)
+                                </div>
+                                <div class="py-4 bg-slate-900 text-slate-300 rounded-lg text-center text-xs font-mono border border-slate-800">
+                                    <strong>Relational DB</strong><br>(Transactions & Logs)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="py-24 bg-slate-900 text-slate-300">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-4">Enterprise Security & Compliance</h2>
+                    <p class="max-w-2xl text-slate-400 font-light">
+                        Designed for zero-trust environments. We ensure data integrity through immutable audit logs and strict Role-Based Access Control (RBAC).
+                    </p>
+                </div>
+                <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded flex items-center gap-2 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    Security Whitepaper
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="col-span-2 bg-slate-800 rounded-xl p-6 border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Immutable Audit Trail
+                        </h3>
+                        <span class="text-[10px] font-mono text-slate-500">JSON-Schema v1.2</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4">
+                        Every system action (Rule Check, Decision, Override) is recorded as a structured event. This log is append-only and can be exported for internal audit.
+                    </p>
+                    <div class="bg-black rounded-lg p-4 overflow-x-auto border border-slate-800">
+<pre class="font-mono text-[10px] text-emerald-400 leading-relaxed">
+{
+  "event_id": "evt_20250111_001",
+  "timestamp": "2025-01-11T10:12:00Z",
+  "actor": "system_policy_engine",
+  "action": "RULE_VIOLATION_DETECTED",
+  "context": {
+    "case_id": "CASE-OVT-2025-002",
+    "rule_violated": "R-01_PRICE_DEVIATION",
+    "details": {
+      "contract_price": 12.50,
+      "po_price": 12.80,
+      "delta_pct": 2.4
+    },
+    "evidence_ref": "contract_ovt_raw.pdf#page=6"
+  },
+  "hash": "sha256:8f2a9c3d..."
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-sm font-bold text-white mb-2">Data Residency & Privacy</h3>
+                        <ul class="text-xs text-slate-400 space-y-3">
+                            <li class="flex items-start gap-3">
+                                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>On-Premise Ready:</strong> Can be deployed on your private cloud (AWS VPC, Azure VNet) or on-premise Kubernetes.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Encryption:</strong> AES-256 for data at rest, TLS 1.3 for data in transit.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>PII Masking:</strong> Automatic redaction of sensitive entities before sending to LLM (optional).</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-sm font-bold text-white mb-2">RBAC & Authentication</h3>
+                        <p class="text-xs text-slate-400">
+                            Integration with OIDC / SAML for Single Sign-On (SSO). Granular permissions for <em>Requester</em>, <em>Approver</em>, and <em>Auditor</em> roles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="integration" class="py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Integration Patterns</h2>
+                    <p class="text-sm text-slate-600 mb-8 font-light">
+                        TH8.AI is designed to coexist with your existing ERP. We support multiple integration patterns depending on your latency requirements.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded bg-red-50 text-red-600 flex items-center justify-center font-bold text-xs shrink-0">API</div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">Synchronous (Pre-Check)</h4>
+                                <p class="text-xs text-slate-600 mt-1">
+                                    Call our <code class="bg-slate-100 px-1 py-0.5 rounded">POST /v1/policy/check</code> endpoint before PO creation. Returns <span class="text-emerald-600 font-bold">Pass</span> / <span class="text-amber-600 font-bold">Pending</span> status instantly.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs shrink-0">HOOK</div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">Asynchronous (Webhooks)</h4>
+                                <p class="text-xs text-slate-600 mt-1">
+                                    For heavy PDF processing, send documents via API. We will callback your <code class="bg-slate-100 px-1 py-0.5 rounded">webhook_url</code> when the Decision Center outcome is ready.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Verified Tech Stack</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 border border-slate-200 rounded-lg hover:border-red-400 transition-colors">
+                            <h5 class="text-xs font-bold text-slate-500 uppercase mb-2">Core Backend</h5>
+                            <ul class="text-sm font-mono text-slate-800 space-y-1">
+                                <li>Python 3.11+</li>
+                                <li>FastAPI (Async)</li>
+                                <li>Pydantic (Validation)</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg hover:border-red-400 transition-colors">
+                            <h5 class="text-xs font-bold text-slate-500 uppercase mb-2">Data & AI</h5>
+                            <ul class="text-sm font-mono text-slate-800 space-y-1">
+                                <li>Qdrant / Milvus</li>
+                                <li>PostgreSQL</li>
+                                <li>LangChain / LlamaIndex</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg hover:border-red-400 transition-colors">
+                            <h5 class="text-xs font-bold text-slate-500 uppercase mb-2">Infrastructure</h5>
+                            <ul class="text-sm font-mono text-slate-800 space-y-1">
+                                <li>Docker / K8s</li>
+                                <li>Redis (Queue/Cache)</li>
+                                <li>Prometheus (Metrics)</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg hover:border-red-400 transition-colors">
+                            <h5 class="text-xs font-bold text-slate-500 uppercase mb-2">Frontend</h5>
+                            <ul class="text-sm font-mono text-slate-800 space-y-1">
+                                <li>React / Vue.js</li>
+                                <li>Tailwind CSS</li>
+                                <li>Recharts (KPI)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl font-bold text-slate-900 mb-10 text-center">Technical Implementation Stages</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600">Phase 0</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Data Prep & Config</h4>
+                    <p class="text-xs text-slate-600">Ingest Contract PDFs, Define JSON Policy Rules. (Dev Env)</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">Phase 1</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Engine Deployment</h4>
+                    <p class="text-xs text-slate-600">Deploy Containers (API + Worker). Connect Vector DB. (UAT Env)</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">Phase 2</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Integration & Pilot</h4>
+                    <p class="text-xs text-slate-600">Connect ERP Webhooks. Run "Shadow Mode" on real transactions.</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden opacity-75">
+                    <div class="absolute top-0 right-0 bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500">Phase 3</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Production Scale</h4>
+                    <p class="text-xs text-slate-600">Full Rollout. Enable Auto-scaling and Advanced Monitoring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-slate-200 py-12 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="h-6 w-6 bg-black rounded flex items-center justify-center font-bold text-white text-[10px] mono">T8</div>
+                <span class="font-bold text-slate-700">TH8 Engineering</span>
+            </div>
+            <div class="flex gap-8 text-slate-500 text-xs">
+                <a href="#" class="hover:text-red-600">System Status</a>
+                <a href="#" class="hover:text-red-600">API Changelog</a>
+                <a href="#" class="hover:text-red-600">Privacy Policy</a>
+                <a href="#" class="hover:text-red-600">Security</a>
+            </div>
+            <div class="text-slate-400 text-xs">
+                © 2026 TH8.AI | Enterprise Grade
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

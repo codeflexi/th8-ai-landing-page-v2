@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | End-to-End Financial Risk Control Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
+                              linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #D9232D, #991b1b);
+        }
+        .vs-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        th8: {
+                            red: '#D9232D',
+                            black: '#111111',
+                            dark: '#1A1A1A',
+                            gray: '#F3F4F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-th8-black antialiased selection:bg-th8-red selection:text-white">
+
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-th8-black text-white rounded-xl flex items-center justify-center font-bold text-xl tracking-tighter">TH8</div>
+                    <div>
+                        <span class="block font-bold text-lg leading-none">Financial Control</span>
+                        <span class="text-xs text-slate-500 font-medium tracking-wider">ENTERPRISE SUITE</span>
+                    </div>
+                </div>
+                <div class="hidden lg:flex space-x-6 text-sm font-medium text-slate-600">
+                    <a href="#comparison" class="hover:text-th8-red transition font-bold text-th8-red">Why TH8?</a>
+                    <a href="#platform" class="hover:text-th8-red transition">Platform</a>
+                    <a href="#roi" class="hover:text-th8-red transition">ROI</a>
+                    <a href="#implementation" class="hover:text-th8-red transition">Timeline</a>
+                </div>
+                <button class="bg-th8-red hover:bg-red-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition shadow-lg shadow-red-100">
+                    Request Demo
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern -z-10 opacity-60"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold uppercase tracking-wider text-slate-600 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    Unified Platform: Procurement & Payment
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 leading-tight mb-6">
+                    Stop Revenue Leakage <br>
+                    <span class="text-gradient">End-to-End</span> From PO to Payment
+                </h1>
+                <p class="text-lg text-slate-600 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                    เติมเต็มช่องว่างของ ERP และ Workflow เดิมของคุณ ด้วย AI ที่ตรวจสอบเงื่อนไขสัญญา (Contract PDF) 
+                    เทียบกับเอกสารจริง เพื่อดักจับการจ่ายเงินเกิน <strong>"ก่อน"</strong> เงินออกจากบริษัท
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-th8-black text-white px-8 py-4 rounded-xl font-semibold hover:bg-slate-800 transition flex items-center justify-center gap-2 shadow-xl">
+                        Start Pilot Program
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                    <button class="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold hover:bg-slate-50 transition">
+                        View Technical Specs
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparison" class="py-24 bg-slate-50 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-th8-red font-bold uppercase tracking-widest text-sm">Integration Strategy</span>
+                <h2 class="text-3xl font-bold mt-2">Why TH8? (Connecting Your Ecosystem)</h2>
+                <p class="text-slate-600 mt-4 max-w-3xl mx-auto">
+                    องค์กรของคุณอาจมีระบบเหล่านี้อยู่แล้ว แต่ <strong>Revenue Leakage</strong> ยังเกิดขึ้น เพราะแต่ละระบบมีหน้าที่เฉพาะด้าน 
+                    TH8 ถูกออกแบบมาเพื่อ <strong>"เชื่อมต่อและตรวจสอบ"</strong> ช่องว่างเหล่านั้น
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 vs-card transition duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-xl">💾</div>
+                        <h3 class="font-bold text-lg text-slate-900">ERP / SAP</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Core Function</p>
+                            <p class="text-sm text-slate-600">System of Record (บันทึกข้อมูล)</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">The Gap</p>
+                            <p class="text-sm text-red-600">
+                                ERP "ไม่รู้" เงื่อนไขซับซ้อนในสัญญา PDF และมักตรวจสอบแค่ 3-Way Match พื้นฐาน (Qty/Price) แต่ขาด Logic เชิงลึก
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100">
+                            <p class="text-sm font-bold text-th8-red">✅ TH8 Role</p>
+                            <p class="text-sm text-slate-800">
+                                ดึงข้อมูล ERP มาเทียบกับสัญญา PDF และดักจับความผิดปกติ <strong>ก่อน</strong> บันทึกบัญชี (Pre-posting Control)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 vs-card transition duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-xl">🔀</div>
+                        <h3 class="font-bold text-lg text-slate-900">Workflow / BPA</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Core Function</p>
+                            <p class="text-sm text-slate-600">Routing Engine (ส่งต่องาน)</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">The Gap</p>
+                            <p class="text-sm text-red-600">
+                                ส่งงานให้คนอนุมัติ แต่ "ไม่ได้ช่วยคิด" ว่าควรอนุมัติหรือไม่ คนยังต้องเปิดเอกสารเทียบเอง เสี่ยงต่อ Human Error
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100">
+                            <p class="text-sm font-bold text-th8-red">✅ TH8 Role</p>
+                            <p class="text-sm text-slate-800">
+                                เป็น <strong>Decision Engine</strong> ส่ง "คำแนะนำ (Approve/Reject)" พร้อม "หลักฐาน" แนบไปกับ Workflow ให้คนตัดสินใจง่ายขึ้น
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 vs-card transition duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-xl">📷</div>
+                        <h3 class="font-bold text-lg text-slate-900">OCR / IDP</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Core Function</p>
+                            <p class="text-sm text-slate-600">Digitization (แปลงภาพเป็นตัวหนังสือ)</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">The Gap</p>
+                            <p class="text-sm text-red-600">
+                                OCR แค่แปลงข้อมูล แต่ "ไม่เข้าใจความหมาย" (No Context) ไม่รู้ว่าราคานี้ถูกต้องตามสัญญาที่เซ็นไว้เมื่อ 2 ปีก่อนหรือไม่
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100">
+                            <p class="text-sm font-bold text-th8-red">✅ TH8 Role</p>
+                            <p class="text-sm text-slate-800">
+                                ใช้ AI เข้าใจบริบท (Context-Aware) จับคู่ Invoice กับ Contract Clause ที่ถูกต้อง แม้รูปแบบเอกสารจะเปลี่ยนไป
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 vs-card transition duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-xl">📡</div>
+                        <h3 class="font-bold text-lg text-slate-900">IoT / Sensors</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Core Function</p>
+                            <p class="text-sm text-slate-600">Physical Data (ชั่งน้ำหนัก/นับจำนวน)</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">The Gap</p>
+                            <p class="text-sm text-red-600">
+                                IoT ให้ข้อมูลดิบ แต่ไม่ได้เชื่อมโยงกับ "เงื่อนไขการจ่ายเงิน" ในสัญญา (เช่น ความชื้นเกิน 5% ต้องหักเงิน)
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100">
+                            <p class="text-sm font-bold text-th8-red">✅ TH8 Role</p>
+                            <p class="text-sm text-slate-800">
+                                รับข้อมูล IoT มาเป็น Input เพื่อคำนวณ <strong>Adjusted Price</strong> ตามสูตรในสัญญา (Policy Engine) อัตโนมัติ
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 vs-card transition duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center text-xl">📊</div>
+                        <h3 class="font-bold text-lg text-slate-900">DW / BI Tool</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Core Function</p>
+                            <p class="text-sm text-slate-600">Reporting (รายงานผล)</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase">The Gap</p>
+                            <p class="text-sm text-red-600">
+                                เป็น "Post-mortem" (วัวหายล้อมคอก) รายงานสิ่งที่เกิดขึ้นไปแล้วในเดือนที่ผ่านมา เงินไหลออกไปแล้ว เรียกคืนยาก
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100">
+                            <p class="text-sm font-bold text-th8-red">✅ TH8 Role</p>
+                            <p class="text-sm text-slate-800">
+                                เป็น <strong>Real-time Prevention</strong> หยุดการจ่ายเงินที่ผิดปกติ "ทันที" และส่งข้อมูลที่ Clean แล้วไปให้ BI ทำรายงานต่อ
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-center items-center text-center">
+                    <div class="w-16 h-16 bg-th8-red rounded-full flex items-center justify-center text-3xl mb-4 shadow-lg shadow-red-900/50">🛡️</div>
+                    <h3 class="font-bold text-xl text-white mb-2">The TH8 Advantage</h3>
+                    <p class="text-sm text-slate-300 mb-6">
+                        "We don't replace your systems. We make them safer and smarter."
+                    </p>
+                    <button class="bg-white text-th8-black px-6 py-2 rounded-full text-sm font-bold hover:bg-slate-200 transition">
+                        See Architecture Diagram
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="platform" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-th8-red font-bold uppercase tracking-widest text-sm">Two Defense Lines</span>
+                <h2 class="text-3xl font-bold mt-2">Core Platform Modules</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-blue-300 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-20 -mr-16 -mt-16"></div>
+                    <div class="relative">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold text-xl">01</div>
+                            <div>
+                                <h3 class="text-xl font-bold">Procurement Control</h3>
+                                <p class="text-xs text-slate-500 uppercase tracking-wide">Pre-PO Approval</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-6">
+                            ตรวจสอบใบขอซื้อ (PR) เทียบกับสัญญา (Contract PDF) เพื่อป้องกันการซื้อผิดราคาหรือผิดเงื่อนไขตั้งแต่ต้นทาง
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                Price List Verification
+                            </li>
+                            <li class="flex items-center text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                Vendor Contract Validity
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-red-300 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-red-100 rounded-full blur-3xl opacity-20 -mr-16 -mt-16"></div>
+                    <div class="relative">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-th8-red font-bold text-xl">02</div>
+                            <div>
+                                <h3 class="text-xl font-bold">Payment Control</h3>
+                                <p class="text-xs text-slate-500 uppercase tracking-wide">Pre-Payment Approval</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-6">
+                            ตรวจสอบ Invoice เทียบกับ PO และการรับของ (GR) พร้อมแจ้งเตือน Payment Hold หากพบยอดเงินเกินจริง
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-th8-red mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                Intelligent 3-Way Match
+                            </li>
+                            <li class="flex items-center text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-th8-red mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                Duplicate Invoice Detection
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="uxflow" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div>
+                    <span class="text-th8-red font-bold uppercase tracking-widest text-sm">User Experience</span>
+                    <h2 class="text-3xl font-bold mt-2">Designed for Finance Teams</h2>
+                    <p class="text-slate-600 mt-2 max-w-2xl">
+                        ลดเวลาตรวจสอบจาก "ชั่วโมง" เหลือ "วินาที" ด้วยหน้าจอที่รวม Data และ Evidence ไว้ในที่เดียว
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="hidden md:block absolute top-12 left-0 right-0 h-0.5 bg-slate-100 -z-10"></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="relative group">
+                        <div class="w-24 h-24 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:border-th8-red transition z-10 mx-auto md:mx-0">
+                            <span class="text-3xl">🔔</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-center md:text-left">1. Notify</h3>
+                        <p class="text-sm text-slate-600 text-center md:text-left">
+                            แจ้งเตือนทันทีเมื่อพบ Exception (เช่น ราคาสูงกว่าสัญญา) เข้า Pending Queue
+                        </p>
+                    </div>
+                    <div class="relative group">
+                        <div class="w-24 h-24 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:border-th8-red transition z-10 mx-auto md:mx-0">
+                            <span class="text-3xl">👁️</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-center md:text-left">2. Validate</h3>
+                        <p class="text-sm text-slate-600 text-center md:text-left">
+                            ดูรายละเอียดหน้า <strong>Evidence View</strong>: ซ้ายเป็น Data, ขวาเป็น PDF Snippet
+                        </p>
+                    </div>
+                    <div class="relative group">
+                        <div class="w-24 h-24 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:border-th8-red transition z-10 mx-auto md:mx-0">
+                            <span class="text-3xl">✍️</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-center md:text-left">3. Decide</h3>
+                        <p class="text-sm text-slate-600 text-center md:text-left">
+                            Approve/Hold/Reject พร้อมบังคับใส่ "เหตุผล" (Mandatory Reason) เพื่อ Audit
+                        </p>
+                    </div>
+                    <div class="relative group">
+                        <div class="w-24 h-24 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:border-th8-red transition z-10 mx-auto md:mx-0">
+                            <span class="text-3xl">📈</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2 text-center md:text-left">4. Report</h3>
+                        <p class="text-sm text-slate-600 text-center md:text-left">
+                            Dashboard อัปเดตยอด <strong>Savings</strong> และ KPI แบบ Real-time
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roi" class="py-24 bg-slate-50 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-th8-red font-bold uppercase tracking-widest text-sm">Business Value</span>
+                    <h2 class="text-3xl font-bold mt-2 mb-6">ROI & P&L Impact</h2>
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+                        การลงทุนใน TH8 ไม่ใช่แค่ Software แต่คือการ <strong>"ปิดรูรั่วของกำไร"</strong> ที่วัดผลได้จริง
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 text-2xl">💰</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Direct P&L Impact</h4>
+                                <p class="text-sm text-slate-600">ทุกๆ 1% ของ Leakage ที่ป้องกันได้ คือ 1% ของ Net Profit ที่เพิ่มขึ้น</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-2xl">⏱️</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Payback < 3 Months</h4>
+                                <p class="text-sm text-slate-600">คืนทุนรวดเร็วจากการหยุดจ่ายเงินเกินและซ้ำซ้อน</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 text-2xl">🛡️</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Audit Readiness</h4>
+                                <p class="text-sm text-slate-600">ลดเวลาเตรียมเอกสาร Audit ด้วยระบบจัดเก็บหลักฐานอัตโนมัติ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 relative overflow-hidden">
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Projected Savings (Monthly)</h3>
+                    <div class="space-y-6 relative z-10">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700">Price Variance Leakage</span>
+                                <span class="font-bold text-slate-900">฿ 250,000</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-th8-red h-2 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700">Duplicate Payment</span>
+                                <span class="font-bold text-slate-900">฿ 85,000</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-amber-400 h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <div class="pt-6 border-t border-slate-100 mt-6">
+                            <div class="flex justify-between items-end">
+                                <span class="text-sm text-slate-500">Total Savings / Month</span>
+                                <span class="text-4xl font-bold text-green-600">฿ 335,000</span>
+                            </div>
+                            <p class="text-xs text-right text-slate-400 mt-2">*ตัวเลขจำลองจากกลุ่มธุรกิจ FMCG</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="implementation" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-th8-red font-bold uppercase tracking-widest text-sm">Implementation Path</span>
+                <h2 class="text-3xl font-bold mt-2">Go Live in 4 Weeks</h2>
+                <p class="text-slate-600 mt-4">ติดตั้งแบบ Non-Intrusive ไม่กระทบระบบ ERP เดิม</p>
+            </div>
+
+            <div class="relative max-w-5xl mx-auto">
+                <div class="md:hidden absolute left-8 top-0 bottom-0 w-0.5 bg-slate-200"></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="relative pl-20 md:pl-0">
+                        <div class="absolute left-6 md:left-1/2 md:-ml-3 top-0 md:-top-3 w-6 h-6 rounded-full bg-slate-900 border-4 border-white shadow-md z-10"></div>
+                        <div class="hidden md:block absolute top-0 left-0 right-0 h-0.5 bg-slate-200 -z-10"></div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Week 1</span>
+                            <h3 class="font-bold text-lg mb-2 text-slate-900">Kickoff</h3>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
+                                <li>NDA & Setup</li>
+                                <li>รับข้อมูลตัวอย่าง (Sample CSV/PDF)</li>
+                                <li>กำหนดกฎ Policy (v1.0)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="relative pl-20 md:pl-0">
+                        <div class="absolute left-6 md:left-1/2 md:-ml-3 top-0 md:-top-3 w-6 h-6 rounded-full bg-blue-500 border-4 border-white shadow-md z-10"></div>
+                        <div class="hidden md:block absolute top-0 left-0 right-0 h-0.5 bg-slate-200 -z-10"></div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Week 2</span>
+                            <h3 class="font-bold text-lg mb-2 text-slate-900">Ingest</h3>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
+                                <li>เชื่อมต่อ Data Pipeline</li>
+                                <li>ปรับจูน Policy Engine</li>
+                                <li>ตั้งค่าสิทธิ์ผู้ใช้ (RBAC)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="relative pl-20 md:pl-0">
+                        <div class="absolute left-6 md:left-1/2 md:-ml-3 top-0 md:-top-3 w-6 h-6 rounded-full bg-purple-500 border-4 border-white shadow-md z-10"></div>
+                        <div class="hidden md:block absolute top-0 left-0 right-0 h-0.5 bg-slate-200 -z-10"></div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Week 3</span>
+                            <h3 class="font-bold text-lg mb-2 text-slate-900">UAT</h3>
+                            <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
+                                <li>User Acceptance Test</li>
+                                <li>อบรมการใช้งาน</li>
+                                <li>ปรับแต่ง Dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="relative pl-20 md:pl-0">
+                        <div class="absolute left-6 md:left-1/2 md:-ml-3 top-0 md:-top-3 w-6 h-6 rounded-full bg-green-500 border-4 border-white shadow-md z-10"></div>
+                        <div class="hidden md:block absolute top-0 left-0 right-0 h-0.5 bg-slate-200 -z-10"></div>
+                        <div class="bg-green-50 p-6 rounded-xl border border-green-200 h-full">
+                            <span class="text-xs font-bold text-green-700 uppercase">Week 4</span>
+                            <h3 class="font-bold text-lg mb-2 text-green-900">Go Live</h3>
+                            <ul class="text-sm text-green-800 space-y-2 list-disc pl-4">
+                                <li>เริ่มใช้งานจริง (Live Monitor)</li>
+                                <li>รายงาน Leakage รายวัน</li>
+                                <li>สรุปผล ROI ครั้งแรก</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 bg-slate-900 text-white p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold mb-2">IT Requirements</h3>
+                        <p class="text-slate-400 text-sm">เราต้องการทรัพยากรเพียงเล็กน้อยเพื่อเริ่ม Pilot (Read-only)</p>
+                    </div>
+                    <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                        <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                            <span class="text-green-400 font-bold">1. Read Access</span>
+                            <p class="text-xs text-slate-400 mt-1">API / DB View / CSV export (PO & Invoice)</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                            <span class="text-green-400 font-bold">2. Document Path</span>
+                            <p class="text-xs text-slate-400 mt-1">Link/Path เพื่ออ่านไฟล์ Contract PDF</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-50 border-t border-slate-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 bg-th8-black text-white rounded flex items-center justify-center font-bold text-sm">TH8</div>
+                <span class="font-bold text-slate-900">TH8.AI</span>
+            </div>
+            <p class="text-sm text-slate-500">© 2026 TH8.AI – Enterprise Financial Intelligence. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

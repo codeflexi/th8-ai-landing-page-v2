@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Beyond RAG: The Reasoning Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        
+        /* Brain Pulse Animation */
+        @keyframes brain-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+        .reasoning-node { animation: brain-pulse 2s infinite; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white antialiased pb-32">
+
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 bg-white text-black rounded-lg flex items-center justify-center font-bold text-sm">TH8</div>
+                <div>
+                    <span class="font-bold text-white block leading-tight">The AI Brain</span>
+                    <span class="text-[10px] text-slate-400 font-mono">More than just Document Search</span>
+                </div>
+            </div>
+            <div class="text-xs font-mono text-red-400 bg-red-900/20 px-3 py-1 rounded-full border border-red-900">
+                Cognitive Layer Active
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-20">
+
+        <div class="text-center">
+            <h1 class="text-3xl md:text-5xl font-bold mb-6">
+                ไม่ใช่แค่ "จำได้" (RAG)<br>
+                แต่คือ <span class="text-red-500">"คิดเป็น" (Reasoning)</span>
+            </h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                ระบบค้นหาทั่วไปทำได้แค่หา keywords ในเอกสาร <br>
+                แต่ <strong>TH8 Reasoning Engine</strong> ใช้ตรรกะ, สามัญสำนึก (Common Sense), และบริบท เพื่อ "ตัดสินใจ" เหมือนมนุษย์
+            </p>
+        </div>
+
+        <section>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 opacity-60">
+                    <div class="text-4xl mb-4">📚</div>
+                    <h3 class="font-bold text-lg mb-2">1. Knowledge (RAG)</h3>
+                    <p class="text-sm text-slate-400">"ในเอกสารเขียนว่าอะไร?"</p>
+                    <div class="mt-4 p-3 bg-black/30 rounded text-xs font-mono text-slate-500">
+                        Query: "นโยบายจัดซื้อ"<br>
+                        Result: "ข้อ 5.2 ต้องเทียบ 3 เจ้า..."
+                    </div>
+                </div>
+
+                <div class="bg-slate-800 p-6 rounded-2xl border border-red-500/50 shadow-2xl shadow-red-900/20 reasoning-node relative overflow-hidden">
+                    <div class="absolute inset-0 bg-red-500/5"></div>
+                    <div class="text-4xl mb-4 relative z-10">🧠</div>
+                    <h3 class="font-bold text-lg mb-2 text-white relative z-10">2. Reasoning (Brain)</h3>
+                    <p class="text-sm text-red-200 relative z-10">"สถานการณ์นี้ ควรทำอย่างไร?"</p>
+                    <div class="mt-4 p-3 bg-black/50 rounded text-xs font-mono text-green-400 border border-green-900 relative z-10">
+                        Context: "เครื่องจักรพัง + ด่วนมาก"<br>
+                        Logic: "ด่วน = ข้อยกเว้น"<br>
+                        Decision: "Allow Bypass Rule 5.2"
+                    </div>
+                </div>
+
+                <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 opacity-60">
+                    <div class="text-4xl mb-4">🛠️</div>
+                    <h3 class="font-bold text-lg mb-2">3. Action (Agent)</h3>
+                    <p class="text-sm text-slate-400">"ลงมือทำอะไรต่อ?"</p>
+                    <div class="mt-4 p-3 bg-black/30 rounded text-xs font-mono text-slate-500">
+                        Action: Call 'calculate_delta'<br>
+                        Action: Send Email to CFO
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-12">
+            <h2 class="text-2xl font-bold flex items-center gap-3">
+                <i data-lucide="microscope" class="text-red-500"></i> พิสูจน์ความฉลาด (Real-world Tests)
+            </h2>
+
+            <div class="bg-white text-slate-900 rounded-3xl p-1 overflow-hidden">
+                <div class="bg-slate-100 p-4 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="font-bold flex items-center gap-2">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">A</span>
+                        การเข้าใจ "บริบทแฝง" (Implicit Context)
+                    </h3>
+                    <span class="text-xs font-bold text-red-600 bg-red-100 px-2 py-1 rounded">Reasoning Demo</span>
+                </div>
+                <div class="grid md:grid-cols-2">
+                    <div class="p-6 border-r border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">Input</p>
+                        <div class="bg-blue-50 p-4 rounded-xl text-sm text-blue-900 italic">
+                            "ขอซื้ออะไหล่ X ด่วนมาก สายการผลิตหยุดชะงัก (Line Down) รอเทียบราคา 3 เจ้าไม่ไหวแล้ว"
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase mb-2">Document (RAG) Says:</p>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200 text-xs font-mono text-slate-600">
+                                "Policy 5.2: การจัดซื้อทุกครั้งต้องเทียบราคาอย่างน้อย 3 เจ้า ห้ามละเว้น"
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-slate-50">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">AI "Brain" Processing</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="x-circle" class="text-slate-400 w-5 h-5 mt-0.5"></i>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-500">ถ้าเป็น Search Engine ทั่วไป:</p>
+                                    <p class="text-xs text-slate-500">ตอบว่า: "ทำไม่ได้ครับ กฎข้อ 5.2 ห้ามละเว้น"</p>
+                                </div>
+                            </div>
+                            <div class="h-px bg-slate-200 my-2"></div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="brain-circuit" class="text-red-600 w-5 h-5 mt-0.5"></i>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">TH8 Reasoning Engine:</p>
+                                    <ul class="text-xs text-slate-700 mt-1 space-y-1 list-disc pl-4">
+                                        <li>Analyze: พบคำว่า "Line Down" = <strong>วิกฤต (Critical)</strong></li>
+                                        <li>Reason: ความเสียหายจาก Line Down > ความเสี่ยงเรื่องราคา</li>
+                                        <li>Infer: สถานการณ์นี้เข้าข่าย "Emergency Procurement" (แม้ User ไม่ได้พูดคำนี้)</li>
+                                        <li><strong>Decision:</strong> "แนะนำให้ใช้ช่องทาง Emergency Approval (Form E-01) แทนครับ"</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white text-slate-900 rounded-3xl p-1 overflow-hidden">
+                <div class="bg-slate-100 p-4 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="font-bold flex items-center gap-2">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">B</span>
+                        การจับผิดสังเกต (Common Sense Anomaly)
+                    </h3>
+                    <span class="text-xs font-bold text-red-600 bg-red-100 px-2 py-1 rounded">Reasoning Demo</span>
+                </div>
+                <div class="grid md:grid-cols-2">
+                    <div class="p-6 border-r border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">Input PO</p>
+                        <div class="bg-blue-50 p-4 rounded-xl text-sm text-blue-900 font-mono">
+                            Vendor: "ร้านสมชายการเกษตร"<br>
+                            Item: "MacBook Pro M3 Max"<br>
+                            Price: 120,000 THB
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase mb-2">Database Check</p>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200 text-xs font-mono text-green-600">
+                                Vendor Status: Active (Approved)<br>
+                                Price Check: Within Market Range (Pass)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-slate-50">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">AI "Brain" Processing</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="x-circle" class="text-slate-400 w-5 h-5 mt-0.5"></i>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-500">ถ้าเป็น ERP ทั่วไป:</p>
+                                    <p class="text-xs text-slate-500">"Approved" (เพราะ Vendor Active และราคาไม่เกินจริง)</p>
+                                </div>
+                            </div>
+                            <div class="h-px bg-slate-200 my-2"></div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="alert-triangle" class="text-amber-500 w-5 h-5 mt-0.5"></i>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">TH8 Reasoning Engine:</p>
+                                    <ul class="text-xs text-slate-700 mt-1 space-y-1 list-disc pl-4">
+                                        <li>Concept Matching: "สมชายการเกษตร" = ธุรกิจเกษตร/ปุ๋ย</li>
+                                        <li>Item Matching: "MacBook" = อุปกรณ์ IT</li>
+                                        <li><strong>Conflict Logic:</strong> ร้านเกษตร ไม่น่าจะขาย MacBook (ความน่าจะเป็นต่ำ)</li>
+                                        <li><strong>Action:</strong> Flag as "Suspicious Category Mismatch" -> ส่งให้คนตรวจสอบ</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="grid md:grid-cols-4 gap-6 text-center">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                <div class="text-2xl mb-2">🔍</div>
+                <h4 class="font-bold text-white text-sm">Contextual</h4>
+                <p class="text-xs text-slate-400 mt-2">เข้าใจบริบท "ด่วน", "สำคัญ", "ทดแทน" ไม่ใช่แค่ Keyword Match</p>
+            </div>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                <div class="text-2xl mb-2">⚖️</div>
+                <h4 class="font-bold text-white text-sm">Judgment</h4>
+                <p class="text-xs text-slate-400 mt-2">ตัดสินใจในเคสที่กำกวม (Ambiguous) ได้โดยอิงจากเจตนารมณ์ของ Policy</p>
+            </div>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                <div class="text-2xl mb-2">🤖</div>
+                <h4 class="font-bold text-white text-sm">Agentic</h4>
+                <p class="text-xs text-slate-400 mt-2">เรียกใช้ Tools (Calculator, Email, API) ได้เองเมื่อจำเป็น</p>
+            </div>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                <div class="text-2xl mb-2">📝</div>
+                <h4 class="font-bold text-white text-sm">Summarization</h4>
+                <p class="text-xs text-slate-400 mt-2">สรุปเรื่องราวซับซ้อนให้ผู้บริหารเข้าใจใน 3 บรรทัด</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 text-center text-sm text-slate-500">
+        &copy; 2026 TH8.AI | Intelligence Beyond Retrieval
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 Decision Control Center | Procurement & Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        
+        /* Glassmorphism */
+        .glass-card { background: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .glass-dark { background: rgba(15, 23, 42, 0.95); border: 1px solid #334155; }
+        
+        /* Animations */
+        .scan-line {
+            position: absolute; width: 100%; height: 2px; background: #dc2626;
+            top: 0; left: 0; box-shadow: 0 0 15px #dc2626;
+            animation: scan 2.5s infinite linear;
+        }
+        @keyframes scan { 0% {top: 0; opacity: 0;} 10% {opacity: 1;} 90% {opacity: 1;} 100% {top: 100%; opacity: 0;} }
+        
+        .pulse-ring {
+            box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+            animation: pulse-red 2s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes pulse-red {
+            to { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+        }
+
+        /* Flow Steps */
+        .step-item.active .step-circle { background-color: #dc2626; color: white; border-color: #dc2626; }
+        .step-item.active .step-text { color: #dc2626; font-weight: 600; }
+        .step-circle { transition: all 0.3s; }
+        
+        /* Tabs */
+        .active-tab { border-bottom: 2px solid #dc2626; color: #dc2626; font-weight: 600; background: #fef2f2; }
+        .inactive-tab { color: #64748b; background: transparent; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased pb-20">
+
+    <nav class="bg-slate-900 text-white h-14 flex items-center justify-between px-6 sticky top-0 z-50 shadow-md">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-sm">T8</div>
+                <span class="font-bold tracking-tight">Decision Control Center</span>
+            </div>
+            <div class="h-6 w-px bg-slate-700 mx-2"></div>
+            <div class="hidden md:flex gap-4 text-xs font-medium text-slate-300">
+                <a href="#" class="hover:text-white">Procurement</a>
+                <a href="#" class="text-white border-b-2 border-red-500 pb-4 mt-4">Invoice Processing</a>
+                <a href="#" class="hover:text-white">Vendor Mgmt</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 text-xs">
+            <div class="flex items-center gap-2 px-3 py-1 bg-green-900/30 border border-green-800 rounded-full text-green-400">
+                <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                <span>Live Mode</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">JD</div>
+                <span>John Doe (CFO)</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-white border-b border-slate-200 py-6">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Process Journey: Invoice Matching #INV-2024-001</h2>
+            <div class="flex items-center justify-between relative">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-slate-200 -z-0"></div>
+                
+                <div class="step-item active relative z-10 bg-white px-2">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="step-circle w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center text-xs font-bold text-slate-500">1</div>
+                        <span class="step-text text-[10px] text-slate-500">Ingestion (Email/ERP)</span>
+                    </div>
+                </div>
+                <div class="step-item active relative z-10 bg-white px-2">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="step-circle w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center text-xs font-bold text-slate-500">2</div>
+                        <span class="step-text text-[10px] text-slate-500">AI Extraction & OCR</span>
+                    </div>
+                </div>
+                <div class="step-item active relative z-10 bg-white px-2">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="step-circle w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center text-xs font-bold text-slate-500">3</div>
+                        <span class="step-text text-[10px] text-slate-500">Rule Validation</span>
+                    </div>
+                </div>
+                <div class="step-item active relative z-10 bg-white px-2">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="step-circle w-8 h-8 rounded-full border-2 border-red-600 bg-red-600 text-white flex items-center justify-center text-xs font-bold pulse-ring">4</div>
+                        <span class="step-text text-[10px] font-bold text-red-600">Human Decision</span>
+                    </div>
+                </div>
+                <div class="step-item relative z-10 bg-white px-2">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="step-circle w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center text-xs font-bold text-slate-500">5</div>
+                        <span class="step-text text-[10px] text-slate-500">ERP Sync (SAP)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+
+        <div class="grid lg:grid-cols-12 gap-6 h-[750px]">
+            
+            <div class="lg:col-span-3 flex flex-col gap-4">
+                <div class="glass-card rounded-xl overflow-hidden flex flex-col flex-1">
+                    <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-slate-800">Review Queue</h3>
+                        <span class="bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded-full font-bold">3 Alert</span>
+                    </div>
+                    <div class="overflow-y-auto flex-1 p-2 space-y-2">
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg cursor-pointer relative shadow-sm">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500 rounded-l-lg"></div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-xs font-bold text-slate-900">INV-2024-001</span>
+                                <span class="text-[10px] text-slate-500">2m ago</span>
+                            </div>
+                            <div class="text-xs text-slate-600 mb-2">Vendor: Thai Packing</div>
+                            <span class="text-[10px] bg-white border border-red-200 text-red-600 px-2 py-1 rounded flex items-center gap-1 w-max">
+                                <i data-lucide="alert-triangle" class="w-3 h-3"></i> Price Variance
+                            </span>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-100 rounded-lg opacity-60 hover:opacity-100 transition">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-xs font-bold text-slate-700">INV-2024-009</span>
+                                <span class="text-[10px] text-slate-400">15m ago</span>
+                            </div>
+                            <div class="text-xs text-slate-500">Vendor: Office Mate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-4">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Data Source</h4>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded flex items-center justify-center"><i data-lucide="mail" class="w-4 h-4"></i></div>
+                        <div>
+                            <p class="text-xs font-bold">Email Attachment</p>
+                            <p class="text-[10px] text-slate-500">billing@thaipacking.com</p>
+                        </div>
+                    </div>
+                    <div class="h-px bg-slate-100 my-2"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-slate-100 text-slate-600 rounded flex items-center justify-center"><i data-lucide="database" class="w-4 h-4"></i></div>
+                        <div>
+                            <p class="text-xs font-bold">ERP (SAP)</p>
+                            <p class="text-[10px] text-slate-500">Matches PO: 450001239</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 flex flex-col gap-4">
+                
+                <div class="flex justify-between items-center">
+                     <h3 class="font-bold text-slate-800 text-sm">Document Comparison</h3>
+                     <div class="flex bg-slate-200 rounded-lg p-1 text-[10px]">
+                         <button class="px-3 py-1 bg-white shadow rounded font-bold text-slate-800">Split View</button>
+                         <button class="px-3 py-1 text-slate-500">Invoice Only</button>
+                     </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden flex-1 relative bg-slate-100 flex">
+                    
+                    <div class="w-1/2 border-r border-slate-300 p-4 bg-[#fdfbf7] relative">
+                        <div class="absolute top-2 left-2 bg-slate-200 text-slate-600 text-[10px] px-2 py-1 rounded font-bold z-10">
+                            SOURCE: Contract_2024.pdf
+                        </div>
+                        <div class="mt-8 opacity-70 scale-90 origin-top">
+                            <div class="font-serif text-slate-800 text-xs leading-relaxed">
+                                <h1 class="text-sm font-bold border-b border-black mb-2 pb-1">Supply Agreement</h1>
+                                <p class="mb-2">This agreement is made between TH8 Co. and Thai Packing Co.</p>
+                                <p class="mb-2"><strong>4. Pricing Schedule</strong></p>
+                                <div class="bg-yellow-100 border border-yellow-300 p-1">
+                                    <p>4.1. The unit price for "Ergonomic Chair Model X" shall be fixed at <strong>3,000 THB</strong> for the duration of 2024.</p>
+                                </div>
+                                <p class="mt-2 text-[10px] text-slate-400">...page 5 of 12...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-1/2 p-4 bg-white relative">
+                        <div class="absolute top-2 right-2 bg-blue-100 text-blue-600 text-[10px] px-2 py-1 rounded font-bold z-10">
+                            INCOMING: Invoice PDF
+                        </div>
+                        <div class="scan-line"></div> <div class="mt-8 scale-90 origin-top">
+                            <div class="font-mono text-xs text-slate-800">
+                                <div class="flex justify-between border-b pb-2 mb-2">
+                                    <span class="font-bold text-lg">INVOICE</span>
+                                    <span>#INV-2024-001</span>
+                                </div>
+                                <table class="w-full text-left">
+                                    <tr class="border-b"><th>Item</th><th class="text-right">Price</th></tr>
+                                    <tr>
+                                        <td class="py-2">Ergonomic Chair X</td>
+                                        <td class="py-2 text-right bg-red-50 border border-red-300 font-bold text-red-600">3,500</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 flex flex-col gap-4">
+                
+                <div class="glass-card rounded-xl overflow-hidden flex flex-col flex-1">
+                    <div class="flex border-b border-slate-200">
+                        <button class="flex-1 py-3 text-xs active-tab">Analysis Result</button>
+                        <button class="flex-1 py-3 text-xs inactive-tab">Audit Log</button>
+                    </div>
+
+                    <div class="p-5 flex-1 overflow-y-auto space-y-6">
+                        
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 flex gap-2">
+                                <i data-lucide="book-open" class="w-3 h-3"></i> 1. Retrieval (RAG)
+                            </h4>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+                                <p class="text-slate-500 mb-1">Found matching rule in <span class="underline text-blue-600 cursor-pointer">Contract_2024.pdf</span></p>
+                                <p class="font-serif italic text-slate-700 bg-white p-2 border border-slate-100 rounded">
+                                    "Unit price fixed at 3,000 THB"
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 flex gap-2">
+                                <i data-lucide="cpu" class="w-3 h-3"></i> 2. Validation Logic
+                            </h4>
+                            <div class="bg-red-50 p-3 rounded-lg border border-red-200">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-red-700 font-bold text-xs">Rule: Price Variance</span>
+                                    <span class="bg-red-200 text-red-800 text-[10px] px-1.5 rounded font-bold">FAILED</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-center text-[10px] mb-2">
+                                    <div class="bg-white p-1 rounded border border-red-100">
+                                        <span class="block text-slate-400">Allowed</span>
+                                        <span class="font-bold">3,000</span>
+                                    </div>
+                                    <div class="bg-white p-1 rounded border border-red-100">
+                                        <span class="block text-slate-400">Actual</span>
+                                        <span class="font-bold text-red-600">3,500</span>
+                                    </div>
+                                    <div class="bg-white p-1 rounded border border-red-100">
+                                        <span class="block text-slate-400">Delta</span>
+                                        <span class="font-bold text-red-600">+16.6%</span>
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-red-600">
+                                    <i data-lucide="info" class="w-3 h-3 inline"></i> Threshold allow: max 5%
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-2">3. Impact Analysis</h4>
+                            <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-xs text-blue-900">
+                                <p><strong>Financial Impact:</strong> If approved, cost increases by <strong>฿ 25,000</strong> (for 50 units).</p>
+                                <p class="mt-1"><strong>Recommendation:</strong> Reject and request revised invoice.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="p-4 bg-slate-50 border-t border-slate-200">
+                        <label class="text-xs font-bold text-slate-700 mb-2 block">Action Required:</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-colors">
+                                Reject Invoice
+                            </button>
+                            <button class="py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-lg transition-colors flex justify-center items-center gap-2">
+                                Approve (Exception) <i data-lucide="shield-alert" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-card rounded-xl p-4">
+                 <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase flex gap-2 items-center">
+                        <i data-lucide="code-2" class="w-4 h-4"></i> System Audit Log
+                    </h3>
+                    <span class="text-[10px] text-green-600 bg-green-50 px-2 py-0.5 rounded">Immutable</span>
+                </div>
+                <div class="bg-slate-900 rounded-lg p-3 font-mono text-[10px] text-slate-300 overflow-x-auto">
+<pre>{
+  "event_id": "evt_001",
+  "timestamp": "2026-01-05T14:35:01Z",
+  "trigger": "invoice_ingestion",
+  "checks": [
+    { "rule": "vendor_active", "status": "PASS" },
+    { "rule": "price_variance", "status": "FAIL", "delta": 16.6 }
+  ],
+  "rag_source": "contract_db/2024/TPACK_001.pdf"
+}</pre>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase flex gap-2 items-center">
+                        <i data-lucide="activity" class="w-4 h-4"></i> System Health
+                    </h3>
+                    <span class="text-[10px] text-slate-400">Last 24h</span>
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-2xl font-bold text-slate-900">142</p>
+                        <p class="text-[10px] text-slate-500">Invoices Processed</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-green-600">0.8s</p>
+                        <p class="text-[10px] text-slate-500">Avg. AI Latency</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-blue-600">100%</p>
+                        <p class="text-[10px] text-slate-500">Uptime</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

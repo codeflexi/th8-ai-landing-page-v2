@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI Decision Control Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Custom Animations */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sidebar-link.active {
+            background-color: #f1f5f9;
+            color: #0ea5e9;
+            border-right: 3px solid #0ea5e9;
+        }
+
+        /* Status Indicators */
+        .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
+        .status-green { background-color: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+        .status-amber { background-color: #f59e0b; box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
+        .status-red { background-color: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+
+        /* Loader */
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #0ea5e9; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col z-20 shadow-sm">
+        <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-100">
+            <div class="w-8 h-8 bg-slate-900 rounded text-white flex items-center justify-center font-bold text-sm">TH8</div>
+            <span class="font-bold text-slate-800">Control Center</span>
+        </div>
+
+        <nav class="flex-1 py-6 space-y-1">
+            <p class="px-6 text-[10px] uppercase font-bold text-slate-400 mb-2">Main Modules</p>
+            <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="sidebar-link active flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+            </a>
+            <a href="#" onclick="switchTab('flow')" id="nav-flow" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <i data-lucide="play-circle" class="w-4 h-4"></i> End-to-End Flow
+            </a>
+            
+            <p class="px-6 text-[10px] uppercase font-bold text-slate-400 mb-2 mt-6">Governance</p>
+            <a href="#" onclick="switchTab('audit')" id="nav-audit" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <i data-lucide="file-check" class="w-4 h-4"></i> Audit Logs
+            </a>
+            <a href="#" onclick="switchTab('health')" id="nav-health" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">
+                <i data-lucide="activity" class="w-4 h-4"></i> System Health
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f172a&color=fff" class="w-8 h-8 rounded-full">
+                <div>
+                    <p class="text-xs font-bold text-slate-700">Somchai (Admin)</p>
+                    <p class="text-[10px] text-green-600 flex items-center gap-1"><span class="status-dot status-green w-1.5 h-1.5"></span> Online</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 overflow-y-auto relative">
+        <!-- Header -->
+        <header class="h-16 bg-white/80 backdrop-blur sticky top-0 z-10 border-b border-slate-200 px-8 flex justify-between items-center">
+            <h2 id="page-title" class="text-lg font-bold text-slate-800">Executive Dashboard</h2>
+            <div class="flex gap-3">
+                <span class="px-3 py-1 bg-sky-50 text-sky-600 text-xs rounded-full border border-sky-100 font-medium">Domain: Procurement & Contract</span>
+                <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full border border-slate-200">v3.2.0 Stable</span>
+            </div>
+        </header>
+
+        <div class="p-8">
+
+            <!-- TAB 1: DASHBOARD -->
+            <div id="tab-dashboard" class="space-y-6 fade-in">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="text-xs text-slate-500 mb-1">Total Processed (MTD)</div>
+                        <div class="text-2xl font-bold text-slate-900">1,248 PRs</div>
+                        <div class="text-[10px] text-green-500 mt-2 flex items-center">
+                            <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +12% from last month
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-500">
+                        <div class="text-xs text-slate-500 mb-1">Risk Cost Saved</div>
+                        <div class="text-2xl font-bold text-emerald-600">฿14.2M</div>
+                        <div class="text-[10px] text-slate-400 mt-2">Prevented via High Value Rules</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-amber-500">
+                        <div class="text-xs text-slate-500 mb-1">SLA Breaches Prevented</div>
+                        <div class="text-2xl font-bold text-amber-600">42 Cases</div>
+                        <div class="text-[10px] text-slate-400 mt-2">Warned < 6 hours before deadline</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="text-xs text-slate-500 mb-1">Avg. Approval Time</div>
+                        <div class="text-2xl font-bold text-sky-600">2.4 Hrs</div>
+                        <div class="text-[10px] text-green-500 mt-2 flex items-center">
+                            <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Reduced from 3 Days
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm md:col-span-2">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4">Procurement Volume vs. Anomalies</h3>
+                        <div class="h-64"><canvas id="mainChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="text-sm font-bold text-slate-800 mb-4">AI Trigger Distribution</h3>
+                        <div class="h-48 relative"><canvas id="donutChart"></canvas></div>
+                        <div class="mt-4 text-center text-xs text-slate-500">Most triggers relate to "Contract Variance"</div>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-slate-800">High Priority Alerts (Needs Action)</h3>
+                        <button class="text-xs text-sky-600 font-medium hover:underline">View All</button>
+                    </div>
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                            <tr>
+                                <th class="px-6 py-3">ID</th>
+                                <th class="px-6 py-3">Risk Type</th>
+                                <th class="px-6 py-3">Amount</th>
+                                <th class="px-6 py-3">AI Confidence</th>
+                                <th class="px-6 py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-3 font-code text-slate-600">PR-8891</td>
+                                <td class="px-6 py-3"><span class="flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-red-500"></i> High Value > 3M</span></td>
+                                <td class="px-6 py-3 font-medium">3,250,000</td>
+                                <td class="px-6 py-3"><div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden"><div class="bg-red-500 h-full w-[95%]"></div></div></td>
+                                <td class="px-6 py-3"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold">Pending Mgr</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-3 font-code text-slate-600">PR-8895</td>
+                                <td class="px-6 py-3"><span class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-amber-500"></i> SLA Breach</span></td>
+                                <td class="px-6 py-3 font-medium">450,000</td>
+                                <td class="px-6 py-3"><div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden"><div class="bg-amber-500 h-full w-[80%]"></div></div></td>
+                                <td class="px-6 py-3"><span class="bg-sky-100 text-sky-700 px-2 py-1 rounded text-xs font-bold">Notified Officer</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: END-TO-END FLOW (INTERACTIVE) -->
+            <div id="tab-flow" class="hidden space-y-6 fade-in">
+                
+                <!-- Flow Stepper -->
+                <div class="flex items-center justify-between px-20 mb-8 relative">
+                    <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -z-10"></div>
+                    
+                    <button onclick="setFlowStep(1)" class="w-10 h-10 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold ring-4 ring-white shadow transition-all scale-110">1</button>
+                    <button onclick="setFlowStep(2)" id="step-btn-2" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold ring-4 ring-white shadow transition-all">2</button>
+                    <button onclick="setFlowStep(3)" id="step-btn-3" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold ring-4 ring-white shadow transition-all">3</button>
+                    <button onclick="setFlowStep(4)" id="step-btn-4" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold ring-4 ring-white shadow transition-all">4</button>
+                </div>
+
+                <!-- STEP 1: INGESTION -->
+                <div id="flow-step-1" class="flow-content max-w-3xl mx-auto">
+                    <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm text-center">
+                        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="file-input" class="w-8 h-8 text-slate-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Step 1: Data Ingestion</h3>
+                        <p class="text-slate-500 mb-6">User creates a Purchase Request in ERP. TH8 intercepts via API.</p>
+                        
+                        <div class="bg-slate-900 text-left p-4 rounded-lg font-code text-xs text-slate-300 mb-6 max-w-lg mx-auto">
+                            <span class="text-green-400">POST</span> /api/v1/ingest/pr <br>
+                            {<br>
+                            &nbsp;&nbsp;"id": "PR-2024-8891",<br>
+                            &nbsp;&nbsp;"item": "Server Rack 42U",<br>
+                            &nbsp;&nbsp;"amount": <span class="text-yellow-400">3,250,000</span>,<br>
+                            &nbsp;&nbsp;"vendor": "TechSpace Solutions"<br>
+                            }
+                        </div>
+                        <button onclick="setFlowStep(2)" class="bg-slate-900 text-white px-6 py-2 rounded-lg font-bold hover:bg-slate-800 transition flex items-center gap-2 mx-auto">
+                            Simulate Submission <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: AI PROCESSING (The Brain) -->
+                <div id="flow-step-2" class="flow-content hidden max-w-4xl mx-auto">
+                    <div class="grid grid-cols-2 gap-6">
+                        <!-- Rule Engine -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-amber-500 opacity-10 rounded-bl-full"></div>
+                            <h4 class="font-bold text-amber-600 mb-4 flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i> Rule Engine</h4>
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex items-center justify-between p-2 bg-red-50 rounded border border-red-100">
+                                    <span>High Value (>3M)</span>
+                                    <span class="font-bold text-red-600">TRIGGERED</span>
+                                </li>
+                                <li class="flex items-center justify-between p-2 bg-slate-50 rounded">
+                                    <span>Blacklist Check</span>
+                                    <span class="font-bold text-green-600">PASSED</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- RAG Retrieval -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-20 h-20 bg-purple-500 opacity-10 rounded-bl-full"></div>
+                            <h4 class="font-bold text-purple-600 mb-4 flex items-center gap-2"><i data-lucide="search" class="w-4 h-4"></i> RAG Evidence</h4>
+                            <div class="text-xs bg-slate-50 p-3 rounded border border-slate-100 font-mono text-slate-600">
+                                > Retrieval: "Price cap clause"<br>
+                                > Found: <strong>Contract_2023.pdf (Page 12)</strong><br>
+                                > Context: "Annual increase capped at 5%"
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-6">
+                        <div class="inline-block p-2 bg-white rounded-full shadow-lg animate-bounce">
+                            <i data-lucide="arrow-down" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <br>
+                        <button onclick="setFlowStep(3)" class="mt-4 bg-sky-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-sky-700 transition">
+                            Generate Decision Cockpit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: DECISION UI (The Manager View) -->
+                <div id="flow-step-3" class="flow-content hidden max-w-4xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800">Approval Request: PR-8891</h3>
+                            <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold">Needs Approval</span>
+                        </div>
+                        <div class="p-6 grid grid-cols-3 gap-6">
+                            <div class="col-span-2 space-y-4">
+                                <div>
+                                    <label class="text-xs text-slate-500 uppercase font-bold">Analysis</label>
+                                    <div class="bg-sky-50 border border-sky-100 p-3 rounded-lg mt-1">
+                                        <p class="text-sm text-sky-900">
+                                            <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                                            ราคา 3.25M สูงกว่าครั้งก่อน 2% แต่ยังอยู่ในเกณฑ์สัญญา (Max 5%). Vendor เชื่อถือได้.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500 uppercase font-bold">Evidence</label>
+                                    <div class="flex gap-2 mt-1">
+                                        <a class="text-xs flex items-center gap-1 bg-slate-100 px-2 py-1 rounded hover:bg-slate-200 cursor-pointer"><i data-lucide="file-text" class="w-3 h-3"></i> Contract.pdf</a>
+                                        <a class="text-xs flex items-center gap-1 bg-slate-100 px-2 py-1 rounded hover:bg-slate-200 cursor-pointer"><i data-lucide="bar-chart" class="w-3 h-3"></i> Price_History.csv</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-1 border-l border-slate-100 pl-6 flex flex-col justify-center gap-3">
+                                <button onclick="setFlowStep(4)" class="w-full bg-emerald-600 text-white py-2 rounded shadow hover:bg-emerald-700 font-bold transition">Approve</button>
+                                <button class="w-full bg-white border border-red-200 text-red-600 py-2 rounded hover:bg-red-50 font-bold transition">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: AUDIT LOG (Outcome) -->
+                <div id="flow-step-4" class="flow-content hidden max-w-3xl mx-auto text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="check-circle" class="w-10 h-10 text-green-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Process Completed</h3>
+                    <p class="text-slate-500 mb-6">Transaction recorded to Immutable Ledger.</p>
+                    
+                    <div class="bg-slate-900 text-left p-6 rounded-xl shadow-lg font-code text-xs text-slate-300 max-w-xl mx-auto overflow-hidden">
+                        <div class="flex items-center gap-2 mb-2 border-b border-slate-700 pb-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <span class="text-slate-400">audit_log_entry.json</span>
+                        </div>
+                        {<br>
+                        &nbsp;&nbsp;"timestamp": "2024-05-20T10:42:01Z",<br>
+                        &nbsp;&nbsp;"action": "APPROVED",<br>
+                        &nbsp;&nbsp;"approver": "MANAGER_01",<br>
+                        &nbsp;&nbsp;"evidence_hash": "sha256:e3b0c442...",<br>
+                        &nbsp;&nbsp;"sync_status": "ERP_UPDATED"<br>
+                        }
+                    </div>
+                    <button onclick="setFlowStep(1)" class="mt-8 text-slate-400 hover:text-slate-600 text-sm underline">Start New Simulation</button>
+                </div>
+
+            </div>
+
+            <!-- TAB 3: AUDIT LOGS -->
+            <div id="tab-audit" class="hidden space-y-6 fade-in">
+                <div class="flex justify-between items-center">
+                    <div class="relative max-w-sm w-full">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                        <input type="text" placeholder="Search Transaction ID or User..." class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    </div>
+                    <button class="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">
+                        <i data-lucide="download" class="w-4 h-4"></i> Export CSV
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                            <tr>
+                                <th class="px-6 py-3">Timestamp</th>
+                                <th class="px-6 py-3">User</th>
+                                <th class="px-6 py-3">Action</th>
+                                <th class="px-6 py-3">Ref ID</th>
+                                <th class="px-6 py-3">Rule Triggered</th>
+                                <th class="px-6 py-3">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-code text-xs">
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-6 py-3 text-slate-500">2024-05-20 10:42:01</td>
+                                <td class="px-6 py-3 font-bold text-slate-700">Somchai (Mgr)</td>
+                                <td class="px-6 py-3"><span class="text-green-600 font-bold">APPROVED</span></td>
+                                <td class="px-6 py-3">PR-8891</td>
+                                <td class="px-6 py-3">HIGH_VALUE</td>
+                                <td class="px-6 py-3"><a href="#" class="text-sky-600 hover:underline">View JSON</a></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-6 py-3 text-slate-500">2024-05-20 09:15:30</td>
+                                <td class="px-6 py-3 font-bold text-slate-700">SYSTEM (AI)</td>
+                                <td class="px-6 py-3"><span class="text-amber-600 font-bold">WARNING_SENT</span></td>
+                                <td class="px-6 py-3">PR-8895</td>
+                                <td class="px-6 py-3">SLA_RISK</td>
+                                <td class="px-6 py-3"><a href="#" class="text-sky-600 hover:underline">View JSON</a></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-6 py-3 text-slate-500">2024-05-19 16:20:10</td>
+                                <td class="px-6 py-3 font-bold text-slate-700">SYSTEM (AI)</td>
+                                <td class="px-6 py-3"><span class="text-red-600 font-bold">AUTO_REJECT</span></td>
+                                <td class="px-6 py-3">PR-8880</td>
+                                <td class="px-6 py-3">BLACKLIST_VENDOR</td>
+                                <td class="px-6 py-3"><a href="#" class="text-sky-600 hover:underline">View JSON</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 4: SYSTEM HEALTH -->
+            <div id="tab-health" class="hidden space-y-6 fade-in">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">API Status</div>
+                            <div class="text-green-600 font-bold flex items-center gap-2"><span class="status-dot status-green"></span> Operational</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-slate-900">99.99%</div>
+                            <div class="text-xs text-slate-400">Uptime</div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Latency</div>
+                            <div class="text-sky-600 font-bold">Fast</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-slate-900">120ms</div>
+                            <div class="text-xs text-slate-400">Avg Response</div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-slate-500 uppercase font-bold mb-1">Queue Depth</div>
+                            <div class="text-slate-600 font-bold">Empty</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-slate-900">0</div>
+                            <div class="text-xs text-slate-400">Pending Jobs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-white p-6 rounded-xl font-code text-xs">
+                    <div class="flex items-center gap-2 mb-4 border-b border-slate-700 pb-2">
+                        <i data-lucide="terminal" class="w-4 h-4"></i> System Live Stream
+                    </div>
+                    <div class="space-y-2 h-48 overflow-y-auto" id="log-stream">
+                        <div class="text-green-400">[10:45:01] SERVICE_PROCUREMENT: Healthy check passed.</div>
+                        <div class="text-slate-400">[10:45:05] WORKER_01: Processing PR-8899...</div>
+                        <div class="text-blue-400">[10:45:06] AI_MODEL: RAG Retrieval complete (0.4s).</div>
+                        <div class="text-slate-400">[10:45:07] WORKER_01: Job completed.</div>
+                        <div class="text-green-400">[10:45:10] SERVICE_CONTRACT: Syncing with ERP...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tabId) {
+            // Hide all tabs
+            ['dashboard', 'flow', 'audit', 'health'].forEach(id => {
+                document.getElementById('tab-' + id).classList.add('hidden');
+                document.getElementById('nav-' + id).classList.remove('active', 'bg-slate-50', 'text-slate-900', 'border-r-3');
+                // Reset styling for inactive
+                document.getElementById('nav-' + id).classList.add('text-slate-600'); 
+            });
+
+            // Show selected tab
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            // Highlight Nav
+            const nav = document.getElementById('nav-' + tabId);
+            nav.classList.add('active');
+            nav.classList.remove('text-slate-600');
+
+            // Update Title
+            const titles = {
+                'dashboard': 'Executive Dashboard',
+                'flow': 'End-to-End Simulation',
+                'audit': 'Audit Trail & Compliance',
+                'health': 'System Health Monitoring'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        // --- FLOW SIMULATION LOGIC ---
+        function setFlowStep(step) {
+            // Hide all steps
+            for(let i=1; i<=4; i++) {
+                document.getElementById('flow-step-'+i).classList.add('hidden');
+                // Reset buttons
+                const btn = document.getElementById('step-btn-'+i);
+                if(btn) {
+                    btn.classList.remove('bg-sky-600', 'text-white', 'scale-110');
+                    btn.classList.add('bg-slate-200', 'text-slate-500');
+                }
+            }
+
+            // Show current step
+            document.getElementById('flow-step-'+step).classList.remove('hidden');
+            document.getElementById('flow-step-'+step).classList.add('fade-in');
+
+            // Update buttons (Previous ones active)
+            for(let i=1; i<=step; i++) {
+                const btn = document.getElementById(i === 1 ? '' : 'step-btn-'+i); // 1 is manual button
+                // (Logic simplified for demo button IDs)
+            }
+            
+            // Update specific active button visual
+             // NOTE: In a real app, I'd map IDs cleaner, but for this single-file demo:
+             if(step > 1) {
+                 const btn = document.getElementById('step-btn-'+step);
+                 btn.classList.remove('bg-slate-200', 'text-slate-500');
+                 btn.classList.add('bg-sky-600', 'text-white', 'scale-110');
+             }
+        }
+
+        // --- CHARTS (Chart.js) ---
+        // 1. Line Chart
+        const ctxMain = document.getElementById('mainChart').getContext('2d');
+        new Chart(ctxMain, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Total PR Volume',
+                    data: [120, 150, 180, 140],
+                    borderColor: '#0f172a',
+                    tension: 0.4
+                }, {
+                    label: 'High Risk Detected',
+                    data: [10, 5, 15, 8],
+                    borderColor: '#ef4444',
+                    borderDash: [5, 5],
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+            }
+        });
+
+        // 2. Donut Chart
+        const ctxDonut = document.getElementById('donutChart').getContext('2d');
+        new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                labels: ['High Value', 'SLA Risk', 'Blacklist', 'Price Variance'],
+                datasets: [{
+                    data: [35, 25, 10, 30],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#0f172a', '#0ea5e9'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'right', labels: { boxWidth: 10 } } },
+                cutout: '70%'
+            }
+        });
+
+    </script>
+</body>
+</html>

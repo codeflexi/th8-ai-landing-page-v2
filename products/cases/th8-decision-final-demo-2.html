@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Decision Control Center (Frontend Prototype)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: "Prompt", sans-serif; background-color: #f1f5f9; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        
+        /* Utility for switching views */
+        .view-section { display: none; animation: fadeIn 0.3s ease-out; }
+        .view-section.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+</head>
+<body class="text-slate-900 h-screen flex flex-col overflow-hidden">
+
+    <nav class="h-16 bg-slate-900 text-white flex items-center justify-between px-6 z-50 shadow-md flex-shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('dashboard')">
+                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-sm">T8</div>
+                <span class="font-bold text-lg tracking-tight">Decision Control Center</span>
+            </div>
+            <div class="h-6 w-px bg-slate-700 mx-2"></div>
+            <div class="flex gap-2 text-xs font-medium text-slate-400" id="breadcrumbs">
+                <span class="text-white">Dashboard</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 text-xs">
+            <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                Backend API: Connected
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-red-400 transition" onclick="switchView('login')">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center font-bold">JD</div>
+                <span>Logout</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-hidden relative">
+
+        <div id="view-login" class="view-section active h-full w-full bg-slate-900 absolute inset-0 z-40">
+            <div class="h-full flex flex-col items-center justify-center">
+                <h1 class="text-3xl font-bold text-white mb-8">Select Your Role</h1>
+                <div class="flex gap-6">
+                    <div onclick="switchView('dashboard', 'Requester')" class="group w-64 bg-slate-800 border border-slate-700 hover:border-red-500 p-6 rounded-2xl cursor-pointer transition-all hover:-translate-y-1">
+                        <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:bg-red-900 text-white">
+                            <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg">Requester</h3>
+                        <p class="text-slate-400 text-sm mt-2">Upload Invoice & Documents for AI Processing.</p>
+                    </div>
+                    <div onclick="switchView('dashboard', 'Approver')" class="group w-64 bg-slate-800 border border-slate-700 hover:border-green-500 p-6 rounded-2xl cursor-pointer transition-all hover:-translate-y-1">
+                        <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mb-4 group-hover:bg-green-900 text-white">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg">Approver (CFO)</h3>
+                        <p class="text-slate-400 text-sm mt-2">Review AI Risk Analysis & Make Decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-dashboard" class="view-section h-full p-8 overflow-y-auto">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Overview Dashboard</h2>
+                        <p class="text-slate-500 text-sm">Real-time procurement monitoring</p>
+                    </div>
+                    <button onclick="switchView('upload')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg flex items-center gap-2 transition">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Upload New Invoice
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold uppercase">Pending Approval</p>
+                        <p class="text-2xl font-bold text-amber-600 mt-1">12 <span class="text-xs text-slate-400 font-normal">Invoices</span></p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold uppercase">Risk Detected</p>
+                        <p class="text-2xl font-bold text-red-600 mt-1">3 <span class="text-xs text-slate-400 font-normal">High Priority</span></p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold uppercase">Processed Today</p>
+                        <p class="text-2xl font-bold text-slate-800 mt-1">45 <span class="text-xs text-slate-400 font-normal">Items</span></p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-bold uppercase">Total Saved</p>
+                        <p class="text-2xl font-bold text-green-600 mt-1">฿ 1.2M</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                        <h3 class="font-bold text-sm text-slate-700">Inbox: Pending Validation</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Search PO / Invoice..." class="text-xs border border-slate-300 rounded-md px-2 py-1 w-48">
+                        </div>
+                    </div>
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-500 bg-slate-50 uppercase font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-3">Status</th>
+                                <th class="px-6 py-3">Invoice #</th>
+                                <th class="px-6 py-3">Vendor</th>
+                                <th class="px-6 py-3">Amount</th>
+                                <th class="px-6 py-3">AI Flag</th>
+                                <th class="px-6 py-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-red-50/50 cursor-pointer transition" onclick="switchView('workspace')">
+                                <td class="px-6 py-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Risk</span></td>
+                                <td class="px-6 py-4 font-mono font-bold text-slate-700">INV-2024-001</td>
+                                <td class="px-6 py-4">Thai Packing Co.</td>
+                                <td class="px-6 py-4 font-bold text-slate-800">175,000</td>
+                                <td class="px-6 py-4"><span class="text-red-600 flex items-center gap-1 font-bold text-xs"><i data-lucide="alert-triangle" class="w-3 h-3"></i> Price Mismatch</span></td>
+                                <td class="px-6 py-4 text-right text-blue-600 font-bold hover:underline">Review ></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 cursor-pointer transition">
+                                <td class="px-6 py-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-[10px] font-bold">Pending</span></td>
+                                <td class="px-6 py-4 font-mono text-slate-600">INV-2024-002</td>
+                                <td class="px-6 py-4">Office Mate</td>
+                                <td class="px-6 py-4">4,500</td>
+                                <td class="px-6 py-4"><span class="text-slate-400 text-xs">-</span></td>
+                                <td class="px-6 py-4 text-right text-slate-400">Processing...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-workspace" class="view-section h-full flex flex-col">
+            <div class="h-12 bg-white border-b border-slate-200 flex items-center justify-between px-6 shadow-sm z-10">
+                <div class="flex items-center gap-4">
+                    <button onclick="switchView('dashboard')" class="text-slate-500 hover:text-slate-800"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                    <span class="font-bold text-sm text-slate-700">Review Case: INV-2024-001</span>
+                    <span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">High Risk Detected</span>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="switchView('audit')" class="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1"><i data-lucide="history" class="w-3 h-3"></i> View Logs</button>
+                </div>
+            </div>
+
+            <div class="flex-1 flex overflow-hidden">
+                
+                <div class="w-1/2 bg-slate-100 p-4 border-r border-slate-200 overflow-y-auto">
+                    <div class="bg-white shadow-lg rounded-lg min-h-[800px] p-8 relative">
+                        <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">Uploaded PDF</div>
+                        <div class="opacity-75 font-mono text-xs space-y-6 mt-4">
+                            <div class="flex justify-between border-b pb-4">
+                                <h1 class="text-2xl font-bold">INVOICE</h1>
+                                <div class="text-right">Thai Packing Co., Ltd.</div>
+                            </div>
+                            <div class="grid grid-cols-2">
+                                <div>Bill To: TH8 Company</div>
+                                <div class="text-right">
+                                    Ref: INV-2024-001<br>
+                                    PO Ref: 450001239
+                                </div>
+                            </div>
+                            <table class="w-full text-left mt-8 border-t border-b">
+                                <tr class="border-b bg-slate-50"><th class="py-2">Item</th><th class="text-right">Price/Unit</th></tr>
+                                <tr>
+                                    <td class="py-2">Ergonomic Chair Model X (50 units)</td>
+                                    <td class="py-2 text-right font-bold text-red-600 border-2 border-red-500/50 bg-red-50 p-1">3,500.00</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-1/2 bg-white flex flex-col">
+                    <div class="flex-1 p-6 overflow-y-auto space-y-6">
+                        
+                        <div class="p-4 rounded-xl border border-slate-200">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-3 flex items-center gap-2">
+                                <i data-lucide="scan" class="w-4 h-4"></i> AI Extraction
+                            </h4>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div><span class="text-slate-500 text-xs block">Vendor</span> <span class="font-bold">Thai Packing Co.</span></div>
+                                <div><span class="text-slate-500 text-xs block">Total Amount</span> <span class="font-bold">175,000 THB</span></div>
+                                <div><span class="text-slate-500 text-xs block">PO Reference</span> <span class="font-bold text-blue-600">450001239</span></div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl border border-red-200 bg-red-50/30">
+                            <h4 class="text-xs font-bold text-red-500 uppercase mb-3 flex items-center gap-2">
+                                <i data-lucide="brain-circuit" class="w-4 h-4"></i> Validation Logic
+                            </h4>
+                            
+                            <div class="flex justify-between items-center mb-2 p-2 bg-white rounded border border-slate-100">
+                                <span class="text-xs text-slate-600">Vendor Status</span>
+                                <span class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Approved</span>
+                            </div>
+
+                            <div class="bg-white rounded border border-red-300 p-3 shadow-sm">
+                                <div class="flex justify-between items-center mb-2 border-b border-slate-100 pb-2">
+                                    <span class="text-xs font-bold text-slate-700">Price Validation</span>
+                                    <span class="text-xs font-bold text-red-600 flex items-center gap-1"><i data-lucide="x" class="w-3 h-3"></i> FAILED</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
+                                    <div>
+                                        <span class="block text-slate-400 text-[10px]">PO Price</span>
+                                        <span class="font-mono font-bold">3,000</span>
+                                    </div>
+                                    <div>
+                                        <span class="block text-slate-400 text-[10px]">Invoice</span>
+                                        <span class="font-mono font-bold text-red-600">3,500</span>
+                                    </div>
+                                    <div>
+                                        <span class="block text-slate-400 text-[10px]">Delta</span>
+                                        <span class="font-mono font-bold text-red-600">+16.6%</span>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 p-2 rounded text-[10px] text-slate-500 italic border border-slate-200">
+                                    Source: Contract-2024.pdf (Page 5) - "Fixed at 3,000 THB"
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-200">
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0"><i data-lucide="bot" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="text-xs font-bold text-blue-800 mb-1">AI Recommendation</p>
+                                    <p class="text-sm text-blue-900 leading-relaxed">
+                                        "Detected price variance > 5%. Recommended to <strong class="underline">Reject</strong> invoice. If approved, financial impact is <strong>-25,000 THB</strong>."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="p-6 border-t border-slate-200 bg-slate-50">
+                        <label class="block text-xs font-bold text-slate-600 mb-2">Reviewer Comment (Required)</label>
+                        <textarea class="w-full border border-slate-300 rounded-lg p-2 text-sm mb-4 h-20 focus:outline-none focus:border-slate-500" placeholder="Enter reason..."></textarea>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-lg hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition">
+                                Reject & Return
+                            </button>
+                            <button class="py-3 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 shadow-lg transition flex justify-center items-center gap-2">
+                                Approve (Exception) <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-audit" class="view-section h-full p-8 overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+                <button onclick="switchView('workspace')" class="text-slate-500 hover:text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Case</button>
+                
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Audit Trail Log</h2>
+                <p class="text-slate-500 text-sm mb-8 font-mono">Case ID: INV-2024-001 | Immutable Hash: 0x8f2a...</p>
+
+                <div class="relative border-l-2 border-slate-200 pl-8 space-y-8">
+                    <div class="relative">
+                        <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-slate-200 border-4 border-white"></div>
+                        <p class="text-xs text-slate-400 font-mono mb-1">2026-01-05 10:00:05</p>
+                        <div class="bg-white border border-slate-200 p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-sm text-slate-800">Data Ingestion</h4>
+                            <p class="text-xs text-slate-600">Received PDF via Email API. Initiated Extraction.</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-blue-200 border-4 border-white"></div>
+                        <p class="text-xs text-slate-400 font-mono mb-1">2026-01-05 10:00:08</p>
+                        <div class="bg-white border border-slate-200 p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-sm text-blue-700">AI Logic Execution</h4>
+                            <p class="text-xs text-slate-600 mb-2">Ran 3 rules. <span class="text-red-600 font-bold">1 Violation Found.</span></p>
+                            <div class="bg-slate-900 rounded p-2 font-mono text-[10px] text-green-400">
+                                > Tool: check_price()<br>
+                                > Result: FAIL (Delta +16%)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-amber-200 border-4 border-white animate-pulse"></div>
+                        <p class="text-xs text-slate-400 font-mono mb-1">Current State</p>
+                        <div class="bg-amber-50 border border-amber-200 p-4 rounded-lg shadow-sm">
+                            <h4 class="font-bold text-sm text-amber-800">Pending Human Review</h4>
+                            <p class="text-xs text-amber-700">Waiting for CFO decision.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function switchView(viewId, role) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            
+            // Show selected view
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.add('active');
+
+            // Update Breadcrumbs (Simple logic)
+            const breadcrumbs = document.getElementById('breadcrumbs');
+            if(viewId === 'login') breadcrumbs.innerHTML = '<span class="text-white">Login</span>';
+            if(viewId === 'dashboard') breadcrumbs.innerHTML = '<span class="text-slate-400">Home</span> / <span class="text-white">Dashboard</span>';
+            if(viewId === 'workspace') breadcrumbs.innerHTML = '<span class="text-slate-400">Home</span> / <span class="text-slate-400">Dashboard</span> / <span class="text-white">Review Case</span>';
+            if(viewId === 'audit') breadcrumbs.innerHTML = '<span class="text-slate-400">Home</span> / ... / <span class="text-white">Audit Log</span>';
+
+            // Simulate Role change
+            if(role) console.log("Logged in as: " + role);
+        }
+
+        // Init
+        // switchView('login'); // Default start
+    </script>
+</body>
+</html>

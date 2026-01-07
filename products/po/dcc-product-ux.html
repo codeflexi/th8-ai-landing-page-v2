@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI: End-to-End Product & Service UX</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (Script version for single file) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+        }
+        .pulse-marker { animation: pulse-ring 2s infinite; }
+
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .step-active { 
+            background-color: #f1f5f9; 
+            border-left: 4px solid #0ea5e9;
+        }
+        .step-inactive {
+            border-left: 4px solid transparent;
+        }
+
+        /* Mockup Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-screen overflow-hidden flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-white border-b border-slate-200 h-16 flex-none z-20">
+        <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-slate-900 text-white w-8 h-8 rounded flex items-center justify-center font-bold text-sm">TH8</div>
+                <h1 class="font-semibold text-slate-700">Product & Service UX Journey</h1>
+            </div>
+            <div class="flex gap-4 text-xs font-medium text-slate-500">
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500"></span> System Action</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> User Action</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-900"></span> Service Support</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT GRID -->
+    <main class="flex-1 max-w-7xl w-full mx-auto grid grid-cols-1 md:grid-cols-12 overflow-hidden">
+        
+        <!-- LEFT: JOURNEY STEPS (Navigation) -->
+        <aside class="md:col-span-4 bg-white border-r border-slate-200 overflow-y-auto no-scrollbar h-full">
+            <div class="p-6">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">The Lifecycle</h2>
+                
+                <!-- Step 1: Onboarding -->
+                <div onclick="setStep(1)" id="step-btn-1" class="step-active cursor-pointer p-4 rounded-r-lg mb-2 transition hover:bg-slate-50 group">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 p-1.5 bg-slate-100 rounded text-slate-600 group-hover:text-slate-900">
+                            <i data-lucide="plug" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">1. Seamless Integration</h3>
+                            <p class="text-xs text-slate-500 mt-1">Day 1 Setup: เชื่อมต่อ ERP & กำหนด Rule</p>
+                            <span class="inline-block mt-2 text-[10px] px-2 py-0.5 bg-slate-100 text-slate-600 rounded">Service Team</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Ingestion -->
+                <div onclick="setStep(2)" id="step-btn-2" class="step-inactive cursor-pointer p-4 rounded-r-lg mb-2 transition hover:bg-slate-50 group">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 p-1.5 bg-slate-100 rounded text-sky-600 group-hover:text-sky-700">
+                            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">2. Real-time Ingestion</h3>
+                            <p class="text-xs text-slate-500 mt-1">User เปิด PR ใน SAP -> AI รับข้อมูลทันที</p>
+                            <span class="inline-block mt-2 text-[10px] px-2 py-0.5 bg-sky-50 text-sky-600 rounded">Auto System</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: AI Processing -->
+                <div onclick="setStep(3)" id="step-btn-3" class="step-inactive cursor-pointer p-4 rounded-r-lg mb-2 transition hover:bg-slate-50 group">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 p-1.5 bg-slate-100 rounded text-sky-600 group-hover:text-sky-700">
+                            <i data-lucide="brain-circuit" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">3. Intelligent Triage (Core)</h3>
+                            <p class="text-xs text-slate-500 mt-1">ตรวจสอบ 3M Rule & SLA Risk</p>
+                            <span class="inline-block mt-2 text-[10px] px-2 py-0.5 bg-sky-50 text-sky-600 rounded">AI Logic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: User Action (Risk) -->
+                <div onclick="setStep(4)" id="step-btn-4" class="step-inactive cursor-pointer p-4 rounded-r-lg mb-2 transition hover:bg-slate-50 group">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 p-1.5 bg-slate-100 rounded text-amber-600 group-hover:text-amber-700">
+                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">4. The "Smart Alert"</h3>
+                            <p class="text-xs text-slate-500 mt-1">แจ้งเตือน Officer/Manager เฉพาะเคสสำคัญ</p>
+                            <span class="inline-block mt-2 text-[10px] px-2 py-0.5 bg-amber-50 text-amber-600 rounded">User UX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Decision -->
+                <div onclick="setStep(5)" id="step-btn-5" class="step-inactive cursor-pointer p-4 rounded-r-lg mb-2 transition hover:bg-slate-50 group">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 p-1.5 bg-slate-100 rounded text-amber-600 group-hover:text-amber-700">
+                            <i data-lucide="check-square" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">5. Decision Cockpit</h3>
+                            <p class="text-xs text-slate-500 mt-1">หน้าจออนุมัติพร้อม Evidence Support</p>
+                            <span class="inline-block mt-2 text-[10px] px-2 py-0.5 bg-amber-50 text-amber-600 rounded">CFO/Mgr UX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Audit -->
+                <div onclick="setStep(6)" id="step-btn-6" class="step-inactive cursor-pointer p-4 rounded-r-lg mb-2 transition hover:bg-slate-50 group">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 p-1.5 bg-slate-100 rounded text-slate-600 group-hover:text-slate-900">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">6. Executive Insight</h3>
+                            <p class="text-xs text-slate-500 mt-1">Monthly Report & Process Optimization</p>
+                            <span class="inline-block mt-2 text-[10px] px-2 py-0.5 bg-slate-100 text-slate-600 rounded">Service Value</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- RIGHT: VISUALIZER (Interactive Canvas) -->
+        <section class="md:col-span-8 bg-slate-100 relative h-full overflow-hidden flex flex-col">
+            
+            <!-- Dynamic Content Area -->
+            <div id="visual-content" class="flex-1 p-8 flex items-center justify-center relative">
+                <!-- Content injected via JS -->
+            </div>
+
+            <!-- Bottom Control Bar (Context) -->
+            <div class="h-16 bg-white border-t border-slate-200 px-6 flex items-center justify-between">
+                <div id="context-text" class="text-sm text-slate-600 font-medium">
+                    <!-- Dynamic Context Text -->
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="prevStep()" class="p-2 hover:bg-slate-100 rounded-full text-slate-500"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                    <button onclick="nextStep()" class="p-2 hover:bg-slate-100 rounded-full text-slate-900"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- TEMPLATES FOR JS TO INJECT -->
+    <template id="tpl-step-1">
+        <div class="w-full max-w-2xl animate-fade-in">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-200 rounded-full mb-4">
+                    <i data-lucide="settings-2" class="w-8 h-8 text-slate-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">Phase 1: Zero-Disruption Setup</h2>
+                <p class="text-slate-500 mt-2">TH8 เชื่อมต่อกับระบบเดิมผ่าน API Gateway ที่ปลอดภัย ไม่ต้องรื้อระบบ ERP เดิม</p>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-4 text-center items-center">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="text-slate-400 text-xs uppercase font-bold mb-2">Existing ERP</div>
+                    <div class="font-bold text-lg text-slate-700">SAP / Oracle</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="h-0.5 w-full bg-slate-300 relative">
+                        <div class="absolute -top-1.5 left-1/2 -ml-1.5 w-3 h-3 bg-green-500 rounded-full pulse-marker"></div>
+                    </div>
+                    <span class="text-xs text-slate-400 mt-2">Secure API Tunnel</span>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700 text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-sky-500 blur-xl opacity-20"></div>
+                    <div class="text-sky-400 text-xs uppercase font-bold mb-2">TH8 Cloud</div>
+                    <div class="font-bold text-lg">Rule Engine Setup</div>
+                </div>
+            </div>
+            <div class="mt-8 bg-sky-50 border border-sky-100 p-4 rounded-lg text-sm text-sky-800 flex gap-3">
+                <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0 text-sky-600"></i>
+                <div>
+                    <strong>Service Touchpoint:</strong> ทีม TH8 ช่วย Map Data Fields และตั้งค่า Rules (เช่น 3M Threshold, SLA) ให้เหมาะสมกับ Policy บริษัทภายใน 1-2 สัปดาห์
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-step-2">
+        <div class="w-full max-w-md animate-fade-in relative">
+            <h2 class="text-center text-xl font-bold text-slate-800 mb-6">User Workflow: Purchase Request</h2>
+            
+            <!-- Mockup SAP Screen -->
+            <div class="bg-slate-200 p-2 rounded-t-lg flex gap-1">
+                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+            </div>
+            <div class="bg-white border-x border-b border-slate-300 p-6 rounded-b-lg shadow-xl relative z-10">
+                <div class="flex justify-between items-center border-b pb-4 mb-4">
+                    <span class="font-mono text-sm text-slate-500">SAP PR-2024-8891</span>
+                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">Submitted</span>
+                </div>
+                <div class="space-y-3">
+                    <div class="h-4 bg-slate-100 rounded w-1/3"></div>
+                    <div class="h-4 bg-slate-100 rounded w-3/4"></div>
+                    <div class="h-4 bg-slate-100 rounded w-1/2"></div>
+                    <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                        <span class="text-sm font-bold text-slate-700">Total Amount</span>
+                        <span class="text-lg font-bold text-slate-900">3,250,000 THB</span>
+                    </div>
+                </div>
+                
+                <!-- Overlay Animation -->
+                <div class="absolute inset-0 bg-slate-900/5 flex items-center justify-center">
+                    <div class="bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 text-sky-500 animate-spin"></i>
+                        <span class="text-xs font-semibold text-slate-700">Syncing to TH8...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-step-3">
+        <div class="w-full max-w-3xl animate-fade-in">
+            <h2 class="text-center text-xl font-bold text-slate-800 mb-8">Inside the "Black Box": AI Logic</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Logic Card 1 -->
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-slate-800">Rule: High Amount</h3>
+                        <span class="bg-red-100 text-red-600 text-[10px] px-2 py-1 rounded-full uppercase font-bold">Risk</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-600">
+                        <div class="flex justify-between">
+                            <span>Input Value:</span>
+                            <span class="font-mono font-bold">3,250,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Threshold:</span>
+                            <span class="font-mono">3,000,000</span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-xs text-slate-400">Logic Check</span>
+                            <span class="text-red-500 font-bold flex items-center gap-1">
+                                <i data-lucide="alert-circle" class="w-4 h-4"></i> ESCALATE
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logic Card 2 -->
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-amber-500 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-slate-800">Rule: SLA Timer</h3>
+                        <span class="bg-amber-100 text-amber-600 text-[10px] px-2 py-1 rounded-full uppercase font-bold">Efficiency</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-600">
+                        <div class="flex justify-between">
+                            <span>SLA Deadline:</span>
+                            <span class="font-mono">17:00 Today</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Time Remaining:</span>
+                            <span class="font-mono text-amber-600 font-bold">04:30 hrs</span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-xs text-slate-400">Logic Check</span>
+                            <span class="text-amber-500 font-bold flex items-center gap-1">
+                                <i data-lucide="clock" class="w-4 h-4"></i> WARN < 6H
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-step-4">
+        <div class="w-full max-w-sm animate-fade-in">
+            <div class="text-center mb-6">
+                <h2 class="text-xl font-bold text-slate-800">The "Smart Alert" UX</h2>
+                <p class="text-xs text-slate-500">การแจ้งเตือนไม่ใช่ Spam แต่มาเฉพาะเมื่อจำเป็น</p>
+            </div>
+            
+            <!-- Notification Mockup (Mobile Style) -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden max-w-xs mx-auto">
+                <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                    <span class="text-sm font-bold">TH8 Assistant</span>
+                    <span class="text-xs text-slate-400">Now</span>
+                </div>
+                <div class="p-6">
+                    <div class="flex gap-4 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="shield-alert" class="w-5 h-5 text-red-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">Action Required: High Value PR</h4>
+                            <p class="text-xs text-slate-500 mt-1">PR-8891 exceeds 3M THB threshold. Requires Manager approval.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-3 rounded-lg mb-4 text-xs space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Amount:</span>
+                            <span class="font-bold">3.25M THB</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Deadline:</span>
+                            <span class="text-amber-600 font-bold">4 Hours left</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-sky-600 hover:bg-sky-700 text-white text-sm font-medium py-2 rounded-lg transition shadow-md shadow-sky-200">
+                        View Details
+                    </button>
+                    <button class="w-full mt-2 text-slate-400 text-xs py-2 hover:text-slate-600">
+                        Snooze 1 Hour
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-step-5">
+        <div class="w-full max-w-4xl animate-fade-in">
+             <div class="flex justify-between items-end mb-4">
+                <h2 class="text-xl font-bold text-slate-800">CFO/Manager Decision Cockpit</h2>
+                <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-600">Desktop View</span>
+            </div>
+
+            <!-- Dashboard Mockup -->
+            <div class="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden">
+                <!-- Toolbar -->
+                <div class="bg-slate-50 border-b border-slate-200 px-6 py-3 flex gap-4 text-xs font-medium text-slate-500">
+                    <span class="text-sky-600 border-b-2 border-sky-600 pb-2.5 -mb-3">Overview</span>
+                    <span>Line Items</span>
+                    <span>History</span>
+                    <span>Compare (AI)</span>
+                </div>
+                
+                <div class="p-8 grid grid-cols-3 gap-8">
+                    <!-- Left: Details -->
+                    <div class="col-span-2 space-y-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Purchase Request #8891</h3>
+                            <p class="text-sm text-slate-500">Vendor: TechSpace Solutions Co., Ltd.</p>
+                        </div>
+                        
+                        <!-- AI Insight Box -->
+                        <div class="bg-sky-50 border border-sky-100 p-4 rounded-lg flex gap-4">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-sky-600 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <h4 class="text-sm font-bold text-sky-900">AI Analysis</h4>
+                                <p class="text-xs text-sky-800 mt-1 leading-relaxed">
+                                    ราคานี้สูงกว่าประวัติการซื้อครั้งล่าสุด 5% แต่ยังอยู่ในเกณฑ์ตลาด (Market Average). 
+                                    Vendor นี้มีคะแนน Performance 95/100 ไม่มีความเสี่ยงเรื่องส่งของล่าช้า
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-slate-50 text-slate-500 uppercase">
+                                <tr>
+                                    <th class="p-2">Item</th>
+                                    <th class="p-2">Qty</th>
+                                    <th class="p-2 text-right">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="p-2">Server Rack 42U</td>
+                                    <td class="p-2">10</td>
+                                    <td class="p-2 text-right font-bold">3,250,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Right: Actions -->
+                    <div class="border-l border-slate-100 pl-8 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs text-slate-400 uppercase font-bold mb-2">Status</div>
+                            <span class="inline-block bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded font-bold mb-6">Pending Approval (High Value)</span>
+                            
+                            <div class="text-xs text-slate-400 uppercase font-bold mb-2">Escalated To</div>
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="w-8 h-8 rounded-full bg-slate-200"></div>
+                                <span class="text-sm font-medium">Somchai (CFO)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2 rounded shadow-md text-sm font-bold transition">Approve</button>
+                            <button class="w-full bg-white border border-red-200 text-red-500 hover:bg-red-50 py-2 rounded text-sm font-bold transition">Reject / Query</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-step-6">
+        <div class="w-full max-w-4xl animate-fade-in">
+            <div class="flex items-center gap-3 mb-6">
+                <h2 class="text-xl font-bold text-slate-800">Executive Insight & Audit</h2>
+                <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">Monthly Value</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Chart Card -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-bold text-slate-600 mb-4">Reduction in "Rush Orders" (SLA < 6h)</h3>
+                    <div class="h-64 relative w-full">
+                         <canvas id="auditChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Text Card -->
+                <div class="space-y-4">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <i data-lucide="file-check" class="w-4 h-4 text-emerald-500"></i> Audit Log Ready
+                        </h3>
+                        <p class="text-xs text-slate-500">
+                            ทุกการคลิก Approve, ทุก Rule ที่ Trigger ถูกบันทึกแบบ Immutable Log พร้อมให้ผู้ตรวจสอบบัญชี (External Audit) ดูได้ทันที ลดเวลาเตรียมเอกสาร 80%
+                        </p>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-xl shadow-lg text-white">
+                        <h3 class="text-sm font-bold text-sky-400 mb-2">Strategic Value</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            "TH8 ไม่ใช่แค่โปรแกรมอนุมัติ แต่คือเครื่องมือที่ทำให้ผมเห็นว่าเงิน 500 ล้านบาทต่อปี ไหลไปทางไหน และเสี่ยงตรงไหน"
+                        </p>
+                        <div class="mt-4 flex items-center gap-2">
+                             <div class="w-6 h-6 rounded-full bg-slate-600"></div>
+                             <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Quote from Client CFO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- JS LOGIC -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        let currentStep = 1;
+        const totalSteps = 6;
+
+        // Step Data for Context Bar
+        const stepContexts = [
+            "", // Index 0 unused
+            "Step 1: Onboarding - เชื่อมต่อระบบครั้งเดียว ใช้งานได้ตลอดไป ทีมงาน TH8 ดูแลการตั้งค่าทั้งหมด",
+            "Step 2: Trigger - ข้อมูลไหลจาก ERP เข้าสู่ TH8 แบบ Real-time ผู้ใช้ทำงานบนระบบเดิมได้เลย",
+            "Step 3: Intelligence - AI วิเคราะห์ความเสี่ยงเบื้องหลัง (High Value / SLA / Vendor Credit)",
+            "Step 4: User Experience - แจ้งเตือนผ่าน Line/Email เฉพาะเคสที่ต้องจัดการด่วน ลด Noise",
+            "Step 5: Decision - หน้าจอรวมข้อมูลให้ตัดสินใจได้ในคลิกเดียว ไม่ต้องเปิดเอกสารกระดาษ",
+            "Step 6: Optimization - Dashboard สรุปผลเพื่อปรับปรุง Process ให้ดียิ่งขึ้นในเดือนถัดไป"
+        ];
+
+        function setStep(step) {
+            currentStep = step;
+            updateUI();
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateUI();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            // Update Sidebar Active State
+            for (let i = 1; i <= totalSteps; i++) {
+                const el = document.getElementById(`step-btn-${i}`);
+                if (i === currentStep) {
+                    el.classList.remove('step-inactive');
+                    el.classList.add('step-active');
+                } else {
+                    el.classList.remove('step-active');
+                    el.classList.add('step-inactive');
+                }
+            }
+
+            // Inject Content
+            const container = document.getElementById('visual-content');
+            const template = document.getElementById(`tpl-step-${currentStep}`);
+            container.innerHTML = template.innerHTML;
+            
+            // Re-init Icons for new content
+            lucide.createIcons();
+
+            // Update Context Text
+            document.getElementById('context-text').innerText = stepContexts[currentStep];
+
+            // Specific Logic for Chart in Step 6
+            if (currentStep === 6) {
+                setTimeout(renderAuditChart, 100);
+            }
+        }
+
+        function renderAuditChart() {
+            const ctx = document.getElementById('auditChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+                        datasets: [{
+                            label: 'Late Approvals',
+                            data: [45, 38, 25, 15, 8, 5],
+                            borderColor: '#0ea5e9',
+                            backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+        }
+
+        // Initial Load
+        updateUI();
+
+    </script>
+</body>
+</html>

@@ -17,10 +17,60 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Animation for Version Widget */
+        .version-widget { transition: all 0.3s ease; transform: translateY(0); }
+        .version-widget:hover { transform: translateY(-5px); }
     </style>
 </head>
 <body class="bg-white text-slate-900 antialiased selection:bg-red-100 selection:text-red-900">
+ <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 group">
+        <div class="bg-slate-900 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            Switch Build Version
+        </div>
 
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-2xl w-64 version-widget">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-slate-100 pb-2">Build History</h4>
+            <ul class="space-y-2">
+                <li>
+                    <a href="dcc-po-tech-org.html" class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">v0.1 Original</span>
+                            <span class="text-[9px]">Raw Logic Flow</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">BIZ-03</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="dcc-po-tech-ux.html" class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">v1.0 UX Demo</span>
+                            <span class="text-[9px]">Story & Interface</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">Spec-0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="dcc-po-tech-spec.html" class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">v2.0 Tech Spec</span>
+                            <span class="text-[9px]">YAML & Data Model</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">Spec-1</span>
+                    </a>
+                </li>
+                <li class="mt-2 pt-2 border-t border-slate-100">
+                    <div class="flex items-center justify-between text-xs p-2 bg-slate-900 text-white rounded-lg shadow-md cursor-default">
+                        <div class="flex flex-col">
+                            <span class="font-bold">v3.0 Master</span>
+                            <span class="text-[9px] text-slate-300">Unified Blueprint</span>
+                        </div>
+                        <div class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-4">
@@ -37,9 +87,13 @@
                 <a href="#architecture" class="hover:text-red-600 transition-colors">Architecture</a>
             </nav>
             <div class="flex gap-3">
-                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition-colors shadow-lg shadow-red-100">
-                    Request Demo
-                </button>
+
+                <a href="dcc-po-demo-chat.html" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition-colors shadow-lg shadow-red-100">
+                    Chat Demo
+                </a>
+                 <a href="dcc-po-demo-upload.html" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition-colors shadow-lg shadow-red-100">
+                    Upload Demo
+                </a>
             </div>
         </div>
     </header>

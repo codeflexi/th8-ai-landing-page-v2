@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TH8.AI – Invoice & Payment Exception Control</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Prompt', 'Inter', sans-serif; }
+    .mono { font-family: ui-monospace, 'Cascadia Code', monospace; }
+    .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+  </style>
+</head>
+
+<body class="bg-[#f8fafc] text-slate-900 antialiased">
+
+  <header class="sticky top-0 z-50 glass border-b border-slate-200">
+    <div class="max-w-[1440px] mx-auto px-6 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="h-9 w-9 rounded-xl bg-red-700 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-red-200">T8</div>
+        <div>
+          <h1 class="text-sm font-bold tracking-tight text-slate-800 uppercase">Invoice & Payment Exception Control</h1>
+          <p class="text-[11px] font-medium text-slate-500">Technical Specification & UX Blueprint • v1.0</p>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center gap-3">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-700 text-[12px] font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          ERP Read-only
+        </div>
+        <div class="px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 text-[12px] font-semibold">
+          Pilot Phase
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-6 py-8 space-y-12">
+
+    <section>
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-slate-800">01. System Architecture (C4 Model)</h2>
+        <p class="text-slate-500 text-sm mt-1">สถาปัตยกรรมระบบสำหรับการควบคุม Exception ก่อนการจ่ายเงิน โดยเน้นความปลอดภัยและไม่กระทบ ERP หลัก</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-3 space-y-6">
+          <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">External Ecosystem</h3>
+            <div class="space-y-4">
+              <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50">
+                <p class="text-[13px] font-bold">SAP / ERP System</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">Source: PO, GR, Invoice, Vendor</p>
+                <div class="mt-2 flex gap-1">
+                  <span class="px-1.5 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-medium uppercase text-slate-400">Read-Only</span>
+                </div>
+              </div>
+              <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50">
+                <p class="text-[13px] font-bold">Document Store</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">Contract PDFs, Scanned Invoices</p>
+              </div>
+              <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50">
+                <p class="text-[13px] font-bold">IdP (Identity Provider)</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">SSO / SAML Authentication</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-red-50 border border-red-100">
+            <h3 class="text-xs font-bold text-red-500 uppercase tracking-widest mb-3">Key Actors</h3>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs font-medium bg-white p-2 rounded-lg shadow-sm">
+                <span>AP Specialist</span>
+                <span class="text-[10px] text-red-600">Reviewer</span>
+              </div>
+              <div class="flex items-center justify-between text-xs font-medium bg-white p-2 rounded-lg shadow-sm">
+                <span>Finance Manager</span>
+                <span class="text-[10px] text-red-600">Validator</span>
+              </div>
+              <div class="flex items-center justify-between text-xs font-medium bg-white p-2 rounded-lg shadow-sm">
+                <span>CFO</span>
+                <span class="text-[10px] text-red-600">Approver</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm ring-4 ring-slate-50">
+            <h3 class="text-sm font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <span class="w-2 h-4 bg-red-600 rounded-full"></span>
+              TH8.AI Core Containers
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:border-red-200 transition-colors">
+                <span class="text-[10px] font-bold text-red-700 uppercase tracking-tight">01 Ingestion</span>
+                <h4 class="text-sm font-bold mt-1">Data Pipeline</h4>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">ดึงและ Normalize ข้อมูล PO/GR/Invoice จาก ERP ในรูปแบบ Batch/Near-real-time</p>
+              </div>
+              <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:border-red-200 transition-colors">
+                <span class="text-[10px] font-bold text-red-700 uppercase tracking-tight">02 Policy Engine</span>
+                <h4 class="text-sm font-bold mt-1">Rule Evaluation</h4>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">ตรวจสอบความผิดปกติตามเงื่อนไข (INV-01 ถึง 05) พร้อมระบุระดับความรุนแรง</p>
+              </div>
+              <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:border-red-200 transition-colors">
+                <span class="text-[10px] font-bold text-red-700 uppercase tracking-tight">03 Evidence Engine</span>
+                <h4 class="text-sm font-bold mt-1">Smart Linking</h4>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">จับคู่เลขที่สัญญาและ Invoice พร้อมชี้เป้า Page/Snippet ในไฟล์ PDF</p>
+              </div>
+              <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:border-red-200 transition-colors">
+                <span class="text-[10px] font-bold text-red-700 uppercase tracking-tight">04 Workflow</span>
+                <h4 class="text-sm font-bold mt-1">Decision Service</h4>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">ระบบ Case Management สำหรับส่งต่อให้ผู้บริหาร Approve หรือ Hold การจ่าย</p>
+              </div>
+              <div class="md:col-span-2 p-4 rounded-2xl bg-slate-900 text-white shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                  <h4 class="text-sm font-bold">Audit & Data Persistence</h4>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-white/20 uppercase font-bold tracking-widest text-white/80">Immutable</span>
+                </div>
+                <div class="grid grid-cols-3 gap-3 text-center">
+                  <div class="p-2 rounded-xl bg-white/5 border border-white/10">
+                    <p class="text-[9px] text-white/40 font-bold uppercase mb-1">Database</p>
+                    <p class="text-[11px]">PostgreSQL</p>
+                  </div>
+                  <div class="p-2 rounded-xl bg-white/5 border border-white/10">
+                    <p class="text-[9px] text-white/40 font-bold uppercase mb-1">Logs</p>
+                    <p class="text-[11px]">Event Store</p>
+                  </div>
+                  <div class="p-2 rounded-xl bg-white/5 border border-white/10">
+                    <p class="text-[9px] text-white/40 font-bold uppercase mb-1">Format</p>
+                    <p class="text-[11px]">JSON / CSV</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-3">
+          <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm h-full">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Data Model Objects</h3>
+            <div class="space-y-3">
+              <div class="p-3 rounded-xl border-l-4 border-red-600 bg-slate-50">
+                <p class="text-xs font-bold">Invoice Entity</p>
+                <p class="text-[10px] text-slate-500 mono mt-1">id, vendor, amt, po_ref</p>
+              </div>
+              <div class="p-3 rounded-xl border-l-4 border-red-600 bg-slate-50">
+                <p class="text-xs font-bold">Exception Case</p>
+                <p class="text-[10px] text-slate-500 mono mt-1">case_id, severity, sla</p>
+              </div>
+              <div class="p-3 rounded-xl border-l-4 border-red-600 bg-slate-50">
+                <p class="text-xs font-bold">Audit Evidence</p>
+                <p class="text-[10px] text-slate-500 mono mt-1">doc_id, page_ref, snippet</p>
+              </div>
+              <div class="p-3 rounded-xl border-l-4 border-slate-400 bg-slate-50 opacity-60">
+                <p class="text-xs font-bold text-slate-400 italic">No ERP Write-back</p>
+                <p class="text-[10px] text-slate-400 mt-1 italic">Policy for pilot phase</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">02. UX Interface Blueprint</h2>
+          <p class="text-slate-500 text-sm mt-1">จำลองหน้าจอการใช้งานจริงสำหรับฝ่ายบัญชีและการเงิน</p>
+        </div>
+        <div class="flex gap-2">
+           <span class="px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-semibold text-slate-600">8 Screen Flows</span>
+           <span class="px-3 py-1 bg-red-700 rounded-full text-xs font-semibold text-white">Decision-First Design</span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-[2rem] border border-slate-200 shadow-xl overflow-hidden">
+        <div class="p-6 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold text-red-700 uppercase tracking-widest">Screen 01</span>
+            <h3 class="text-lg font-bold">Executive Overview</h3>
+          </div>
+          <div class="flex gap-2">
+            <button class="px-3 py-1.5 text-xs font-bold bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50">Filter Period</button>
+            <button class="px-3 py-1.5 text-xs font-bold bg-slate-900 text-white rounded-lg shadow-lg">Export Report</button>
+          </div>
+        </div>
+        <div class="p-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="p-5 rounded-2xl bg-red-50 border border-red-100 shadow-inner">
+              <p class="text-[11px] font-bold text-red-500 uppercase">Amount at Risk</p>
+              <h4 class="text-3xl font-bold text-red-900 mt-2">฿ 2.18M</h4>
+              <p class="text-[10px] text-red-600 font-medium mt-1">↑ 12% vs last month</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-100 shadow-inner">
+              <p class="text-[11px] font-bold text-emerald-500 uppercase">Prevented Leakage</p>
+              <h4 class="text-3xl font-bold text-emerald-900 mt-2">฿ 203k</h4>
+              <p class="text-[10px] text-emerald-600 font-medium mt-1">Total saved from errors</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-amber-50 border border-amber-100 shadow-inner">
+              <p class="text-[11px] font-bold text-amber-500 uppercase">Decision SLA</p>
+              <h4 class="text-3xl font-bold text-amber-900 mt-2">84.2%</h4>
+              <p class="text-[10px] text-amber-600 font-medium mt-1">Resolution within 8h</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 shadow-inner">
+              <p class="text-[11px] font-bold text-slate-500 uppercase">Active Exceptions</p>
+              <h4 class="text-3xl font-bold text-slate-900 mt-2">18</h4>
+              <p class="text-[10px] text-slate-600 font-medium mt-1">Cases pending action</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                Priority Attention Required
+              </h4>
+              <div class="p-4 rounded-xl bg-white border border-red-100 hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden group">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-xs font-bold text-red-600">High Severity • INV-02</p>
+                    <h5 class="font-bold text-slate-800 mt-1">Thai Packaging Solutions</h5>
+                    <p class="text-[11px] text-slate-500 mt-1 truncate">Invoice > Contract Delta: ฿18,000 (+4.7%)</p>
+                  </div>
+                  <span class="px-2 py-1 bg-red-50 text-red-700 text-[10px] font-bold rounded uppercase">Due 2 Days</span>
+                </div>
+              </div>
+               <div class="p-4 rounded-xl bg-white border border-amber-100 hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden group">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-xs font-bold text-amber-600">Medium Severity • INV-01</p>
+                    <h5 class="font-bold text-slate-800 mt-1">Logistic Express Co.</h5>
+                    <p class="text-[11px] text-slate-500 mt-1">Invoice > PO Delta: ฿9,500 (+2.2%)</p>
+                  </div>
+                  <span class="px-2 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold rounded uppercase">In Review</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-6 rounded-2xl bg-slate-900 text-white">
+              <h4 class="text-sm font-bold mb-4">Explainability Panel</h4>
+              <div class="space-y-4 text-xs">
+                <div class="flex gap-3">
+                  <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-[10px] shrink-0 font-bold">1</div>
+                  <p class="text-white/70 leading-relaxed"><strong class="text-white">Risk Filtering:</strong> ระบบคัดกรองเฉพาะ Invoice ที่มีความเสี่ยงสูงให้ผู้บริหารเห็นก่อนจ่าย</p>
+                </div>
+                <div class="flex gap-3">
+                  <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-[10px] shrink-0 font-bold">2</div>
+                  <p class="text-white/70 leading-relaxed"><strong class="text-white">Evidence-Based:</strong> ทุกความผิดปกติมีหลักฐานจากไฟล์สัญญาและ PO อ้างอิงชัดเจน</p>
+                </div>
+                <div class="flex gap-3">
+                  <div class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-[10px] shrink-0 font-bold">3</div>
+                  <p class="text-white/70 leading-relaxed"><strong class="text-white">Decision History:</strong> ทุกการตัดสินใจถูกบันทึกเพื่อใช้ในการวิเคราะห์ Audit Trail</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden flex flex-col">
+          <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-800 uppercase tracking-tight">Screen 04: Decision View</h3>
+            <span class="px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-widest border border-red-200">Payment Hold (Recommended)</span>
+          </div>
+          <div class="p-6 space-y-6 flex-grow">
+            <div>
+              <p class="text-[11px] font-bold text-slate-400 uppercase mb-2">Invoice Summary</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                  <p class="text-[10px] text-slate-500">Invoice Amount</p>
+                  <p class="text-lg font-bold">฿ 402,000</p>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                  <p class="text-[10px] text-slate-500">Contract Rate</p>
+                  <p class="text-lg font-bold">฿ 384,000</p>
+                </div>
+                <div class="p-4 rounded-xl bg-red-50 border border-red-100">
+                  <p class="text-[10px] text-red-600 font-bold">Price Delta (%)</p>
+                  <p class="text-lg font-bold text-red-700">+4.7%</p>
+                </div>
+                <div class="p-4 rounded-xl bg-red-50 border border-red-100">
+                  <p class="text-[10px] text-red-600 font-bold">Value Delta</p>
+                  <p class="text-lg font-bold text-red-700">฿ 18,000</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-red-50 border border-red-100">
+              <p class="text-xs font-bold text-red-900">System Recommendation:</p>
+              <p class="text-xs text-red-800 mt-1 italic">“ราคาใน Invoice สูงกว่าสัญญาหลัก แนะนำให้ Hold เพื่อรอ Vendor ชี้แจง”</p>
+            </div>
+          </div>
+          <div class="p-6 bg-slate-50 border-t border-slate-200">
+            <div class="flex gap-2">
+              <button class="flex-1 py-3 bg-red-700 text-white rounded-xl font-bold text-sm shadow-lg hover:bg-red-800 transition-colors">Hold Payment</button>
+              <button class="flex-1 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors">Approve Exception</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden">
+          <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-800 uppercase tracking-tight">Screen 05: Smart Evidence</h3>
+            <button class="text-red-700 text-xs font-bold hover:underline">View Full PDF</button>
+          </div>
+          <div class="p-6 space-y-6">
+            <div class="relative rounded-2xl border border-slate-200 bg-slate-100 aspect-[4/3] flex items-center justify-center p-8">
+              <div class="w-full h-full bg-white rounded shadow-sm border border-slate-300 p-6 flex flex-col gap-3 relative">
+                <div class="h-4 w-1/3 bg-slate-100 rounded"></div>
+                <div class="h-2 w-full bg-slate-50 rounded"></div>
+                <div class="h-2 w-full bg-slate-50 rounded"></div>
+                <div class="mt-4 border border-red-400 bg-red-50/50 p-2 rounded relative">
+                   <div class="h-4 w-3/4 bg-red-100 rounded"></div>
+                   <div class="absolute -top-2 -right-2 w-4 h-4 bg-red-600 rounded-full flex items-center justify-center text-[8px] text-white">✓</div>
+                   <p class="text-[10px] text-red-700 mt-1 font-bold">PKG-CAN-400G : Unit Price ฿12.50</p>
+                </div>
+                <div class="absolute bottom-6 left-6 right-6">
+                   <div class="h-2 w-full bg-slate-50 rounded"></div>
+                </div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-4 border-red-500/30 rounded-full animate-pulse pointer-events-none"></div>
+              </div>
+              <p class="absolute bottom-4 text-center text-[10px] text-slate-400 font-bold tracking-widest uppercase">Contract Page Reference: 06 / 24</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-xs">
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="font-bold text-slate-400 uppercase text-[9px]">Match Object (JSON)</p>
+                <p class="mono text-[10px] text-red-700 mt-1 break-all">{"rule":"INV-02", "src":"contract.pdf", "pg":6, "val":12.50}</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                <p class="font-bold text-slate-400 uppercase text-[9px]">Decision Context</p>
+                <p class="text-[11px] text-slate-700 mt-1">Audit-ready snippet extracted via OCR-Link</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden">
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
+          <div>
+            <h3 class="text-base font-bold text-slate-800 tracking-tight uppercase">Screen 08: Immutable Audit Trail</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Timeline เหตุการณ์ของ Case #CASE-OVT-INV-2025-017</p>
+          </div>
+          <div class="flex gap-2">
+             <span class="px-3 py-1 bg-slate-200 rounded text-[10px] font-bold text-slate-600 mono shadow-sm tracking-tighter">HASH: 8f2a...9d11</span>
+          </div>
+        </div>
+        <div class="p-10 relative">
+          <div class="absolute left-10 top-10 bottom-10 w-px bg-slate-200"></div>
+
+          <div class="space-y-10">
+            <div class="relative pl-12">
+              <div class="absolute left-[-2px] top-1.5 w-2 h-2 rounded-full bg-slate-400 ring-4 ring-white shadow-sm"></div>
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Data Ingested</h4>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">System pulled Invoice header and PO reference from SAP RFC Interface.</p>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2 py-1 rounded">2025-01-12 09:12</p>
+              </div>
+            </div>
+            <div class="relative pl-12">
+              <div class="absolute left-[-2px] top-1.5 w-2 h-2 rounded-full bg-red-600 ring-4 ring-white shadow-sm"></div>
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Policy Evaluation</h4>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Applied <span class="font-bold underline">Policy v1.0</span>. Violation detected on INV-02 (Price variance > 2%)</p>
+                  <div class="mt-2 flex gap-2">
+                    <span class="px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[9px] font-bold">MATCH_PO: SUCCESS</span>
+                    <span class="px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[9px] font-bold">MATCH_CONTRACT: FAILED</span>
+                  </div>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2 py-1 rounded">2025-01-12 09:13</p>
+              </div>
+            </div>
+             <div class="relative pl-12">
+              <div class="absolute left-[-2px] top-1.5 w-2 h-2 rounded-full bg-amber-500 ring-4 ring-white shadow-sm"></div>
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Pending Workflow Created</h4>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Case routed to <span class="font-bold">CFO Queue</span>. SLA Timer started (8 hours).</p>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2 py-1 rounded">2025-01-12 09:14</p>
+              </div>
+            </div>
+            <div class="relative pl-12">
+              <div class="absolute left-[-2px] top-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-white shadow-sm"></div>
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Decision Made: HOLD</h4>
+                  <p class="text-xs text-emerald-700 font-medium mt-1 p-3 bg-emerald-50 border border-emerald-100 rounded-xl leading-relaxed">
+                    "ระงับการจ่ายเนื่องจากราคาไม่ตรงกับสัญญาหน้า 6 – ให้เจ้าหน้าที่ AP ประสานงานกับ Vendor เพื่อส่งใบแจ้งหนี้ใหม่"
+                  </p>
+                  <div class="mt-2 text-[10px] text-slate-500 italic flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full bg-slate-200"></span>
+                    Decided by: CFO_OVT (S. Kittichai)
+                  </div>
+                </div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2 py-1 rounded">2025-01-12 10:05</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="p-8 rounded-3xl bg-slate-100 border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-3">IT Checklist</h4>
+        <ul class="text-[11px] space-y-2 text-slate-500 list-disc pl-4 leading-relaxed">
+          <li>เตรียม Data Feed (PO/GR/INV/Contract)</li>
+          <li>เชื่อมต่อ Document Storage สำหรับ PDF</li>
+          <li>Setup RBAC (AP, Finance, CFO Roles)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-widest mb-3">Success Metrics</h4>
+        <ul class="text-[11px] space-y-2 text-slate-500 list-disc pl-4 leading-relaxed">
+          <li>ลด Human Error ในการตรวจสอบสัญญา</li>
+          <li>สร้าง Audit Trail ที่แก้ไขไม่ได้ (100% Transparency)</li>
+          <li>ควบคุมกระแสเงินสดผ่าน Decision-Ready Reports</li>
+        </ul>
+      </div>
+      <div class="p-4 rounded-2xl bg-white border border-slate-200">
+        <p class="text-[10px] font-bold text-red-700 uppercase mb-2">Technical Note</p>
+        <p class="text-[11px] text-slate-500 italic leading-relaxed">Pilot phase มุ่งเน้นไปที่การสร้าง Control Layer โดยไม่ต้อง Write-back เพื่อลดความเสี่ยงด้านความปลอดภัยของ ERP ระบบหลัก</p>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>

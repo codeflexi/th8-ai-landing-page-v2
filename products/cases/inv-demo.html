@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Enterprise Intelligence Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        num: ['Sarabun', 'sans-serif'],
+                    },
+                    colors: {
+                        th8: {
+                            red: '#D9232E',
+                            dark: '#0F172A',
+                            gray: '#334155',
+                            light: '#F8FAFC',
+                            white: '#FFFFFF'
+                        }
+                    },
+                    animation: {
+                        'scan': 'scan 3s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { top: '0%' },
+                            '50%': { top: '100%' },
+                            '100%': { top: '0%' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        .th8-gradient-text {
+            background: linear-gradient(135deg, #D9232E 0%, #991B1B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .tab-content.active { display: block; }
+        
+        .code-editor { font-family: 'JetBrains Mono', monospace; line-height: 1.6; }
+        
+        /* Syntax Highlighting Mock */
+        .token-key { color: #f472b6; }
+        .token-str { color: #a3e635; }
+        .token-num { color: #fbbf24; }
+        .token-comment { color: #64748b; font-style: italic; }
+        .token-tag { color: #60a5fa; }
+        
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Meta Tag Style */
+        .meta-tag {
+            font-size: 0.65rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-th8-red selection:text-white">
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded bg-th8-red text-white grid place-items-center font-bold text-lg shadow-lg">TH8</div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg leading-none text-slate-900">TH8.AI</span>
+                    <span class="text-[10px] text-slate-500 font-medium tracking-wide">Enterprise Intelligence</span>
+                </div>
+            </div>
+            <div class="hidden xl:flex items-center gap-8 text-sm font-medium text-slate-600">
+                <a href="#strategic" class="hover:text-th8-red transition">Why TH8?</a>
+                <a href="#interactive-demo" class="hover:text-th8-red transition font-bold">Live Simulation</a>
+                <a href="#security" class="hover:text-th8-red transition">IT Security</a>
+            </div>
+            <a href="#contact" class="px-6 py-2.5 bg-th8-dark hover:bg-black text-white text-sm font-semibold rounded-lg transition shadow-xl flex items-center gap-2">
+                <span>Book Executive Demo</span>
+            </a>
+        </div>
+    </nav>
+
+    <section id="interactive-demo" class="py-32 bg-slate-100 border-y border-slate-200 min-h-screen">
+        <div class="max-w-[1400px] mx-auto px-4 md:px-6">
+            <div class="text-center mb-10">
+                <span class="text-th8-red font-bold text-xs uppercase tracking-wider">Live Simulation</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">TH8 Enterprise Console</h2>
+                <p class="text-slate-600 mt-2">End-to-End Payment Control: Ingest → RAG Analysis → Decide</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-2xl border border-slate-300 overflow-hidden flex flex-col md:flex-row h-[850px]">
+                
+                <aside class="w-full md:w-64 bg-th8-dark text-slate-400 flex flex-col z-10 flex-shrink-0">
+                    <div class="h-16 flex items-center gap-3 px-6 border-b border-gray-800 bg-black/20">
+                        <div class="w-8 h-8 bg-th8-red rounded-lg flex items-center justify-center text-white font-bold shadow-lg">T8</div>
+                        <span class="text-white font-bold tracking-tight">Console</span>
+                    </div>
+                    <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
+                        <p class="px-6 text-[10px] uppercase tracking-wider font-bold text-gray-600 mb-2">Monitor</p>
+                        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white transition flex items-center gap-3 active border-r-2 border-th8-red text-white bg-gray-800">
+                            Executive Dashboard
+                        </button>
+                        <p class="px-6 text-[10px] uppercase tracking-wider font-bold text-gray-600 mt-6 mb-2">Operations</p>
+                        <button onclick="switchTab('ingest')" id="nav-ingest" class="nav-item w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white transition flex items-center gap-3 text-red-400">
+                            Data Ingestion & OCR
+                        </button>
+                        <button onclick="switchTab('intelligence')" id="nav-intelligence" class="nav-item w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white transition flex items-center gap-3 text-blue-400">
+                            AI Analysis (RAG)
+                        </button>
+                        <button onclick="switchTab('action')" id="nav-action" class="nav-item w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white transition flex items-center gap-3 text-yellow-400">
+                            Action Center (HITL)
+                        </button>
+                        <button onclick="switchTab('audit')" id="nav-audit" class="nav-item w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white transition flex items-center gap-3">
+                            Audit Logs
+                        </button>
+                        <p class="px-6 text-[10px] uppercase tracking-wider font-bold text-gray-600 mt-6 mb-2">Admin</p>
+                        <button onclick="switchTab('control')" id="nav-control" class="nav-item w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white transition flex items-center gap-3 text-emerald-400">
+                            AI Control Room
+                        </button>
+                    </nav>
+                    <div class="p-4 border-t border-gray-800 text-xs text-gray-500 bg-black/20">
+                        <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> SAP Connected</div>
+                        v2.4.0 (Live)
+                    </div>
+                </aside>
+
+                <main class="flex-1 h-full overflow-auto bg-slate-50 relative">
+                    <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-20">
+                        <h2 id="page-title" class="text-xl font-bold text-slate-800">Executive Dashboard</h2>
+                        <div class="flex items-center gap-4">
+                            <span class="px-3 py-1 bg-slate-100 rounded-full text-xs font-medium text-slate-600 border border-slate-200">Role: CFO (Approver)</span>
+                            <div class="w-8 h-8 rounded-full bg-slate-300 border border-slate-400"></div>
+                        </div>
+                    </header>
+
+                    <div class="p-8 pb-20">
+
+                        <div id="dashboard" class="tab-content active space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div class="bg-white p-5 rounded-xl border-l-4 border-th8-red shadow-sm">
+                                    <p class="text-xs font-bold text-slate-500 uppercase">Amount at Risk</p>
+                                    <p class="text-2xl font-bold text-th8-red mt-2 font-num">฿ 2,180,000</p>
+                                    <p class="text-xs text-slate-400 mt-1">Pending Review</p>
+                                </div>
+                                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                    <p class="text-xs font-bold text-slate-500 uppercase">Prevented</p>
+                                    <p class="text-2xl font-bold text-emerald-600 mt-2 font-num">฿ 1,203,500</p>
+                                    <p class="text-xs text-slate-400 mt-1">YTD Savings</p>
+                                </div>
+                                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                    <p class="text-xs font-bold text-slate-500 uppercase">Decision SLA</p>
+                                    <p class="text-2xl font-bold text-blue-600 mt-2 font-num">84%</p>
+                                    <p class="text-xs text-slate-400 mt-1">Within 8 Hours</p>
+                                </div>
+                                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                    <p class="text-xs font-bold text-slate-500 uppercase">Top Violation</p>
+                                    <p class="text-2xl font-bold text-slate-800 mt-2">INV-02</p>
+                                    <p class="text-xs text-red-400 mt-1">Invoice > Contract</p>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-gray-50">
+                                    <h3 class="font-bold text-slate-800">Financial Impact (P&L Simulation)</h3>
+                                </div>
+                                <div class="p-6">
+                                    <table class="w-full text-sm font-num">
+                                        <thead>
+                                            <tr class="text-slate-500 border-b border-slate-100">
+                                                <th class="text-left pb-3 font-medium">Item</th>
+                                                <th class="text-right pb-3 font-medium">Without TH8</th>
+                                                <th class="text-right pb-3 font-bold text-blue-600">With TH8</th>
+                                                <th class="text-right pb-3 font-medium">Net Impact</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="bg-red-50/20">
+                                                <td class="py-3 text-slate-600 pl-4 border-l-2 border-th8-red">Cost of Goods Sold (COGS)</td>
+                                                <td class="text-right text-slate-600">(700.0 M)</td>
+                                                <td class="text-right text-slate-900 font-medium">(689.5 M)</td>
+                                                <td class="text-right text-emerald-600 font-bold">+10.5 M</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-3 text-slate-800 font-bold">Gross Profit</td>
+                                                <td class="text-right text-slate-600">300.0 M</td>
+                                                <td class="text-right text-slate-900 font-bold">310.5 M</td>
+                                                <td class="text-right text-emerald-600 font-bold">↑ 3.5%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="ingest" class="tab-content space-y-6">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-800">Data Ingestion Operations</h3>
+                                    <p class="text-sm text-slate-500">Sync SAP RFC & Process OCR Documents</p>
+                                </div>
+                                <button onclick="simulateIngestion()" id="btn-start-ingest" class="px-6 py-2 bg-th8-red text-white font-bold rounded-lg shadow-lg hover:bg-red-700 transition flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    Start Ingestion Simulation
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[550px]">
+                                <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
+                                    <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                                        <h4 class="font-bold text-slate-700 flex items-center gap-2">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" class="h-4 opacity-70">
+                                            SAP Data Stream (RFC)
+                                        </h4>
+                                        <span id="sap-status" class="text-xs font-bold text-slate-400">Idle</span>
+                                    </div>
+                                    <div class="p-4 flex-1 flex flex-col">
+                                        <div id="sap-terminal" class="bg-slate-900 rounded-lg p-3 font-mono text-xs text-green-400 h-48 overflow-y-auto mb-4 border border-slate-700 shadow-inner">
+                                            <span class="text-slate-500">// Waiting for sync command...</span><br>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div class="flex justify-between text-xs font-bold text-slate-600">
+                                                <span>Purchase Orders</span>
+                                                <span id="prog-text-1">0%</span>
+                                            </div>
+                                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                <div id="prog-bar-1" class="bg-blue-600 h-2 rounded-full transition-all duration-300 w-0"></div>
+                                            </div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-600">
+                                                <span>Vendor Master</span>
+                                                <span id="prog-text-2">0%</span>
+                                            </div>
+                                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                <div id="prog-bar-2" class="bg-purple-600 h-2 rounded-full transition-all duration-300 w-0"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden relative">
+                                    <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                                        <h4 class="font-bold text-slate-700">Intelligent OCR Engine</h4>
+                                        <span id="ocr-status" class="text-xs font-bold text-slate-400">Waiting for Stream</span>
+                                    </div>
+                                    <div class="flex-1 relative bg-slate-100 p-4 flex justify-center items-center overflow-hidden">
+                                        <div id="doc-container" class="relative w-[300px] h-[400px] bg-white shadow-2xl border border-slate-300 rounded transition-all duration-500 opacity-50 transform scale-90">
+                                            <div id="scan-line" class="absolute w-full h-1 bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)] z-20 hidden"></div>
+                                            <div class="p-6 space-y-4 opacity-60 text-[10px] text-slate-400 select-none">
+                                                <div class="flex justify-between"><div class="w-16 h-4 bg-slate-200 rounded"></div><div class="w-12 h-4 bg-slate-200 rounded"></div></div>
+                                                <div class="space-y-2 mt-8"><div class="w-full h-2 bg-slate-100 rounded"></div><div class="w-3/4 h-2 bg-slate-100 rounded"></div></div>
+                                                <div id="field-inv" class="border border-transparent p-1 rounded transition-colors duration-200"><span class="font-bold text-slate-800">Invoice #:</span> INV-2026-001</div>
+                                                <div id="field-date" class="border border-transparent p-1 rounded transition-colors duration-200"><span class="font-bold text-slate-800">Date:</span> 12 Jan 2026</div>
+                                                <div class="w-full h-px bg-slate-200 my-4"></div>
+                                                <div id="field-total" class="border border-transparent p-1 rounded transition-colors duration-200 flex justify-between"><span class="font-bold text-slate-800">Total:</span> <span class="font-bold text-slate-900">402,000 THB</span></div>
+                                            </div>
+                                        </div>
+                                        <div id="extraction-panel" class="absolute right-4 top-4 bottom-4 w-40 bg-slate-900/90 backdrop-blur rounded-lg p-3 border border-slate-700 transform translate-x-48 transition-transform duration-500">
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase mb-3 border-b border-slate-700 pb-2">Extracted Data</p>
+                                            <div class="space-y-3" id="extracted-list"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="intelligence" class="tab-content space-y-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-800">AI Intelligence Analysis</h3>
+                                    <p class="text-sm text-slate-500">RAG-Powered Comparison & Reasoning</p>
+                                </div>
+                                <button onclick="simulateAnalysis()" id="btn-run-ai" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                                    Run AI Diagnosis
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[500px]">
+                                <div class="bg-white rounded-xl border border-slate-200 p-0 shadow-sm flex flex-col overflow-hidden">
+                                    <div class="bg-slate-50 p-4 border-b border-slate-200">
+                                        <h4 class="text-sm font-bold text-slate-700 uppercase flex items-center gap-2">
+                                            1. RAG Context Retrieval
+                                            <span id="rag-status" class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded-full font-bold">Idle</span>
+                                        </h4>
+                                    </div>
+                                    
+                                    <div class="p-4 flex-1 space-y-3 overflow-y-auto bg-slate-50/50" id="rag-container">
+                                        <div class="bg-white p-2 rounded border border-slate-300 flex items-center gap-2 text-xs text-slate-400 mb-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                            <span id="rag-query-text">Waiting for query...</span>
+                                        </div>
+
+                                        <div id="rag-results" class="space-y-2 opacity-50">
+                                            <div class="text-center text-xs text-slate-400 mt-10">Run Diagnosis to fetch context</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                                    <h4 class="text-sm font-bold text-slate-700 uppercase mb-4 border-b pb-2">2. Rule Engine Execution</h4>
+                                    <div class="space-y-4">
+                                        <div id="rule-1" class="flex items-center gap-3 p-3 rounded opacity-50 transition-all duration-300">
+                                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold" id="icon-rule-1">1</div>
+                                            <div><p class="text-sm font-bold text-slate-800">3-Way Match</p><p class="text-[10px] text-slate-500">Check PO vs GR vs Invoice</p></div>
+                                        </div>
+                                        <div id="rule-2" class="flex items-center gap-3 p-3 rounded opacity-50 transition-all duration-300">
+                                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold" id="icon-rule-2">2</div>
+                                            <div><p class="text-sm font-bold text-slate-800">Price Variance (INV-02)</p><p class="text-[10px] text-slate-500">Threshold: 2.0%</p></div>
+                                        </div>
+                                        <div id="rule-3" class="flex items-center gap-3 p-3 rounded opacity-50 transition-all duration-300">
+                                            <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold" id="icon-rule-3">3</div>
+                                            <div><p class="text-sm font-bold text-slate-800">Duplicate Check</p><p class="text-[10px] text-slate-500">Fuzzy Logic > 95%</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-900 rounded-xl border border-slate-700 p-5 shadow-xl relative overflow-hidden flex flex-col">
+                                    <h4 class="text-sm font-bold text-slate-400 uppercase mb-4 border-b border-slate-700 pb-2">3. LLM Reasoning</h4>
+                                    <div id="llm-output" class="font-mono text-xs text-green-400 leading-relaxed whitespace-pre-wrap h-full overflow-y-auto"></div>
+                                    <div id="risk-badge" class="mt-auto hidden opacity-0 transition-opacity duration-500 absolute bottom-5 left-5 right-5">
+                                        <div class="p-3 bg-yellow-900/80 border border-yellow-500 rounded text-center backdrop-blur">
+                                            <p class="text-yellow-400 font-bold text-lg">RECOMMENDATION: HOLD</p>
+                                            <p class="text-xs text-yellow-200">Requires Manual Approval</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="action" class="tab-content space-y-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[600px]">
+                                <div class="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col">
+                                    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                                        <h3 class="font-bold text-slate-800">Case Review: INV-2026-001</h3>
+                                        <div class="flex gap-2">
+                                            <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">High Risk</span>
+                                            <span class="px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded text-xs">SLA: 4h left</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 grid grid-cols-2 gap-8 flex-1 overflow-y-auto">
+                                        <div class="space-y-4">
+                                            <h4 class="text-xs font-bold text-slate-500 uppercase">Master Contract Data (Truth)</h4>
+                                            <div class="p-4 bg-slate-50 rounded border border-slate-200">
+                                                <p class="text-sm font-bold text-slate-800">Item: PKG-CAN-400G</p>
+                                                <p class="text-xs text-slate-500 mb-2">Agreed Price (2024)</p>
+                                                <p class="text-2xl font-bold text-slate-900">฿ 12.50 <span class="text-xs font-normal text-slate-500">/ unit</span></p>
+                                            </div>
+                                            <div class="p-3 bg-blue-50 border border-blue-100 rounded text-xs text-blue-800">
+                                                <span class="font-bold">⚠️ Exception Clause Found:</span><br>
+                                                "Adjustment allowed if Brent Crude Index exceeds $80."
+                                            </div>
+                                        </div>
+                                        <div class="space-y-4">
+                                            <h4 class="text-xs font-bold text-slate-500 uppercase">Incoming Invoice Data (Risk)</h4>
+                                            <div class="p-4 bg-red-50 rounded border border-red-200">
+                                                <p class="text-sm font-bold text-slate-800">Item: PKG-CAN-400G</p>
+                                                <p class="text-xs text-red-600 mb-2">Billed Price</p>
+                                                <p class="text-2xl font-bold text-red-600">฿ 12.80 <span class="text-xs font-normal text-red-400">/ unit</span></p>
+                                            </div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-700 px-2">
+                                                <span>Variance:</span>
+                                                <span class="text-red-600">+ 4.7% (฿18,000 Total)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="lg:col-span-4 bg-slate-50 rounded-xl border border-slate-200 p-6 flex flex-col shadow-inner">
+                                    <div class="mb-6">
+                                        <h3 class="font-bold text-slate-800 mb-2">AI Summary</h3>
+                                        <p class="text-xs text-slate-600 leading-relaxed bg-white p-3 rounded border border-slate-200">
+                                            "Invoice price is higher than PO, but matches the Contract Exception Clause (Oil Index > $80). Recommendation: <strong>Approve with Note</strong>."
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="flex-1">
+                                        <label class="block text-xs font-bold text-slate-700 mb-2">Manager Comment (Mandatory)</label>
+                                        <textarea id="decision-comment" class="w-full h-32 p-3 text-sm border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Enter reason for approval or rejection..."></textarea>
+                                    </div>
+
+                                    <div class="space-y-3 mt-4">
+                                        <button onclick="submitDecision('APPROVE')" class="w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition shadow-md flex items-center justify-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                            Approve Payment
+                                        </button>
+                                        <button onclick="submitDecision('REJECT')" class="w-full py-3 bg-white text-red-600 border border-red-200 font-bold rounded-lg hover:bg-red-50 transition flex items-center justify-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                            Reject / Hold
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="audit" class="tab-content space-y-6">
+                            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                                <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    System Event Timeline
+                                </h3>
+                                
+                                <div class="relative pl-8 space-y-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-0 before:w-0.5 before:bg-slate-200">
+                                    <div class="relative group">
+                                        <div class="absolute -left-8 w-6 h-6 bg-blue-100 rounded-full border-2 border-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <p class="font-bold text-slate-800 text-sm">Data Ingestion Completed</p>
+                                                <p class="text-xs text-slate-500">Source: SAP RFC Gateway | Batch ID: #9921</p>
+                                            </div>
+                                            <span class="text-xs font-mono text-slate-400">10:42:01</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="relative group">
+                                        <div class="absolute -left-8 w-6 h-6 bg-purple-100 rounded-full border-2 border-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <span class="text-[8px] font-bold text-purple-700">AI</span>
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <p class="font-bold text-purple-700 text-sm">Policy Check Executed</p>
+                                                <p class="text-xs text-slate-500">Rule INV-02 Triggered (Variance > 2%)</p>
+                                            </div>
+                                            <span class="text-xs font-mono text-slate-400">10:42:05</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="relative group">
+                                        <div class="absolute -left-8 w-6 h-6 bg-red-100 rounded-full border-2 border-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <span class="text-[10px] font-bold text-red-700">!</span>
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <p class="font-bold text-red-700 text-sm">High Risk Detected</p>
+                                                <p class="text-xs text-slate-500">Case #2026-001 Created. Assigned to: CFO</p>
+                                            </div>
+                                            <span class="text-xs font-mono text-slate-400">10:42:08</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="audit-decision-log" class="hidden relative group fade-in">
+                                        <div class="absolute -left-8 w-6 h-6 bg-green-100 rounded-full border-2 border-green-500 flex items-center justify-center">
+                                            <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <p class="font-bold text-green-700 text-sm">Manual Decision Recorded</p>
+                                                <p class="text-xs text-slate-500" id="audit-decision-text">Approver: CFO | Action: APPROVE</p>
+                                            </div>
+                                            <span class="text-xs font-mono text-slate-400">Just Now</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="control" class="tab-content space-y-6">
+                            <div class="flex justify-between items-end mb-4">
+                                <div>
+                                    <h2 class="text-xl font-bold text-slate-800">AI Control Room</h2>
+                                    <p class="text-sm text-slate-500">Manage Policies & System Prompts (Whitebox Control)</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 bg-th8-dark text-white text-xs font-bold rounded hover:bg-black">Save Configuration</button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[600px]">
+                                <div class="flex flex-col bg-[#1e1e1e] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                                    <div class="px-4 py-3 bg-[#252526] border-b border-black flex justify-between items-center">
+                                        <span class="text-xs font-mono text-gray-400 font-bold flex items-center gap-2">
+                                            <span class="w-3 h-3 rounded-full bg-blue-500"></span> system_prompt.md
+                                        </span>
+                                        <span class="text-[10px] text-gray-400">Read-Only</span>
+                                    </div>
+                                    <div class="flex-1 p-4 font-mono text-sm overflow-y-auto leading-relaxed">
+                                        <div class="text-gray-300">
+                                            <span class="token-comment">### IDENTITY & ROLE</span><br>
+                                            You are the <span class="token-str">"TH8 Financial Governance Agent"</span>.<br>
+                                            Your role is to audit invoices against purchase orders and contracts to prevent financial leakage.<br><br>
+
+                                            <span class="token-comment">### CORE INSTRUCTIONS</span><br>
+                                            <span class="token-key">1. FACTUALITY:</span><br>
+                                            &nbsp;&nbsp;Base decisions <span class="text-red-400">ONLY</span> on provided documents (PDF, JSON). Do not hallucinate external laws.<br><br>
+                                            
+                                            <span class="token-key">2. CITATION:</span><br>
+                                            &nbsp;&nbsp;Every time you flag a risk, you <span class="text-red-400">MUST</span> cite the specific page number and clause from the contract.<br>
+                                            &nbsp;&nbsp;Example: <span class="token-str">"Violation based on Clause 4.2 (Page 9)"</span><br><br>
+
+                                            <span class="token-key">3. LOGIC CHAIN:</span><br>
+                                            &nbsp;&nbsp;<span class="token-tag">&lt;step1&gt;</span> Compare Invoice Total vs PO Total.<br>
+                                            &nbsp;&nbsp;<span class="token-tag">&lt;step2&gt;</span> If variance > <span class="token-num">2.0%</span>, check Contract for "Price Adjustment" clauses.<br>
+                                            &nbsp;&nbsp;<span class="token-tag">&lt;step3&gt;</span> If exception found (e.g. Oil Index), verify external data.<br>
+                                            &nbsp;&nbsp;<span class="token-tag">&lt;step4&gt;</span> Output recommendation.<br><br>
+
+                                            <span class="token-comment">### OUTPUT FORMAT (JSON)</span><br>
+                                            {<br>
+                                            &nbsp;&nbsp;<span class="token-key">"risk_level"</span>: "HIGH" | "MEDIUM" | "LOW",<br>
+                                            &nbsp;&nbsp;<span class="token-key">"reasoning"</span>: "string",<br>
+                                            &nbsp;&nbsp;<span class="token-key">"evidence_ref"</span>: { "doc": "string", "page": int }<br>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col bg-[#1e1e1e] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                                    <div class="px-4 py-3 bg-[#252526] border-b border-black flex justify-between items-center">
+                                        <span class="text-xs font-mono text-gray-400 font-bold flex items-center gap-2">
+                                            <span class="w-3 h-3 rounded-full bg-yellow-500"></span> policy_config.yaml
+                                        </span>
+                                        <span class="text-[10px] text-green-400">Editable</span>
+                                    </div>
+                                    <textarea class="flex-1 bg-[#1e1e1e] text-gray-300 p-4 font-mono text-sm code-editor outline-none resize-none" spellcheck="false">
+policy_version: "2.4.0"
+global_settings:
+  currency: "THB"
+  tolerance_mode: "strict"
+
+rules:
+  # Rule 1: Invoice vs Contract Price
+  - id: "INV-02"
+    name: "Price Variance Check"
+    threshold_percent: 2.0  # <--- Change this to adjust sensitivity
+    action_on_fail: "FLAG_FOR_REVIEW"
+    priority: "HIGH"
+
+  # Rule 2: Duplicate Detection
+  - id: "INV-05"
+    name: "Duplicate Invoice Check"
+    similarity_score: 0.95
+    lookback_days: 90
+    action_on_fail: "BLOCK_PAYMENT"
+
+integrations:
+  sap_rfc_enabled: true
+  ocr_confidence_min: 0.85
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active', 'border-r-2', 'border-th8-red', 'bg-gray-800', 'text-white');
+                el.classList.add('text-gray-400');
+            });
+            
+            const activeNav = document.getElementById('nav-' + tabId);
+            if(activeNav) {
+                activeNav.classList.add('active', 'border-r-2', 'border-th8-red', 'bg-gray-800', 'text-white');
+                activeNav.classList.remove('text-gray-400');
+            }
+            
+            const titles = {
+                'dashboard': 'Executive Dashboard',
+                'ingest': 'Data Ingestion Operations',
+                'intelligence': 'AI Intelligence Center',
+                'action': 'Action Center',
+                'control': 'AI Control Room (Configuration)',
+                'audit': 'Audit Logs'
+            };
+            if(titles[tabId]) document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        // Ingestion Simulation Logic
+        async function simulateIngestion() {
+            const btn = document.getElementById('btn-start-ingest');
+            const sapStatus = document.getElementById('sap-status');
+            const ocrStatus = document.getElementById('ocr-status');
+            const terminal = document.getElementById('sap-terminal');
+            const docContainer = document.getElementById('doc-container');
+            const scanLine = document.getElementById('scan-line');
+            const extractionPanel = document.getElementById('extraction-panel');
+            const extractedList = document.getElementById('extracted-list');
+
+            // Reset
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            terminal.innerHTML = '<span class="text-slate-500">// Starting Sync Sequence...</span><br>';
+            extractedList.innerHTML = '';
+            document.getElementById('prog-bar-1').style.width = '0%';
+            document.getElementById('prog-bar-2').style.width = '0%';
+            document.getElementById('prog-text-1').innerText = '0%';
+            document.getElementById('prog-text-2').innerText = '0%';
+            docContainer.classList.add('opacity-50', 'scale-90');
+            docContainer.classList.remove('opacity-100', 'scale-100');
+            extractionPanel.classList.add('translate-x-48');
+            scanLine.classList.add('hidden');
+            scanLine.classList.remove('animate-scan');
+
+            // Helper to write log
+            const log = (msg) => {
+                terminal.innerHTML += `> ${msg}<br>`;
+                terminal.scrollTop = terminal.scrollHeight;
+            };
+
+            // 1. Simulate SAP Sync
+            sapStatus.innerText = 'Syncing...';
+            sapStatus.className = 'text-xs font-bold text-blue-500 animate-pulse';
+            
+            log('Connecting to SAP RFC Gateway...');
+            await new Promise(r => setTimeout(r, 800));
+            log('Connection Established (Latency: 45ms)');
+            
+            // Progress 1
+            log('Fetching Purchase Orders (table: EKKO)...');
+            document.getElementById('prog-bar-1').style.width = '100%';
+            document.getElementById('prog-text-1').innerText = '100%';
+            await new Promise(r => setTimeout(r, 1000));
+            log('Fetched 452 PO records.');
+
+            // Progress 2
+            log('Validating Vendor Master...');
+            document.getElementById('prog-bar-2').style.width = '100%';
+            document.getElementById('prog-text-2').innerText = '100%';
+            await new Promise(r => setTimeout(r, 800));
+            log('SAP Sync Complete.');
+            sapStatus.innerText = 'Connected';
+            sapStatus.className = 'text-xs font-bold text-green-500';
+
+            // 2. Simulate OCR & Vectorization
+            ocrStatus.innerText = 'Processing...';
+            ocrStatus.className = 'text-xs font-bold text-blue-500 animate-pulse';
+            log('Triggering OCR Queue for Invoice #INV-2026-001...');
+            
+            // Show Doc
+            docContainer.classList.remove('opacity-50', 'scale-90');
+            docContainer.classList.add('opacity-100', 'scale-100');
+            await new Promise(r => setTimeout(r, 500));
+
+            // Start Scan Line
+            scanLine.classList.remove('hidden');
+            scanLine.classList.add('animate-scan');
+            
+            // Simulate Extraction hits
+            await new Promise(r => setTimeout(r, 1000));
+            document.getElementById('field-inv').classList.add('bg-yellow-100', 'border-yellow-300');
+            extractionPanel.classList.remove('translate-x-48');
+            extractedList.innerHTML += `<div class="bg-slate-800 p-2 rounded border-l-2 border-pink-500 text-[10px] text-gray-300 fade-in">Key: Invoice_No<br><span class="text-white font-bold">INV-2026-001</span></div>`;
+            log('OCR: Detected Invoice Number');
+
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('field-date').classList.add('bg-yellow-100', 'border-yellow-300');
+            extractedList.innerHTML += `<div class="bg-slate-800 p-2 rounded border-l-2 border-pink-500 text-[10px] text-gray-300 fade-in">Key: Date<br><span class="text-white font-bold">2026-01-12</span></div>`;
+            log('OCR: Detected Date');
+
+            await new Promise(r => setTimeout(r, 800));
+            document.getElementById('field-total').classList.add('bg-green-100', 'border-green-300');
+            extractedList.innerHTML += `<div class="bg-slate-800 p-2 rounded border-l-2 border-green-500 text-[10px] text-gray-300 fade-in">Key: Total_Amt<br><span class="text-white font-bold">402,000.00</span></div>`;
+            log('OCR: Detected Total Amount');
+
+            // Vectorization step simulation
+            await new Promise(r => setTimeout(r, 1000));
+            log('Embedding: Generating Vectors (dim=1536)...');
+            log('Indexing: Upsert to VectorDB (200ms)');
+
+            await new Promise(r => setTimeout(r, 500));
+            scanLine.classList.remove('animate-scan');
+            scanLine.classList.add('hidden');
+            ocrStatus.innerText = 'Completed';
+            ocrStatus.className = 'text-xs font-bold text-green-500';
+            log('Ingestion Pipeline Finished successfully.');
+
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+        }
+
+        // AI Analysis Simulation with RAG
+        async function simulateAnalysis() {
+            const btn = document.getElementById('btn-run-ai');
+            const output = document.getElementById('llm-output');
+            const badge = document.getElementById('risk-badge');
+            const ragContainer = document.getElementById('rag-results');
+            const ragStatus = document.getElementById('rag-status');
+            const queryText = document.getElementById('rag-query-text');
+            const rules = ['rule-1', 'rule-2', 'rule-3'];
+            const icons = ['icon-rule-1', 'icon-rule-2', 'icon-rule-3'];
+
+            // Reset
+            btn.disabled = true; btn.classList.add('opacity-50');
+            output.innerText = ''; badge.classList.add('hidden', 'opacity-0');
+            ragContainer.innerHTML = '';
+            ragContainer.classList.remove('opacity-50');
+            rules.forEach(r => document.getElementById(r).classList.add('opacity-50', 'bg-white'));
+            
+            // Step 0: RAG Simulation
+            ragStatus.innerText = 'Vector Searching...';
+            ragStatus.className = 'text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold animate-pulse';
+            queryText.innerHTML = '<span class="text-slate-700 font-mono">Query: "Price adjustment conditions for PKG-CAN-400G"</span>';
+            
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // Inject Retrieved Chunks
+            const chunks = [
+                {
+                    title: "Contract 2024: Price List",
+                    content: "Item PKG-CAN-400G ... Agreed Unit Price: 12.50 THB",
+                    meta: ["SOURCE: CTR_2024.pdf", "PAGE: 6", "SCORE: 0.98"],
+                    bg: "bg-slate-100"
+                },
+                {
+                    title: "Contract 2024: Clause 4.2",
+                    content: "Exception: Price adjustment is permitted if Brent Crude Oil Index fluctuates > 5%.",
+                    meta: ["SOURCE: CTR_2024.pdf", "PAGE: 9", "SCORE: 0.95"],
+                    bg: "bg-blue-50 border-blue-200"
+                },
+                {
+                    title: "External Data: Market Index",
+                    content: "Brent Crude Oil Index (Current): $82.40 USD",
+                    meta: ["SOURCE: Bloomberg API", "DATE: Today", "TRUST: High"],
+                    bg: "bg-green-50 border-green-200"
+                }
+            ];
+
+            for (const chunk of chunks) {
+                ragContainer.innerHTML += `
+                    <div class="p-3 rounded border ${chunk.bg || 'border-slate-200'} text-xs fade-in mb-2">
+                        <p class="font-bold text-slate-700 mb-1">${chunk.title}</p>
+                        <p class="text-slate-600 mb-2 leading-relaxed">"${chunk.content}"</p>
+                        <div class="flex gap-1 flex-wrap">
+                            ${chunk.meta.map(m => `<span class="meta-tag bg-white border border-slate-200 text-slate-500">${m}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                await new Promise(r => setTimeout(r, 400));
+            }
+            ragStatus.innerText = 'Context Retrieved';
+            ragStatus.className = 'text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold';
+
+            // Step 1: Rules
+            for(let i=0; i<3; i++) {
+                await new Promise(r => setTimeout(r, 600));
+                document.getElementById(rules[i]).classList.remove('opacity-50');
+                const icon = document.getElementById(icons[i]);
+                icon.className = 'w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white transition-colors duration-300';
+                
+                if (i === 1) { // Rule 2 Fail
+                    document.getElementById(rules[i]).classList.add('bg-red-50');
+                    icon.classList.add('bg-red-500'); icon.innerHTML = '!';
+                } else {
+                    document.getElementById(rules[i]).classList.add('bg-green-50');
+                    icon.classList.add('bg-green-500'); icon.innerHTML = '✓';
+                }
+            }
+
+            // Step 2: LLM Thinking (Typewriter)
+            output.classList.add('typing-cursor');
+            const reasoningText = `> Analyzing variance... \n> Invoice (402k) > PO (384k) by +4.7%.\n> Searching for contract exceptions...\n> Found Clause 4.2: Oil Price Adjustment allowed.\n> Verifying Brent Crude Index... Current: $82.40 (> $80).\n> Conclusion: Exception is VALID per contract terms.`;
+            
+            for (let i = 0; i < reasoningText.length; i++) {
+                output.innerText += reasoningText.charAt(i);
+                await new Promise(r => setTimeout(r, 20));
+            }
+            output.classList.remove('typing-cursor');
+
+            // Step 3: Result
+            await new Promise(r => setTimeout(r, 500));
+            badge.classList.remove('hidden');
+            setTimeout(() => badge.classList.remove('opacity-0'), 100);
+            
+            btn.disabled = false; btn.classList.remove('opacity-50');
+        }
+
+        // New Decision Submission
+        function submitDecision(type) {
+            const comment = document.getElementById('decision-comment').value;
+            if(!comment) { alert('Please enter a comment before submitting.'); return; }
+            
+            alert(`Decision Submitted: ${type}\nReason: ${comment}\n\nThis action has been logged to the audit trail.`);
+            
+            // Update Audit Log dynamically
+            const logContainer = document.getElementById('audit-decision-log');
+            const logText = document.getElementById('audit-decision-text');
+            logText.innerText = `Approver: CFO | Action: ${type} | Note: "${comment.substring(0, 30)}..."`;
+            logContainer.classList.remove('hidden');
+            
+            // Switch to Audit tab to show proof
+            switchTab('audit');
+        }
+    </script>
+</body>
+</html>

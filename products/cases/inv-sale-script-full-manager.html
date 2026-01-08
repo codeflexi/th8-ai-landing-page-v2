@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI Sales Playbook: All Levels Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        th8: {
+                            red: '#D9232E',
+                            dark: '#0F172A',
+                            gold: '#B45309', // Owner
+                            blue: '#1E40AF', // CFO
+                            green: '#047857', // COO
+                            purple: '#7E22CE', // CTO
+                            teal: '#0F766E', // Manager
+                            indigo: '#4338CA', // Supervisor
+                            pink: '#BE185D', // Key User
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .role-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .role-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        details summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: slideDown 0.2s ease-in-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased pb-20">
+
+    <header class="bg-th8-dark text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">TH8.AI Playbook</h1>
+                <p class="text-xs text-slate-400">For: Siam Winery / AB Food / S.Khon Kaen</p>
+            </div>
+            <div class="text-right hidden sm:block">
+                <p class="text-xs font-bold text-th8-red uppercase tracking-wider">All Levels Included</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white border-b border-slate-200 sticky top-[70px] z-40 overflow-x-auto">
+        <div class="max-w-6xl mx-auto flex min-w-max p-1 space-x-1">
+            <button onclick="switchRole('owner')" id="btn-owner" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2 active-role text-th8-gold bg-orange-50 border border-th8-gold">
+                <span class="text-lg">👑</span> Owner
+            </button>
+            <button onclick="switchRole('cfo')" id="btn-cfo" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+                <span class="text-lg">💰</span> CFO
+            </button>
+            <button onclick="switchRole('coo')" id="btn-coo" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+                <span class="text-lg">⚙️</span> COO
+            </button>
+            <button onclick="switchRole('tech')" id="btn-tech" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+                <span class="text-lg">🛡️</span> CTO
+            </button>
+
+            <div class="w-px bg-slate-300 mx-2"></div>
+
+            <button onclick="switchRole('manager')" id="btn-manager" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+                <span class="text-lg">👔</span> Manager
+            </button>
+            <button onclick="switchRole('supervisor')" id="btn-supervisor" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+                <span class="text-lg">👀</span> Supervisor
+            </button>
+            <button onclick="switchRole('keyuser')" id="btn-keyuser" class="role-btn px-4 py-3 text-sm font-bold text-slate-500 rounded-lg hover:bg-slate-50 transition flex items-center gap-2">
+                <span class="text-lg">👩‍💻</span> Key User
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+
+        <div id="content-owner" class="role-content active">
+            <div class="bg-white p-8 rounded-xl text-center border border-dashed border-slate-300">
+                <h2 class="text-2xl font-bold text-th8-gold">Owner / CEO Content</h2>
+                <p class="text-slate-500 mt-2">(เนื้อหาเดิมจากไฟล์ก่อนหน้า)</p>
+            </div>
+        </div>
+        <div id="content-cfo" class="role-content"><div class="bg-white p-8 rounded-xl text-center border border-dashed border-slate-300"><h2>CFO Content</h2></div></div>
+        <div id="content-coo" class="role-content"><div class="bg-white p-8 rounded-xl text-center border border-dashed border-slate-300"><h2>COO Content</h2></div></div>
+        <div id="content-tech" class="role-content"><div class="bg-white p-8 rounded-xl text-center border border-dashed border-slate-300"><h2>CTO Content</h2></div></div>
+
+        <div id="content-manager" class="role-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-teal-100">
+                <h2 class="text-2xl font-bold text-th8-teal mb-2">Focus: KPIs, Team Performance, Reporting</h2>
+                <p class="text-slate-600">สำหรับผู้จัดการแผนก (จัดซื้อ/บัญชี) ที่กังวลเรื่อง Productivity และการบริหารทีม</p>
+            </div>
+
+            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span class="bg-th8-teal text-white px-2 py-0.5 rounded text-sm">10 Questions</span>
+                    Q&A for Managers
+                </h3>
+                
+                <div class="space-y-3">
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            1. "จะช่วยลด OT ของทีมงานได้จริงไหม? ทุกวันนี้ปิดยอดดึกมาก"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ลดได้แน่นอนครับ เพราะ AI ช่วยทำงานรูทีน (Data Entry / Matching) ไป 80% น้องๆ จะเหลือแค่ตรวจเคสที่ AI สงสัย (Exceptions) ทำให้งานเสร็จเร็วขึ้น กลับบ้านตรงเวลาขึ้นครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            2. "ผมจะรู้ได้ไงว่าใครทำงานช้า หรือคอขวดอยู่ที่ไหน?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "เรามี <strong>Productivity Dashboard</strong> ให้ Manager ครับ เห็นเลยว่า Pending Case ค้างอยู่ที่ใครนานที่สุด หรือ Vendor เจ้าไหนส่งเอกสารผิดบ่อยที่สุด เพื่อให้ท่านเข้าไปแก้ปัญหาได้ถูกจุดครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            3. "ถ้าลูกน้องกด Approve มั่วๆ ระบบจะจับได้ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "จับได้ครับ AI จะเรียนรู้ Pattern ปกติ ถ้ามีคนกด Approve เคสที่มีความเสี่ยงสูงเร็วผิดปกติ (เช่น ใช้เวลาดูแค่ 2 วินาที) ระบบจะ Flag แจ้งเตือนมาที่ Manager ทันทีครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            4. "รายงานสรุปประจำเดือน ต้องทำเองอยู่ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ระบบ Gen ให้ Auto ครับ ท่านสามารถกด Export รายงาน 'Top 10 Risk Vendors' หรือ 'Cost Saving Report' ไปนำเสนอในที่ประชุมบริหารได้เลย ไม่ต้องเสียเวลาทำ Excel เองครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            5. "Vendor ชอบโทรมาถามว่า 'เงินออกหรือยัง' ต้องตอบยังไง?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "เรามีหน้า <strong>Vendor Portal</strong> (Option) ให้ Vendor เช็คสถานะเองได้ หรือทีมงานท่านก็เช็คสถานะ Real-time ได้ในคลิกเดียวว่าติดที่ขั้นตอนไหน ตอบคำถาม Vendor ได้ทันทีครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            6. "ช่วงแรกที่เริ่มใช้ งานจะงอกไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "อาจต้องปรับตัวเล็กน้อยช่วง 1 สัปดาห์แรกครับ แต่ทีม TH8 จะประกบช่วย Onboard จนกว่าทีมท่านจะคล่อง รับรองว่าหลังจากนั้นงานจะเบาลงอย่างเห็นได้ชัดครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            7. "ถ้ามีพนักงานลาออก คนใหม่จะทำงานต่อได้เลยไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "นี่คือข้อดีของระบบ AI ครับ... AI มันจำ Knowledge ของบริษัทไว้หมดแล้ว พนักงานใหม่มาถึงก็แค่ทำตามที่ AI แนะนำ (AI Guided) ทำให้ลดเวลา Training พนักงานใหม่จาก 2 เดือน เหลือ 2 สัปดาห์ครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            8. "กำหนดสิทธิ์การเข้าถึงข้อมูลได้ละเอียดแค่ไหน?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ละเอียดมากครับ (Role-based Access) เช่น น้องคนนี้ดูได้เฉพาะบิลค่าขนส่ง, น้องคนนั้นดูได้เฉพาะ Vendor A-Z, หรือห้ามเห็นยอดเงินรวม... Manager Config เองได้หมดครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            9. "เอาไปใช้กับ KPI ทีมงานได้ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ได้ครับ ระบบเก็บ Stats ว่าใคร Process งานได้กี่ใบ, ความแม่นยำเท่าไหร่, แก้ไขงานบ่อยแค่ไหน เอามาประเมิน Performance ปลายปีได้อย่างเป็นธรรมครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-teal">
+                            10. "ถ้าผมไม่อยู่ออฟฟิศ งานจะสะดุดไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ไม่สะดุดครับ ท่านสามารถมอบหมายสิทธิ์ (Delegate) ให้ Supervisor อนุมัติแทนชั่วคราวได้ หรือท่านจะกด Approve ผ่านมือถือก็ได้ครับ"
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-supervisor" class="role-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-indigo-100">
+                <h2 class="text-2xl font-bold text-th8-indigo mb-2">Focus: QC, Handling Exceptions, Staff Training</h2>
+                <p class="text-slate-600">สำหรับหัวหน้างานที่ต้องตรวจงานน้องๆ และแก้ปัญหาเฉพาะหน้า</p>
+            </div>
+
+            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span class="bg-th8-indigo text-white px-2 py-0.5 rounded text-sm">10 Questions</span>
+                    Q&A for Supervisors
+                </h3>
+                
+                <div class="space-y-3">
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            1. "พี่ต้องมานั่งรีเช็คงานน้องทุกใบเหมือนเดิมไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ไม่ต้องครับพี่... เราใช้วิธี <strong>'Management by Exception'</strong> คือเคสไหนเขียว (AI มั่นใจ 100%) พี่ปล่อยผ่านได้เลย พี่มาโฟกัสตรวจเฉพาะ 'เคสแดง/เหลือง' ที่ AI สงสัยพอครับ ลดงานตรวจไปได้ 80% ครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            2. "ถ้าน้องทำผิด AI จะช่วยเตือนน้องก่อนถึงมือพี่ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ใช่ครับ เช่น ถ้าน้องจะกดจ่ายเงินซ้ำ AI จะเด้ง Popup เตือนน้องทันทีว่า 'ใบนี้จ่ายไปแล้วนะ' ทำให้น้องแก้เองได้ก่อนส่งมาถึงพี่ครับ พี่จะได้ไม่ต้องมาดุน้องบ่อยๆ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            3. "เคสยากๆ เช่น บิลไม่มี PO หรือเคลียร์เงินทดรองจ่าย ทำได้ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ทำได้ครับ เรามี Flow สำหรับ <strong>Non-PO Invoice</strong> หรือ Expense Claim โดยเฉพาะ AI จะช่วยแมตช์กับ GL Code (รหัสบัญชี) ให้ด้วย ลดเวลาพี่ในการมานั่งบอกรหัสบัญชีน้องครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            4. "ถ้า AI อ่านผิด พี่แก้เองได้ไหม หรือต้องแจ้ง IT?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "พี่แก้หน้าจอได้เลยครับ (Human Override) ง่ายเหมือนแก้ Excel แล้ว AI จะจำด้วยว่าครั้งหน้าถ้าเจอบิลแบบนี้ต้องอ่านแบบที่พี่แก้ครับ (Active Learning)"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            5. "ค้นหาเอกสารเก่ายากไหม เวลา Audit เข้า?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ง่ายเหมือน Google ครับ พิมพ์แค่ 'บิลค่าไฟ เดือนมีนา' หรือชื่อ Vendor ระบบจะดึงภาพเอกสารและประวัติการอนุมัติมาให้ทันที พี่ไม่ต้องไปรื้อแฟ้มกระดาษหลังห้องแล้วครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            6. "มีการแยกงานด่วน (Urgent) ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "มีครับ ระบบจะติดป้าย <strong>Fire / Urgent</strong> ให้สำหรับเคสที่ใกล้ Due Date หรือเคสที่ผู้บริหารขอมา พี่สามารถ Filter ดูเฉพาะงานด่วนก่อนได้ครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            7. "น้องใหม่ชอบใส่รหัส Cost Center ผิด AI ช่วยได้ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ช่วยได้เยอะเลยครับ AI จะดูประวัติว่า Vendor เจ้านี้ หรือของชิ้นนี้ ปกติลง Cost Center ไหน แล้วแนะนำ (Auto-suggest) ให้น้องเลือกครับ โอกาสผิดจะน้อยลงมาก"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            8. "ดูประวัติการแก้ไข (Change Log) ได้ไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ได้ทุก Step ครับ ใครเป็นคนแก้, แก้จากอะไรเป็นอะไร, เวลาไหน พี่ดูย้อนหลังได้หมด โปร่งใสตรวจสอบได้ครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            9. "ถ้าบิลมีปัญหา พี่ตีกลับ (Reject) ไปให้น้องแก้ยังไง?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "กดปุ่ม 'Request Changes' แล้วพิมพ์คอมเมนต์ได้เลยครับ ระบบจะส่ง Noti ไปหาน้อง พอน้องแก้เสร็จส่งกลับมา ระบบจะไฮไลท์จุดที่แก้ให้พี่ดูง่ายๆ ครับ ไม่ต้องเริ่มตรวจใหม่ทั้งใบ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-indigo">
+                            10. "Export ข้อมูลไปทำ Excel ต่อได้ไหม พี่ถนัด Excel?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ได้แน่นอนครับ Export เป็น .xlsx หรือ .csv ได้ทุกหน้าจอ พี่เอาไปทำ Pivot Table ต่อได้ตามความถนัดเลยครับ"
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-keyuser" class="role-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-pink-100">
+                <h2 class="text-2xl font-bold text-th8-pink mb-2">Focus: Ease of Use, Job Security, Speed</h2>
+                <p class="text-slate-600">สำหรับน้องๆ ผู้ใช้งานจริง (AP, จัดซื้อ) ที่กลัวตกงาน หรือกลัวระบบยาก</p>
+            </div>
+
+            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span class="bg-th8-pink text-white px-2 py-0.5 rounded text-sm">10 Questions</span>
+                    Q&A for Key Users
+                </h3>
+                
+                <div class="space-y-3">
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            1. "เอา AI มาแล้ว พี่จะโดนไล่ออกไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ไม่โดนแน่นอนครับ! AI มาช่วยให้พี่ <strong>'ไม่ต้องคีย์ข้อมูล'</strong> ซ้ำๆ จนปวดมือต่างหาก พี่จะมีเวลาไปทำงานที่สำคัญกว่า เช่น คุยกับ Vendor หรือเคลียร์บิลยากๆ งานพี่จะมีคุณค่าขึ้น (Smart User) ไม่ใช่แค่คนกรอกข้อมูลครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            2. "ระบบใช้ยากไหม? พี่ไม่เก่งภาษาอังกฤษ"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "เมนูเป็น <strong>ภาษาไทย</strong> ใช้งานง่ายเหมือนเล่น Facebook เลยครับ ปุ่มใหญ่ ตัวหนังสือชัด ไม่ซับซ้อนเหมือนหน้าจอ SAP แน่นอนครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            3. "ต้องมานั่งพิมพ์เลข PO ยาวๆ เองอีกไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ไม่ต้องแล้วครับ! แค่อัปโหลดรูปบิลเข้าไป AI จะวิ่งไปหาเลข PO ในระบบให้เอง แล้วจับคู่ให้เลย พี่แค่ตรวจดูว่ามันจับคู่ถูกไหม แค่นั้นเองครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            4. "ถ้าบิลยับๆ ลายมืออ่านยากๆ ต้องทำไง?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ถ่ายรูปส่งเข้าไปก่อนเลยครับ AI ของเราตาดีกว่าคนอีก มันช่วยแกะลายมือให้ ถ้าตรงไหนมันอ่านไม่ออกจริงๆ มันจะไฮไลท์ถามพี่ครับ พี่ไม่ต้องเพ่งเองทุกใบ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            5. "ถ้าทำผิด จะโดนหักเงินไหม?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ระบบนี้มาช่วยเซฟพี่ครับ! ก่อนพี่จะกดส่งงาน ถ้ามีอะไรผิดพลาด (เช่น ยอดไม่ตรง) ระบบจะเตือนพี่ก่อนเสมอ ทำให้พี่มีโอกาสแก้ตัวก่อนที่หัวหน้าจะเห็นครับ ช่วยให้พี่ทำงานพลาดน้อยลง"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            6. "อัปโหลดไฟล์ทีละหลายๆ ใบได้ไหม หรือต้องทำทีละใบ?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ลากมาวางทีละ 100 ไฟล์ก็ได้ครับ! หรือจะอัปโหลดทั้งโฟลเดอร์ก็ได้ ระบบจะทยอยทำให้อัตโนมัติ พี่ไปชงกาแฟรอได้เลย"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            7. "ค้นหา Vendor ยากไหม ปกติจำรหัส Vendor ไม่ได้"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "พิมพ์แค่ชื่อร้าน (ภาษาไทย/อังกฤษ) ก็เจอครับ ไม่ต้องจำรหัส Vendor Code ยาวๆ อีกต่อไป หรือพิมพ์แค่ส่วนหนึ่งของชื่อ ระบบก็เดาให้ถูกครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            8. "ถ้า AI บอกว่าผิด แต่พี่มั่นใจว่าถูก ต้องทำไง?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "เชื่อพี่เป็นหลักครับ! พี่สามารถกดแก้ (Override) ได้เลย แล้วใส่เหตุผลสั้นๆ บอกหัวหน้า ระบบจะเชื่อพี่และจำไว้ใช้ครั้งหน้าครับ"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            9. "ใช้บนมือถือได้ไหม เวลาออกไปดูของหน้างาน?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "ได้ครับ ถ่ายรูปบิลหน้างานแล้วอัปโหลดผ่านมือถือได้เลย ไม่ต้องเก็บกระดาษกลับมาคีย์ที่ออฟฟิศครับ สะดวกมาก"
+                        </div>
+                    </details>
+                    <details class="group bg-white rounded-lg shadow-sm border border-slate-100">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-bold text-slate-800 hover:text-th8-pink">
+                            10. "ถ้ามีปัญหา ถามใครได้บ้าง?"
+                            <span class="transition group-open:rotate-180">▼</span>
+                        </summary>
+                        <div class="px-4 pb-4 text-sm text-slate-600 border-t border-slate-100 pt-3">
+                            "มีปุ่ม <strong>'แชทกับเจ้าหน้าที่'</strong> มุมขวาล่างครับ กดถามทีม Support คนไทยได้ตลอด หรือถามในไลน์กลุ่มก็ได้ครับ เราพร้อมช่วยพี่เสมอ"
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function switchRole(roleId) {
+            // Hide all content
+            document.querySelectorAll('.role-content').forEach(el => el.classList.remove('active'));
+            // Show selected content
+            document.getElementById('content-' + roleId).classList.add('active');
+            
+            // Reset buttons
+            document.querySelectorAll('.role-btn').forEach(el => {
+                // Reset basic styles
+                el.classList.remove('active-role', 'bg-orange-50', 'bg-blue-50', 'bg-green-50', 'bg-purple-50', 'bg-teal-50', 'bg-indigo-50', 'bg-pink-50');
+                el.classList.remove('text-th8-gold', 'border-th8-gold');
+                el.classList.remove('text-th8-blue', 'border-th8-blue');
+                el.classList.remove('text-th8-green', 'border-th8-green');
+                el.classList.remove('text-th8-purple', 'border-th8-purple');
+                el.classList.remove('text-th8-teal', 'border-th8-teal');
+                el.classList.remove('text-th8-indigo', 'border-th8-indigo');
+                el.classList.remove('text-th8-pink', 'border-th8-pink');
+                el.classList.add('text-slate-500', 'border-transparent');
+            });
+
+            // Highlight active button
+            const btn = document.getElementById('btn-' + roleId);
+            btn.classList.remove('text-slate-500', 'border-transparent');
+            btn.classList.add('active-role');
+            
+            if(roleId === 'owner') btn.classList.add('text-th8-gold', 'border-th8-gold', 'bg-orange-50');
+            if(roleId === 'cfo') btn.classList.add('text-th8-blue', 'border-th8-blue', 'bg-blue-50');
+            if(roleId === 'coo') btn.classList.add('text-th8-green', 'border-th8-green', 'bg-green-50');
+            if(roleId === 'tech') btn.classList.add('text-th8-purple', 'border-th8-purple', 'bg-purple-50');
+            if(roleId === 'manager') btn.classList.add('text-th8-teal', 'border-th8-teal', 'bg-teal-50');
+            if(roleId === 'supervisor') btn.classList.add('text-th8-indigo', 'border-th8-indigo', 'bg-indigo-50');
+            if(roleId === 'keyuser') btn.classList.add('text-th8-pink', 'border-th8-pink', 'bg-pink-50');
+        }
+    </script>
+</body>
+</html>

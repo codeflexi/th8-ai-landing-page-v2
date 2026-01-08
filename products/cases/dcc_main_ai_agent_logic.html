@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 Logic: Rule-Based + LLM Prompts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Kanit', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .code-window {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .code-header {
+            background: #0f172a;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-body {
+            padding: 1rem;
+            overflow-x: auto;
+            color: #d1d5db;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        /* Syntax Highlighting Sim */
+        .k { color: #c084fc; } /* keyword */
+        .s { color: #86efac; } /* string */
+        .f { color: #60a5fa; } /* function */
+        .c { color: #64748b; font-style: italic; } /* comment */
+        .n { color: #fca5a5; } /* number */
+    </style>
+</head>
+<body class="p-6 md:p-12 max-w-5xl mx-auto">
+
+    <header class="mb-10">
+        <h1 class="text-3xl font-bold text-white mb-2">TH8 Technical Logic Breakdown</h1>
+        <p class="text-slate-400">Rule-Based Filtering → LLM Reasoning → Tool Calling</p>
+    </header>
+
+    <!-- ==========================================
+         USE CASE 1: SPLIT PO
+    ========================================== -->
+    <section class="mb-16">
+        <div class="flex items-center mb-4">
+            <span class="bg-rose-500 text-white text-xs font-bold px-2 py-1 rounded mr-3">CASE 1</span>
+            <h2 class="text-2xl font-bold text-white">Split PO Detection (Intent Analysis)</h2>
+        </div>
+
+        <!-- LAYER 1: RULE BASED -->
+        <div class="code-window">
+            <div class="code-header">
+                <span class="text-xs font-bold text-slate-400">Layer 1: Rule-Based (Python/SQL) - "The Filter"</span>
+            </div>
+            <div class="code-body mono">
+<span class="c"># SQL: ดึง PO ของ Vendor เดียวกัน ในช่วง 7 วัน ที่ยอดรวมเกิน 50k</span>
+<span class="k">SELECT</span> vendor_id, <span class="f">SUM</span>(total_amount) <span class="k">as</span> cluster_sum, <span class="f">ARRAY_AGG</span>(po_id)
+<span class="k">FROM</span> purchase_orders
+<span class="k">WHERE</span> created_at <span class="k">BETWEEN</span> <span class="f">NOW</span>() - <span class="k">INTERVAL</span> <span class="s">'7 days'</span> <span class="k">AND</span> <span class="f">NOW</span>()
+<span class="k">GROUP BY</span> vendor_id
+<span class="k">HAVING</span> <span class="f">SUM</span>(total_amount) > <span class="n">50000</span> <span class="k">AND</span> <span class="f">COUNT</span>(po_id) > <span class="n">1</span>;
+
+<span class="c"># ผลลัพธ์: พบ Vendor A มี 2 PO ยอดรวม 75k (เสี่ยงสูง) -> ส่งต่อให้ LLM</span>
+            </div>
+        </div>
+
+        <!-- LAYER 2: LLM PROMPT -->
+        <div class="code-window border-rose-500/30">
+            <div class="code-header">
+                <span class="text-xs font-bold text-rose-400">Layer 2: LLM Prompt (Gemini Pro) - "The Brain"</span>
+            </div>
+            <div class="code-body mono whitespace-pre-wrap">
+<span class="c"># System Prompt</span>
+You are a Senior Procurement Auditor. Your goal is to detect "Split PO" fraud.
+Analyze the items in the provided Purchase Orders.
+Determine if they belong to the <span class="s">"Same Project"</span> or <span class="s">"Complementary Usage"</span>.
+
+<span class="c"># User Input</span>
+PO_1 (Date: 2024-01-01): "MacBook Air M2" - 45,000 THB
+PO_2 (Date: 2024-01-03): "Magic Mouse, Adapter, Laptop Case" - 5,000 THB
+
+<span class="c"># Output Requirement (JSON)</span>
+{
+  "is_split_po": <span class="k">true</span>,
+  "confidence_score": <span class="n">0.95</span>,
+  "reasoning": <span class="s">"Items in PO_2 are direct accessories for the main item in PO_1. Buying them separately 2 days apart suggests avoiding the 50,000 THB approval threshold."</span>
+}
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         USE CASE 2: PHANTOM LOGISTICS
+    ========================================== -->
+    <section class="mb-16">
+        <div class="flex items-center mb-4">
+            <span class="bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded mr-3">CASE 2</span>
+            <h2 class="text-2xl font-bold text-white">Phantom Logistics (Tool Calling)</h2>
+        </div>
+
+        <!-- LAYER 1: RULE BASED -->
+        <div class="code-window">
+            <div class="code-header">
+                <span class="text-xs font-bold text-slate-400">Layer 1: Rule-Based - "The Trigger"</span>
+            </div>
+            <div class="code-body mono">
+<span class="k">def</span> <span class="f">check_surcharge</span>(invoice_lines):
+    <span class="k">for</span> line <span class="k">in</span> invoice_lines:
+        <span class="c"># จับ Keyword: ค่าทางด่วน, Toll Fee, ค่าผ่านทาง</span>
+        <span class="k">if</span> <span class="s">"ทางด่วน"</span> <span class="k">in</span> line.description <span class="k">and</span> line.amount > <span class="n">0</span>:
+            <span class="k">if not</span> line.has_attachment:
+                <span class="k">return</span> <span class="f">trigger_agent_verification</span>(line)
+            </div>
+        </div>
+
+        <!-- LAYER 2: TOOL CALLING -->
+        <div class="code-window border-cyan-500/30">
+            <div class="code-header">
+                <span class="text-xs font-bold text-cyan-400">Layer 2: AI Tool Calling - "The Verification"</span>
+            </div>
+            <div class="code-body mono whitespace-pre-wrap">
+<span class="c"># 1. Define Tool for LLM (Function Declaration)</span>
+tools = [{
+  "name": <span class="s">"verify_route_toll"</span>,
+  "description": <span class="s">"Calculates the actual toll fee for a route between two points."</span>,
+  "parameters": {
+    "type": <span class="s">"OBJECT"</span>,
+    "properties": {
+      "origin": {"type": <span class="s">"STRING"</span>, "description": <span class="s">"Start location (e.g. Factory Rangsit)"</span>},
+      "destination": {"type": <span class="s">"STRING"</span>, "description": <span class="s">"End location (e.g. Customer Bangna)"</span>}
+    }
+  }
+}]
+
+<span class="c"># 2. Model Execution flow</span>
+<span class="k">User:</span> "Vendor charged 500 THB for toll fee from Rangsit Factory to Central World."
+<span class="k">Model:</span> <span class="f">verify_route_toll</span>(origin=<span class="s">"Rangsit Factory"</span>, destination=<span class="s">"Central World"</span>)
+
+<span class="c"># 3. System executes API (Google Maps) -> Returns: { "has_toll": true, "cost": 115 }</span>
+
+<span class="c"># 4. Final Model Response</span>
+"The vendor charged 500 THB, but the actual toll fee for this route is only 115 THB. This is a <span class="s">Potential Overcharge</span> of 385 THB."
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         USE CASE 3: WHT PENALTY
+    ========================================== -->
+    <section>
+        <div class="flex items-center mb-4">
+            <span class="bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded mr-3">CASE 3</span>
+            <h2 class="text-2xl font-bold text-white">WHT Misclassification (Legal Reasoning)</h2>
+        </div>
+
+        <!-- LAYER 1: RULE BASED -->
+        <div class="code-window">
+            <div class="code-header">
+                <span class="text-xs font-bold text-slate-400">Layer 1: Rule-Based - "The Pattern Matcher"</span>
+            </div>
+            <div class="code-body mono">
+<span class="c"># ดักจับ Invoice ที่มีความเสี่ยงสูง (Service/Rent) ที่ยังไม่ถูกจ่าย</span>
+<span class="k">if</span> invoice.wht_code <span class="k">in</span> [<span class="s">'Unknown'</span>, <span class="s">'1%'</span>, <span class="s">'5%'</span>]:
+    <span class="c"># ถ้า Description มีคำกำกวม</span>
+    <span class="k">if</span> <span class="f">any</span>(word <span class="k">in</span> invoice.desc <span class="k">for</span> word <span class="k">in</span> [<span class="s">"เช่า"</span>, <span class="s">"rent"</span>, <span class="s">"service"</span>, <span class="s">"พร้อมคนขับ"</span>]):
+        <span class="f">send_to_tax_ai_agent</span>(invoice)
+            </div>
+        </div>
+
+        <!-- LAYER 2: LLM PROMPT -->
+        <div class="code-window border-amber-500/30">
+            <div class="code-header">
+                <span class="text-xs font-bold text-amber-400">Layer 2: Contextual Law Interpretation</span>
+            </div>
+            <div class="code-body mono whitespace-pre-wrap">
+<span class="c"># System Prompt (The Tax Expert)</span>
+You are a Thai Tax Law Expert (Revenue Code).
+Your rule:
+1. If "Rent" is for asset usage ONLY (Tenant controls it) -> WHT 5%.
+2. If "Rent" includes operator/driver (Lessor controls it) -> It is considered "Service/Hire of Work" -> WHT 3%.
+
+<span class="c"># User Input</span>
+Description: "ค่าเช่ารถตู้ Commuter ทะเบียน ฮฮ-9999 พร้อมพนักงานขับรถ นายสมชาย สำหรับรับส่งพนักงาน"
+Current WHT applied: 5%
+
+<span class="c"># AI Output</span>
+{
+  "status": <span class="s">"INCORRECT"</span>,
+  "correct_rate": <span class="s">"3%"</span>,
+  "explanation": <span class="s">"Even though the word 'Rent' (เช่า) is used, the inclusion of a driver implies the service provider retains control and possession. This falls under 'Hire of Work' (จ้างทำของ) per Thai Revenue Department Ruling No. 40/2527."</span>
+}
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

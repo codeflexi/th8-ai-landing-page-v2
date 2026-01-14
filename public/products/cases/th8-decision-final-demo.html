@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 | Intelligent P2P Governance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: "Prompt", sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        
+        /* Custom Animations */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .pulse-red { animation: pulseRed 2s infinite; }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+
+        .scan-beam {
+            position: absolute; width: 100%; height: 2px; background: #dc2626;
+            top: 0; box-shadow: 0 0 15px #dc2626; opacity: 0.8;
+            animation: scan 3s infinite linear;
+        }
+        @keyframes scan { 0% {top: 0%;} 50% {top: 100%;} 100% {top: 0%;} }
+
+        /* Glass Cards */
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .active-step { border-left: 4px solid #dc2626; background: rgba(220, 38, 38, 0.1); }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <header class="h-16 border-b border-slate-700 bg-slate-900/80 flex items-center justify-between px-6 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-white">T8</div>
+            <span class="font-bold text-lg tracking-tight">Governance OS</span>
+            <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-400 border border-slate-700">Procure-to-Pay Demo</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex flex-col items-end">
+                <span class="text-[10px] text-slate-400 uppercase tracking-widest">Value Protected Today</span>
+                <span class="text-green-400 font-mono font-bold text-lg">฿ <span id="roiCounter">1,250,000</span></span>
+            </div>
+            <div class="w-px h-8 bg-slate-700"></div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-500"></div>
+                <div class="text-xs">
+                    <p class="font-bold">CFO Account</p>
+                    <p class="text-slate-400">Admin View</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <aside class="w-64 bg-slate-900 border-r border-slate-700 flex flex-col">
+            <div class="p-6">
+                <h3 class="text-xs font-bold text-slate-500 uppercase mb-4">Transaction Journey</h3>
+                <div class="space-y-1 relative">
+                    <div class="absolute left-[15px] top-4 bottom-4 w-0.5 bg-slate-800 -z-0"></div>
+                    
+                    <div id="nav-step-1" class="relative z-10 flex items-center gap-3 p-3 rounded-lg cursor-pointer active-step transition-all" onclick="setStep(1)">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-xs font-bold step-icon">1</div>
+                        <div>
+                            <p class="text-sm font-bold">Requisition</p>
+                            <p class="text-[10px] text-slate-400">AI Context Check</p>
+                        </div>
+                    </div>
+                    
+                    <div id="nav-step-2" class="relative z-10 flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-slate-800/50 transition-all opacity-50" onclick="setStep(2)">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-xs font-bold step-icon">2</div>
+                        <div>
+                            <p class="text-sm font-bold">PO Validation</p>
+                            <p class="text-[10px] text-slate-400">Price vs Contract</p>
+                        </div>
+                    </div>
+
+                    <div id="nav-step-3" class="relative z-10 flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-slate-800/50 transition-all opacity-50" onclick="setStep(3)">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-xs font-bold step-icon">3</div>
+                        <div>
+                            <p class="text-sm font-bold">Invoice Match</p>
+                            <p class="text-[10px] text-slate-400">3-Way Matching</p>
+                        </div>
+                    </div>
+
+                    <div id="nav-step-4" class="relative z-10 flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-slate-800/50 transition-all opacity-50" onclick="setStep(4)">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-xs font-bold step-icon">4</div>
+                        <div>
+                            <p class="text-sm font-bold">Payment</p>
+                            <p class="text-[10px] text-slate-400">Fraud Detection</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-auto p-6 border-t border-slate-800">
+                <div class="bg-gradient-to-r from-red-900/20 to-slate-900 border border-red-900/50 p-3 rounded-lg">
+                    <p class="text-xs text-red-400 font-bold mb-1 flex items-center gap-1"><i data-lucide="shield-alert" class="w-3 h-3"></i> Real-time Risk</p>
+                    <p class="text-[10px] text-slate-400">System is monitoring 12 active rules across 3 data sources.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 bg-slate-950 p-8 overflow-y-auto relative">
+            <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(to right, #1e293b 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+            <div id="content-step-1" class="max-w-4xl mx-auto fade-in">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold">Step 1: Smart Requisition</h1>
+                        <p class="text-slate-400">ระบบเปลี่ยน "คำขอภาษาคน" ให้เป็น "ข้อมูลเข้าระบบ" พร้อมตรวจสอบสัญญาทันที</p>
+                    </div>
+                    <span class="px-3 py-1 bg-blue-900/30 text-blue-400 border border-blue-800 rounded-full text-xs font-mono">Source: Microsoft Teams / Email</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="glass-panel p-4 rounded-xl">
+                        <div class="flex items-center gap-2 mb-4 border-b border-slate-700 pb-2">
+                            <i data-lucide="message-square" class="w-4 h-4 text-slate-400"></i>
+                            <span class="text-sm font-bold">Input (User Request)</span>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg mb-3">
+                            <p class="text-xs text-slate-300">"พี่ครับ ขอเปิด PR ซื้อ Notebook รุ่น Dell Latitude 10 เครื่อง ด่วนมาก เครื่องเก่าพัง ต้องใช้โปรเจกต์ใหม่ครับ"</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                                <span>Intent: CREATE_PR</span>
+                                <span class="text-green-400">Confidence: 98%</span>
+                            </div>
+                            <div class="flex gap-2 flex-wrap">
+                                <span class="text-[10px] bg-slate-700 px-2 py-1 rounded text-blue-300">Item: Notebook</span>
+                                <span class="text-[10px] bg-slate-700 px-2 py-1 rounded text-blue-300">Qty: 10</span>
+                                <span class="text-[10px] bg-red-900/30 border border-red-800 px-2 py-1 rounded text-red-300 animate-pulse">Context: Urgent</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-4 rounded-xl border-l-4 border-l-blue-500">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-blue-400"></i>
+                            <span class="text-sm font-bold text-blue-400">TH8 Recommendation</span>
+                        </div>
+                        <div class="text-sm text-slate-300 space-y-3">
+                            <p>ตรวจพบสัญญาคู่ค้า: <strong>Contract-IT-2024</strong> (Vendor: ABC Tech)</p>
+                            <ul class="text-xs space-y-2 bg-slate-900/50 p-3 rounded border border-slate-700">
+                                <li class="flex justify-between">
+                                    <span>Standard Price:</span>
+                                    <span class="font-mono">35,000 THB</span>
+                                </li>
+                                <li class="flex justify-between text-green-400">
+                                    <span>Volume Discount (>5 units):</span>
+                                    <span class="font-mono">-5%</span>
+                                </li>
+                            </ul>
+                            <button onclick="setStep(2)" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-all shadow-lg shadow-blue-900/20">
+                                Generate PR with Discount
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-step-2" class="max-w-4xl mx-auto fade-in hidden">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold">Step 2: PO Risk Validation</h1>
+                        <p class="text-slate-400">ระบบตรวจสอบเงื่อนไขก่อนออก PO เพื่อป้องกัน Price Creep</p>
+                    </div>
+                    <span class="px-3 py-1 bg-red-900/30 text-red-400 border border-red-800 rounded-full text-xs font-mono">Status: VIOLATION DETECTED</span>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-red-600"></div>
+                    
+                    <div class="flex gap-8">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold mb-4 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Draft PO #240091</h3>
+                            <div class="space-y-4 text-xs">
+                                <div class="flex justify-between p-2 border-b border-slate-700">
+                                    <span class="text-slate-400">Vendor</span>
+                                    <span>ABC Tech Co., Ltd.</span>
+                                </div>
+                                <div class="flex justify-between p-2 border-b border-slate-700">
+                                    <span class="text-slate-400">Item</span>
+                                    <span>Dell Latitude 7420</span>
+                                </div>
+                                <div class="flex justify-between p-2 border-b border-slate-700 bg-red-900/20">
+                                    <span class="text-slate-400">Unit Price (Quoted)</span>
+                                    <span class="text-red-400 font-bold">38,000 THB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col justify-center items-center">
+                            <div class="w-px h-full bg-slate-700 absolute top-0 bottom-0 left-1/2"></div>
+                            <div class="z-10 bg-slate-900 p-2 rounded-full border border-red-500 text-red-500">
+                                <i data-lucide="x" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold mb-4 flex items-center gap-2 text-green-400"><i data-lucide="shield-check" class="w-4 h-4"></i> Contract Baseline</h3>
+                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-700 mb-2">
+                                <p class="text-[10px] text-slate-400 font-mono mb-1">Source: Contract-IT-2024.pdf (Page 12)</p>
+                                <p class="text-xs italic text-slate-300">"Price capped at <strong>35,000 THB</strong> for year 2026"</p>
+                            </div>
+                            <div class="bg-red-900/20 p-3 rounded-lg border border-red-800 text-xs">
+                                <p class="font-bold text-red-400 mb-1">Alert: Price Variance +8.5%</p>
+                                <p class="text-slate-400">User marked as "Urgent" but variance exceeds auto-approve limit (5%).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-slate-700 flex justify-end gap-3">
+                        <button class="px-4 py-2 border border-slate-600 rounded text-xs hover:bg-slate-800">Reject Request</button>
+                        <button onclick="approveWithSaving()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-bold shadow-lg shadow-red-900/20">
+                            Enforce Contract Price (Save 30k)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-step-3" class="max-w-4xl mx-auto fade-in hidden">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold">Step 3: 3-Way Matching</h1>
+                        <p class="text-slate-400">ของมาส่งแล้ว.. AI ตรวจสอบ Invoice เทียบกับ PO และ GR (Good Receipt)</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="glass-panel p-4 rounded-xl text-center opacity-50">
+                        <div class="text-xs text-slate-400 uppercase mb-2">1. Purchase Order</div>
+                        <div class="text-xl font-mono font-bold">35,000</div>
+                        <div class="text-[10px] text-green-400">Approved Price</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl text-center opacity-50">
+                        <div class="text-xs text-slate-400 uppercase mb-2">2. Goods Receipt</div>
+                        <div class="text-xl font-mono font-bold">10 Units</div>
+                        <div class="text-[10px] text-green-400">Received Complete</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl text-center relative overflow-hidden border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                        <div class="scan-beam"></div>
+                        <div class="text-xs text-blue-400 uppercase mb-2">3. Incoming Invoice</div>
+                        <div class="text-xl font-mono font-bold text-white">35,000</div>
+                        <div class="text-[10px] text-blue-300">AI Extracted</div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-900/30 text-green-400 border border-green-800 rounded-lg">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                        <span class="font-bold">Match Successful: Auto-Posting to SAP</span>
+                    </div>
+                    <p class="mt-4 text-xs text-slate-500 cursor-pointer hover:text-slate-300 underline" onclick="setStep(4)">Proceed to Payment Logic</p>
+                </div>
+            </div>
+
+            <div id="content-step-4" class="max-w-4xl mx-auto fade-in hidden">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-red-500">Step 4: Payment Fraud Guard</h1>
+                        <p class="text-slate-400">ด่านสุดท้ายก่อนเงินออก: ตรวจสอบบัญชีปลายทาง</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl border-red-900/50">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center border border-slate-600">
+                            <i data-lucide="banknote" class="w-6 h-6 text-slate-400"></i>
+                        </div>
+                        <div class="flex-1 space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-slate-900/50 rounded border border-slate-700">
+                                <div>
+                                    <p class="text-sm font-bold">Bank Account Match</p>
+                                    <p class="text-[10px] text-slate-400">Invoice Acc vs Vendor Master Data</p>
+                                </div>
+                                <span class="text-green-400 text-xs font-bold flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Matched</span>
+                            </div>
+
+                            <div class="flex justify-between items-center p-3 bg-red-900/20 rounded border border-red-800/50 pulse-red">
+                                <div>
+                                    <p class="text-sm font-bold text-red-400">Sanction / Fraud List</p>
+                                    <p class="text-[10px] text-slate-400">Check against Blacklist DB</p>
+                                </div>
+                                <span class="text-red-400 text-xs font-bold flex items-center gap-1"><i data-lucide="alert-octagon" class="w-3 h-3"></i> Suspicious</span>
+                            </div>
+                            
+                            <div class="text-xs text-slate-300 bg-slate-800 p-3 rounded mt-2">
+                                <span class="font-bold text-red-400">Warning:</span> ชื่อบัญชีนี้เคยถูก Flag ว่าเกี่ยวข้องกับ Supplier ที่ถูก Blacklist ในเครือ (Cross-Company Check).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end gap-3">
+                        <button class="px-6 py-2 bg-slate-700 hover:bg-slate-600 rounded text-xs text-white">Hold Payment</button>
+                        <button class="px-6 py-2 border border-red-600 text-red-500 rounded text-xs hover:bg-red-900/20">Launch Investigation</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <aside class="w-80 bg-slate-900 border-l border-slate-700 p-6 hidden lg:block">
+            <h3 class="text-xs font-bold text-slate-500 uppercase mb-4">TH8 Intelligence Core</h3>
+            
+            <div class="mb-6">
+                <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-2"><i data-lucide="book-open" class="w-3 h-3"></i> Active Contracts</h4>
+                <div class="bg-slate-800 p-3 rounded border border-slate-700 text-[10px] text-slate-400 space-y-2">
+                    <p class="text-white">📄 MSA-2024-ABC.pdf</p>
+                    <div class="h-1 bg-slate-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-green-500 w-3/4"></div>
+                    </div>
+                    <p>Relavance Score: 92%</p>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-2"><i data-lucide="cpu" class="w-3 h-3"></i> Logic Trace</h4>
+                <div class="bg-black p-3 rounded border border-slate-800 font-mono text-[10px] text-green-400 h-32 overflow-y-auto">
+                    > INGEST_REQUEST<br>
+                    > EXTRACT_ENTITIES<br>
+                    > FIND_CONTRACT(Vendor="ABC")<br>
+                    > COMPARE_PRICE(38000, 35000)<br>
+                    <span class="text-red-500">> ALERT: DELTA > 5%</span><br>
+                    > FLAG_FOR_HUMAN_REVIEW
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-2"><i data-lucide="file-key" class="w-3 h-3"></i> Immutable Log</h4>
+                <div class="bg-slate-800 p-3 rounded border border-slate-700 text-[10px] text-slate-500">
+                    <p>Hash: 0x7f8a91...</p>
+                    <p>Timestamp: 10:42:05 UTC</p>
+                    <p class="text-slate-300 mt-1">Ready for Audit Export</p>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        let currentRoi = 1250000;
+
+        function setStep(step) {
+            // Update Nav Styles
+            document.querySelectorAll('[id^="nav-step-"]').forEach(el => {
+                el.classList.remove('active-step', 'bg-slate-800');
+                el.classList.add('opacity-50');
+            });
+            const activeNav = document.getElementById('nav-step-' + step);
+            activeNav.classList.add('active-step', 'bg-slate-800');
+            activeNav.classList.remove('opacity-50');
+
+            // Show Content
+            document.querySelectorAll('[id^="content-step-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('content-step-' + step).classList.remove('hidden');
+        }
+
+        function approveWithSaving() {
+            // Animate ROI
+            const counter = document.getElementById('roiCounter');
+            const start = currentRoi;
+            const end = currentRoi + 30000;
+            currentRoi = end;
+            
+            let current = start;
+            const timer = setInterval(() => {
+                current += 1000;
+                counter.innerText = current.toLocaleString();
+                if (current >= end) {
+                    clearInterval(timer);
+                    counter.classList.add('text-green-300'); // Flash effect
+                    setTimeout(() => counter.classList.remove('text-green-300'), 500);
+                    setStep(3); // Auto move to next step
+                }
+            }, 10);
+        }
+
+        // Init
+        setStep(1);
+    </script>
+</body>
+</html>

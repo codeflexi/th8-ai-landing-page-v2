@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TH8.AI — Procurement Decision Center (Conceptual Model • UX Flow • API Spec)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html, body { font-family: "Prompt", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <!-- Top bar -->
+    <div class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-500">TH8.AI Demo Blueprint</div>
+          <div class="text-sm font-semibold">Procurement Decision Center — Contract-based (FastAPI + Vue 3)</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">
+            Audit = immutable fact
+          </span>
+          <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">
+            UI derives status from audit
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-4 py-8 space-y-10">
+      <!-- Header -->
+      <section class="space-y-3">
+        <div class="inline-flex items-center gap-2">
+          <span class="h-2.5 w-2.5 rounded-full bg-red-600"></span>
+          <p class="text-xs uppercase tracking-wider text-slate-500">Production-minded spec (demo-ready, not overbuild)</p>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-bold">
+          Conceptual Model • End-to-End UX Flow • API Spec
+        </h1>
+        <p class="text-slate-600 max-w-3xl">
+          เอกสารนี้ออกแบบเพื่อ “ทำให้ Step 3–6 ใช้งานได้จริง” โดยยึดหลัก:
+          <span class="font-medium text-slate-900">audit เป็นข้อเท็จจริงที่แก้ไม่ได้</span>,
+          backend ไม่ derive meaning ให้ UI, และ decision status ต้อง derive จาก audit events ฝั่ง frontend เท่านั้น
+          (ห้ามใช้ case.status เป็น decision state)
+        </p>
+      </section>
+
+      <!-- Navigation cards -->
+      <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <a href="#model" class="rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-sm transition">
+          <div class="text-xs text-slate-500">01</div>
+          <div class="font-semibold">Conceptual Model</div>
+          <div class="text-sm text-slate-600 mt-1">Entities, invariants, event taxonomy</div>
+        </a>
+        <a href="#ux" class="rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-sm transition">
+          <div class="text-xs text-slate-500">02</div>
+          <div class="font-semibold">End-to-End UX Flow</div>
+          <div class="text-sm text-slate-600 mt-1">Step 0–6 + screens + actions</div>
+        </a>
+        <a href="#api" class="rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-sm transition">
+          <div class="text-xs text-slate-500">03</div>
+          <div class="font-semibold">API Spec</div>
+          <div class="text-sm text-slate-600 mt-1">Routes, payloads, constraints</div>
+        </a>
+        <a href="#data" class="rounded-2xl border border-slate-200 bg-white p-5 hover:shadow-sm transition">
+          <div class="text-xs text-slate-500">04</div>
+          <div class="font-semibold">Example Data</div>
+          <div class="text-sm text-slate-600 mt-1">Case + Audit events + Evidence</div>
+        </a>
+      </section>
+
+      <!-- Conceptual Model -->
+      <section id="model" class="space-y-6">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold">01) Conceptual Model</h2>
+            <p class="text-slate-600 mt-1">โครงสร้างข้อมูลและหลักการที่ทำให้ระบบ “traceable, auditable, immutable”</p>
+          </div>
+          <span class="hidden md:inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600">
+            Backend writes facts • Frontend interprets
+          </span>
+        </div>
+
+        <!-- Invariants -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+          <h3 class="font-semibold">Invariants (ห้ามผิด)</h3>
+          <ul class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-700">
+            <li class="flex gap-2">
+              <span class="mt-1 h-2 w-2 rounded-full bg-red-600"></span>
+              <span><span class="font-medium">Audit event</span> เป็น append-only และห้ามแก้ย้อนหลัง (immutable fact)</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-1 h-2 w-2 rounded-full bg-red-600"></span>
+              <span><span class="font-medium">Decision status</span> ต้อง derive จาก audit events ฝั่ง UI เท่านั้น</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-1 h-2 w-2 rounded-full bg-red-600"></span>
+              <span>ห้ามใช้ <span class="mono bg-slate-100 px-1 rounded">case.status</span> เป็น decision state</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-1 h-2 w-2 rounded-full bg-red-600"></span>
+              <span>Backend ไม่ “สรุปความหมาย” ให้ UI นอกจากข้อมูลเทคนิค (rule hits / required_role / evidence refs)</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Entities -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <h3 class="font-semibold">Core Entities</h3>
+            <div class="mt-4 space-y-3 text-sm">
+              <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                <div class="font-semibold">Case</div>
+                <div class="text-slate-600 mt-1">
+                  Immutable business facts + reference keys (ไม่เก็บ decision state)
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">case_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">external_status</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">amount_thb</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">sla_due_at</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">vendor_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">doc_set_id</span>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                <div class="font-semibold">Policy</div>
+                <div class="text-slate-600 mt-1">
+                  config ที่ UI แสดงแบบ immutable (policy_id + version) และใช้เวลารัน decision
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">policy_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">policy_version</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">rules[]</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">required_roles[]</span>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                <div class="font-semibold">AuditEvent</div>
+                <div class="text-slate-600 mt-1">
+                  facts ที่เกิดขึ้นตามเวลา (actor + type + payload) เป็นแหล่งความจริงของ decision flow
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">event_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">case_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">event_type</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">occurred_at</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">actor</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">payload</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <h3 class="font-semibold">Evidence Model (RAG-as-Evidence)</h3>
+            <p class="text-sm text-slate-600 mt-1">
+              Evidence ไม่ใช่ “AI answer” แต่เป็น “หลักฐานอ้างอิง” ที่เปิดดูได้จริง (PDF/Clause)
+            </p>
+
+            <div class="mt-4 space-y-3 text-sm">
+              <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                <div class="font-semibold">Document</div>
+                <div class="text-slate-600 mt-1">เอกสารจริงในระบบ (ไฟล์ + metadata)</div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">doc_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">title</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">file_url</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">sha256</span>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                <div class="font-semibold">Clause</div>
+                <div class="text-slate-600 mt-1">ตำแหน่งในเอกสาร (หน้า/ย่อหน้า/บรรทัด) ที่ใช้เป็นหลักฐาน</div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">clause_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">doc_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">page_range</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">text_snippet</span>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                <div class="font-semibold">EvidenceRef</div>
+                <div class="text-slate-600 mt-1">
+                  “สิ่งที่ audit อ้างถึง” (เอกสาร/Clause) เพื่อให้กดเปิดดูได้
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">doc_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">clause_id</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">open_url</span>
+                  <span class="rounded bg-white border border-slate-200 px-2 py-1">relevance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event taxonomy -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="font-semibold">Audit Event Taxonomy (สำหรับ Step 0–6)</h3>
+            <span class="text-xs text-slate-500">แนะนำให้เป็น enum ที่คงที่</span>
+          </div>
+
+          <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="text-xs text-slate-500">Step 0–2 (ทำแล้ว)</div>
+              <ul class="mt-2 text-sm space-y-2">
+                <li><span class="mono">CASE_INGESTED</span> — สร้างเคส/รับข้อมูล</li>
+                <li><span class="mono">ESCALATION_TRIGGERED</span> — เคส amount สูง + SLA ใกล้</li>
+                <li><span class="mono">EXTERNAL_STATUS_SYNCED</span> — สถานะจากภายนอก</li>
+              </ul>
+            </div>
+
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="text-xs text-slate-500">Step 3–4 (Run + Evidence)</div>
+              <ul class="mt-2 text-sm space-y-2">
+                <li><span class="mono">RULE_EVALUATED</span> — ผลประเมิน rule ทีละข้อ</li>
+                <li><span class="mono">DECISION_RECOMMENDED</span> — recommendation (audit-only)</li>
+                <li><span class="mono">EVIDENCE_ATTACHED</span> — แนบหลักฐาน (doc/clause refs)</li>
+              </ul>
+            </div>
+
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="text-xs text-slate-500">Step 5–6 (Approve/Reject + Timeline)</div>
+              <ul class="mt-2 text-sm space-y-2">
+                <li><span class="mono">DECISION_SUBMITTED</span> — ผู้ใช้กด Approve/Reject + reason</li>
+                <li><span class="mono">DECISION_REVERTED</span> — (ถ้าจำเป็น) ย้อนคำตัดสินแบบมีเหตุผล</li>
+                <li><span class="mono">COMMENT_ADDED</span> — หมายเหตุ/คำชี้แจงเพิ่มเติม</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-4 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700">
+            <div class="font-semibold">UI Derivation Rule (ตัวอย่าง)</div>
+            <p class="mt-1 text-slate-600">
+              UI อ่าน timeline แล้วคำนวณ decision status ล่าสุด เช่น:
+              ถ้า event ล่าสุดในกลุ่ม decision คือ <span class="mono">DECISION_SUBMITTED</span> → แสดง “Approved/Rejected”
+              แต่ถ้ามี <span class="mono">DECISION_RECOMMENDED</span> ล่าสุดและยังไม่มี submitted → แสดง “Pending Approval”
+              (ทั้งหมดทำใน frontend เท่านั้น)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- UX Flow -->
+      <section id="ux" class="space-y-6">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold">02) End-to-End UX Flow (Step 0–6)</h2>
+            <p class="text-slate-600 mt-1">โฟลว์ที่ “คลิกได้จริง” และผูกกับ audit events ทุกจุด</p>
+          </div>
+        </div>
+
+        <!-- Flow diagram -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <!-- left: flow -->
+            <div class="lg:col-span-8 space-y-4">
+              <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+                <div class="text-xs text-slate-500">User Journey (UI)</div>
+                <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div class="rounded-lg bg-white border border-slate-200 p-3">
+                    <div class="font-semibold">0) Policy & Version (immutable)</div>
+                    <div class="text-slate-600 mt-1">แสดง policy_id + version ที่ถูก bind จาก config/DB</div>
+                  </div>
+                  <div class="rounded-lg bg-white border border-slate-200 p-3">
+                    <div class="font-semibold">1) Ingest & Escalation</div>
+                    <div class="text-slate-600 mt-1">สร้างเคส + เขียน audit เมื่อเข้าเงื่อนไข escalations</div>
+                  </div>
+                  <div class="rounded-lg bg-white border border-slate-200 p-3">
+                    <div class="font-semibold">2) Case Detail</div>
+                    <div class="text-slate-600 mt-1">แยก External vs Decision status (derive จาก audit)</div>
+                  </div>
+                  <div class="rounded-lg bg-white border border-red-200 p-3 bg-red-50/40">
+                    <div class="font-semibold">3) Run Decision</div>
+                    <div class="text-slate-600 mt-1">กดรัน → เขียน RULE_EVALUATED + DECISION_RECOMMENDED</div>
+                  </div>
+                  <div class="rounded-lg bg-white border border-red-200 p-3 bg-red-50/40">
+                    <div class="font-semibold">4) Evidence</div>
+                    <div class="text-slate-600 mt-1">ดูหลักฐาน/คลิกเปิด PDF/Clause (EVIDENCE_ATTACHED)</div>
+                  </div>
+                  <div class="rounded-lg bg-white border border-red-200 p-3 bg-red-50/40">
+                    <div class="font-semibold">5) Approve / Reject + reason</div>
+                    <div class="text-slate-600 mt-1">กด submit → เขียน DECISION_SUBMITTED (accountability)</div>
+                  </div>
+                  <div class="rounded-lg bg-white border border-red-200 p-3 bg-red-50/40 md:col-span-2">
+                    <div class="font-semibold">6) Audit Timeline</div>
+                    <div class="text-slate-600 mt-1">โหลด /audit/case/{id} → แสดง timeline ครบวงจร</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="text-xs text-slate-500">Key Screens (Minimum-but-Real)</div>
+                <div class="mt-2 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-semibold">Case List</div>
+                    <ul class="mt-2 text-slate-700 space-y-1">
+                      <li>• External Status</li>
+                      <li>• Decision Status (derived)</li>
+                      <li>• SLA risk badge</li>
+                    </ul>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-semibold">Case Detail</div>
+                    <ul class="mt-2 text-slate-700 space-y-1">
+                      <li>• Run Decision button</li>
+                      <li>• Evidence panel</li>
+                      <li>• Approve/Reject modal</li>
+                    </ul>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-semibold">Audit Timeline</div>
+                    <ul class="mt-2 text-slate-700 space-y-1">
+                      <li>• Event groups</li>
+                      <li>• Payload viewer</li>
+                      <li>• Evidence deep-link</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- right: mapping to API -->
+            <div class="lg:col-span-4 space-y-4">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <div class="font-semibold">Action → API → Audit</div>
+                <div class="mt-3 space-y-3 text-sm">
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-medium">Run Decision</div>
+                    <div class="text-slate-600 mt-1">
+                      <span class="mono">POST /decisions/run</span><br />
+                      writes: <span class="mono">RULE_EVALUATED</span>, <span class="mono">DECISION_RECOMMENDED</span>
+                    </div>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-medium">Attach Evidence</div>
+                    <div class="text-slate-600 mt-1">
+                      <span class="mono">POST /evidence/attach</span><br />
+                      writes: <span class="mono">EVIDENCE_ATTACHED</span>
+                    </div>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-medium">Approve/Reject</div>
+                    <div class="text-slate-600 mt-1">
+                      <span class="mono">POST /decisions/submit</span><br />
+                      writes: <span class="mono">DECISION_SUBMITTED</span>
+                    </div>
+                  </div>
+                  <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+                    <div class="font-medium">Timeline</div>
+                    <div class="text-slate-600 mt-1">
+                      <span class="mono">GET /audit/case/{id}</span><br />
+                      UI derives statuses from events
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-red-200 bg-red-50/40 p-4">
+                <div class="font-semibold">Anti-patterns ที่ห้ามทำ</div>
+                <ul class="mt-2 text-sm text-slate-700 space-y-2">
+                  <li>• backend set <span class="mono">case.status = Approved</span></li>
+                  <li>• backend return <span class="mono">ui_decision_state</span></li>
+                  <li>• audit event ถูกแก้ไข/ลบย้อนหลัง</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- API Spec -->
+      <section id="api" class="space-y-6">
+        <div>
+          <h2 class="text-xl font-bold">03) API Spec (Production-minded)</h2>
+          <p class="text-slate-600 mt-1">
+            API ออกแบบให้ “เขียน audit facts” และ “อ่าน timeline” เป็นหลัก
+          </p>
+        </div>
+
+        <!-- API cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Decisions: run -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">A) Run Decision</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">POST /api/v1/decisions/run</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2">
+              รัน rule engine แล้ว “เขียน audit” เท่านั้น (ไม่แก้ case state)
+            </p>
+
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs text-slate-500">Writes audit events</div>
+                <ul class="mt-2 text-sm space-y-1">
+                  <li>• <span class="mono">RULE_EVALUATED</span> (ต่อ rule)</li>
+                  <li>• <span class="mono">DECISION_RECOMMENDED</span> (1 event)</li>
+                </ul>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs text-slate-500">Returns</div>
+                <ul class="mt-2 text-sm space-y-1">
+                  <li>• rule hits / reasons</li>
+                  <li>• recommendation (tech)</li>
+                  <li>• counts (evaluated/hit)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-semibold text-slate-700">Request</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "policy_id": "procurement_policy",
+  "policy_version": "1.0.0",
+  "actor": { "type": "user", "id": "u.mt.buyer01", "display": "MT Buyer", "role": "buyer" }
+}</code></pre>
+
+              <div class="mt-4 text-xs font-semibold text-slate-700">Response</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "policy_id": "procurement_policy",
+  "policy_version": "1.0.0",
+  "summary": { "rules_evaluated": 7, "rules_hit": 2 },
+  "rule_results": [
+    { "rule_id": "R-REQ-APPROVAL-HIGH-AMOUNT", "hit": true, "severity": "high", "reasons": ["amount_thb >= 500000"] }
+  ],
+  "recommendation": { "action": "ESCALATE", "required_role": "manager", "confidence": 0.76, "notes": "High amount requires manager approval" },
+  "audit_written": { "rule_evaluated_events": 7, "decision_recommended_events": 1 }
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Evidence attach -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">B) Evidence (Attach as audit)</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">POST /api/v1/evidence/attach</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2">
+              แนบหลักฐานให้เคสในรูปแบบ audit event เพื่อให้ UI เปิด PDF/Clause ได้
+            </p>
+
+            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
+              <div class="text-xs text-slate-500">Writes audit events</div>
+              <div class="mt-2">• <span class="mono">EVIDENCE_ATTACHED</span> (1 event ต่อ action)</div>
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-semibold text-slate-700">Request</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "actor": { "type": "system", "id": "rag.agent", "display": "RAG Evidence Agent", "role": "system" },
+  "evidence": [
+    {
+      "doc_id": "DOC-CT-2024-001",
+      "title": "Office Supply Contract 2024",
+      "clause_id": "CL-4.2",
+      "page_range": "12-13",
+      "open_url": "/api/v1/docs/DOC-CT-2024-001/open?page=12",
+      "snippet": "Pricing for Ergonomic Chair is 4,500 THB per unit...",
+      "relevance": 0.92
+    }
+  ],
+  "notes": "Evidence attached for pricing verification"
+}</code></pre>
+
+              <div class="mt-4 text-xs font-semibold text-slate-700">Response</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "attached": 1,
+  "audit_written": { "evidence_attached_events": 1 }
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Decisions: submit -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">C) Approve / Reject (Submit)</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">POST /api/v1/decisions/submit</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2">
+              ผู้ใช้ลงนามความรับผิดชอบ: เขียน audit event เท่านั้น (accountability)
+            </p>
+
+            <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
+              <div class="text-xs text-slate-500">Writes audit events</div>
+              <div class="mt-2">• <span class="mono">DECISION_SUBMITTED</span></div>
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-semibold text-slate-700">Request</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "actor": { "type": "user", "id": "u.mt.manager01", "display": "MT Manager", "role": "manager" },
+  "decision": "REJECT",
+  "reason": "Price exceeds contract clause 4.2",
+  "reason_code": "PRICE_MISMATCH",
+  "evidence_refs": [
+    { "doc_id": "DOC-CT-2024-001", "clause_id": "CL-4.2", "open_url": "/api/v1/docs/DOC-CT-2024-001/open?page=12" }
+  ]
+}</code></pre>
+
+              <div class="mt-4 text-xs font-semibold text-slate-700">Response</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "audit_written": { "decision_submitted_events": 1 }
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Audit timeline -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">D) Audit Timeline</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">GET /api/v1/audit/case/{case_id}</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2">
+              Backend ส่ง “facts ตามเวลา” เท่านั้น UI ทำ grouping/derive status เอง
+            </p>
+
+            <div class="mt-4">
+              <div class="text-xs font-semibold text-slate-700">Response (shape)</div>
+              <pre class="mt-2 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "events": [
+    {
+      "event_id": "EVT-0001",
+      "occurred_at": "2026-01-01T10:12:05+07:00",
+      "event_type": "CASE_INGESTED",
+      "actor": { "type": "system", "id": "ingest", "display": "Ingest Job", "role": "system" },
+      "payload": { "source": "SAP", "external_ref": "PR-88901" }
+    }
+  ]
+}</code></pre>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-red-200 bg-red-50/40 p-4 text-sm text-slate-700">
+              <div class="font-semibold">Backend MUST NOT</div>
+              <ul class="mt-2 space-y-1">
+                <li>• ไม่สรุปว่า “Approved” หรือ “Pending” ให้ UI</li>
+                <li>• ไม่คืนค่า “decision_state” ที่ derive แล้ว</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Supporting endpoints -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+          <h3 class="font-semibold">Supporting Endpoints (สำหรับ Evidence เปิดเอกสาร)</h3>
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="font-medium">Doc metadata</div>
+              <div class="mt-1 text-slate-600"><span class="mono">GET /api/v1/docs/{doc_id}</span></div>
+            </div>
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="font-medium">Open PDF</div>
+              <div class="mt-1 text-slate-600"><span class="mono">GET /api/v1/docs/{doc_id}/open?page=12</span></div>
+            </div>
+            <div class="rounded-xl bg-slate-50 border border-slate-200 p-4">
+              <div class="font-medium">Clause lookup</div>
+              <div class="mt-1 text-slate-600"><span class="mono">GET /api/v1/docs/{doc_id}/clauses/{clause_id}</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Example Data -->
+      <section id="data" class="space-y-6">
+        <div>
+          <h2 class="text-xl font-bold">04) Example Data (Demo Dataset)</h2>
+          <p class="text-slate-600 mt-1">ตัวอย่างข้อมูลที่ “พอสำหรับ Demo Step 3–6” และรองรับ trace/audit</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Case -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Case (immutable facts)</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">cases</span>
+            </div>
+            <pre class="mt-4 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "external_ref": "PR-88901",
+  "external_status": "PENDING_APPROVAL",
+  "amount_thb": 750000,
+  "currency": "THB",
+  "vendor_id": "V-OVT-001",
+  "vendor_name": "Ovaltine Supplier Co.,Ltd.",
+  "sla_due_at": "2026-01-01T18:00:00+07:00",
+  "sla_hours_left": 6,
+  "doc_set_id": "DOCSET-2024-OFFICE-SUPPLY",
+  "created_at": "2026-01-01T10:12:05+07:00"
+}</code></pre>
+
+            <div class="mt-4 text-sm text-slate-700">
+              <div class="font-semibold">หมายเหตุ</div>
+              <ul class="mt-2 space-y-1 text-slate-600">
+                <li>• ไม่มี <span class="mono">decision_status</span> ใน case</li>
+                <li>• SLA และ amount เป็น input ให้ rule engine</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Policy -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Policy (immutable reference)</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">policies</span>
+            </div>
+            <pre class="mt-4 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "policy_id": "procurement_policy",
+  "policy_version": "1.0.0",
+  "name": "Procurement Contract Decision Policy",
+  "rules": [
+    { "rule_id": "R-REQ-APPROVAL-HIGH-AMOUNT", "kind": "AMOUNT_GTE", "threshold": 500000, "severity": "high" },
+    { "rule_id": "R-SLA-RISK-NEAR-DUE", "kind": "SLA_HOURS_LTE", "threshold": 8, "severity": "high" }
+  ],
+  "roles": ["buyer", "senior_buyer", "manager", "auditor"],
+  "published_at": "2025-12-15T09:00:00+07:00"
+}</code></pre>
+          </div>
+
+          <!-- Documents -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Document & Clause</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">docs</span>
+            </div>
+            <pre class="mt-4 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "doc_id": "DOC-CT-2024-001",
+  "title": "Office Supply Contract 2024",
+  "file_url": "/api/v1/docs/DOC-CT-2024-001/open",
+  "sha256": "b7d5...f0a1",
+  "clauses": [
+    {
+      "clause_id": "CL-4.2",
+      "page_range": "12-13",
+      "text_snippet": "Pricing for Ergonomic Chair is 4,500 THB per unit..."
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <!-- Audit timeline sample -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold">Audit Events (timeline)</h3>
+              <span class="mono text-xs rounded bg-slate-100 px-2 py-1">audit_events</span>
+            </div>
+            <pre class="mt-4 text-xs bg-slate-950 text-slate-100 rounded-xl p-4 overflow-auto"><code>{
+  "case_id": "CASE-2026-0007",
+  "events": [
+    {
+      "event_id": "EVT-0001",
+      "occurred_at": "2026-01-01T10:12:05+07:00",
+      "event_type": "CASE_INGESTED",
+      "actor": { "type": "system", "id": "ingest", "display": "Ingest Job", "role": "system" },
+      "payload": { "source": "SAP", "external_ref": "PR-88901" }
+    },
+    {
+      "event_id": "EVT-0002",
+      "occurred_at": "2026-01-01T10:12:08+07:00",
+      "event_type": "ESCALATION_TRIGGERED",
+      "actor": { "type": "system", "id": "risk.detector", "display": "Risk Detector", "role": "system" },
+      "payload": { "reasons": ["amount_thb>=500000", "sla_hours_left<=8"], "severity": "high" }
+    },
+    {
+      "event_id": "EVT-0010",
+      "occurred_at": "2026-01-01T10:20:15+07:00",
+      "event_type": "RULE_EVALUATED",
+      "actor": { "type": "user", "id": "u.mt.buyer01", "display": "MT Buyer", "role": "buyer" },
+      "payload": {
+        "policy_id": "procurement_policy",
+        "policy_version": "1.0.0",
+        "rule": { "rule_id": "R-REQ-APPROVAL-HIGH-AMOUNT", "severity": "high" },
+        "inputs": { "amount_thb": 750000, "sla_hours_left": 6, "currency": "THB", "vendor_id": "V-OVT-001" },
+        "result": { "hit": true, "reasons": ["amount_thb >= 500000"] }
+      }
+    },
+    {
+      "event_id": "EVT-0011",
+      "occurred_at": "2026-01-01T10:20:16+07:00",
+      "event_type": "DECISION_RECOMMENDED",
+      "actor": { "type": "user", "id": "u.mt.buyer01", "display": "MT Buyer", "role": "buyer" },
+      "payload": {
+        "policy_id": "procurement_policy",
+        "policy_version": "1.0.0",
+        "recommendation": { "action": "ESCALATE", "required_role": "manager", "confidence": 0.76, "notes": "High amount requires manager approval" },
+        "derived_from": { "rule_hits": ["R-REQ-APPROVAL-HIGH-AMOUNT", "R-SLA-RISK-NEAR-DUE"] }
+      }
+    },
+    {
+      "event_id": "EVT-0020",
+      "occurred_at": "2026-01-01T10:22:01+07:00",
+      "event_type": "EVIDENCE_ATTACHED",
+      "actor": { "type": "system", "id": "rag.agent", "display": "RAG Evidence Agent", "role": "system" },
+      "payload": {
+        "notes": "Evidence attached for pricing verification",
+        "evidence": [
+          { "doc_id": "DOC-CT-2024-001", "clause_id": "CL-4.2", "page_range": "12-13", "open_url": "/api/v1/docs/DOC-CT-2024-001/open?page=12", "relevance": 0.92 }
+        ]
+      }
+    },
+    {
+      "event_id": "EVT-0030",
+      "occurred_at": "2026-01-01T10:25:44+07:00",
+      "event_type": "DECISION_SUBMITTED",
+      "actor": { "type": "user", "id": "u.mt.manager01", "display": "MT Manager", "role": "manager" },
+      "payload": {
+        "decision": "REJECT",
+        "reason": "Price exceeds contract clause 4.2",
+        "reason_code": "PRICE_MISMATCH",
+        "evidence_refs": [
+          { "doc_id": "DOC-CT-2024-001", "clause_id": "CL-4.2", "open_url": "/api/v1/docs/DOC-CT-2024-001/open?page=12" }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- UI derivation example -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+          <h3 class="font-semibold">Frontend Derivation (Pseudo Rules — เพื่อคุยกับทีม)</h3>
+          <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-medium">Decision Status</div>
+              <ul class="mt-2 text-slate-700 space-y-1">
+                <li>• ถ้ามี <span class="mono">DECISION_SUBMITTED</span> ล่าสุด → Approved/Rejected</li>
+                <li>• else ถ้ามี <span class="mono">DECISION_RECOMMENDED</span> → Pending Approval</li>
+                <li>• else → Not Evaluated</li>
+              </ul>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-medium">Evidence Badge</div>
+              <ul class="mt-2 text-slate-700 space-y-1">
+                <li>• มี <span class="mono">EVIDENCE_ATTACHED</span> → show “Evidence ready”</li>
+                <li>• เปิด PDF ผ่าน <span class="mono">open_url</span></li>
+              </ul>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-medium">Accountability</div>
+              <ul class="mt-2 text-slate-700 space-y-1">
+                <li>• show actor + role + time</li>
+                <li>• reason_code เป็น normalized</li>
+                <li>• เหตุผลแนบ evidence refs</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="pb-10">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <div class="text-sm font-semibold">Next implementation sequence (ตาม layer)</div>
+              <div class="text-sm text-slate-600 mt-1">
+                Backend: /decisions/run → /evidence/attach → /decisions/submit → /audit/case/{id}
+                แล้วค่อยทำ Frontend wiring + derive status
+              </div>
+            </div>
+            <div class="text-xs text-slate-500">
+              Spec นี้ตั้งใจให้ “พร้อม implement code จริง” โดยไม่กระทบ Step 0–2
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

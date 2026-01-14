@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>TH8: Why AI Agent vs Traditional RPA?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #0F172A; color: #E2E8F0; }
+        
+        .scenario-card {
+            transition: all 0.5s ease;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .scenario-card.active {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Bot Animation (Rigid) */
+        .bot-icon { animation: robotMove 2s infinite step-end; }
+        @keyframes robotMove { 0% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        /* AI Animation (Fluid) */
+        .ai-brain { animation: pulseBrain 3s infinite ease-in-out; }
+        @keyframes pulseBrain { 0% { filter: drop-shadow(0 0 5px #3b82f6); } 50% { filter: drop-shadow(0 0 20px #8b5cf6); } 100% { filter: drop-shadow(0 0 5px #3b82f6); } }
+
+        .fail-stamp {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
+            border: 4px solid #ef4444; color: #ef4444; font-weight: 900; font-size: 2rem; padding: 1rem;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .success-stamp {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
+            border: 4px solid #10b981; color: #10b981; font-weight: 900; font-size: 2rem; padding: 1rem;
+            opacity: 0; transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4">
+
+    <header class="text-center mb-12">
+        <h1 class="text-3xl font-bold text-white mb-2">The "Why AI?" Showdown</h1>
+        <p class="text-slate-400">เปรียบเทียบ Traditional RPA vs. TH8 AI Agent ในสถานการณ์จริง</p>
+    </header>
+
+    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- LEFT: TRADITIONAL RPA -->
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 relative overflow-hidden group">
+            <div class="absolute top-0 left-0 w-full h-1 bg-slate-600"></div>
+            <div class="flex items-center gap-4 mb-6 opacity-70">
+                <div class="p-3 bg-slate-800 rounded-lg"><i data-lucide="bot" class="w-8 h-8 text-slate-400 bot-icon"></i></div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-300">Traditional RPA / OCR</h2>
+                    <p class="text-xs text-slate-500">Rule-Based, Template-Dependent</p>
+                </div>
+            </div>
+
+            <!-- Scenario View RPA -->
+            <div id="rpa-screen" class="bg-slate-950 rounded-xl p-6 h-64 relative flex flex-col items-center justify-center border border-slate-800">
+                <div class="text-center space-y-4">
+                    <p class="text-sm text-slate-400" id="rpa-status">Waiting for task...</p>
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden w-48 mx-auto">
+                        <div id="rpa-progress" class="h-full bg-slate-500 w-0"></div>
+                    </div>
+                </div>
+                <div id="rpa-fail" class="fail-stamp">SYSTEM ERROR<br><span class="text-xs font-normal">Template Mismatch Exception</span></div>
+            </div>
+        </div>
+
+        <!-- RIGHT: TH8 AI AGENT -->
+        <div class="bg-slate-900 border border-indigo-500/30 rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="p-3 bg-indigo-900/30 rounded-lg"><i data-lucide="brain-circuit" class="w-8 h-8 text-indigo-400 ai-brain"></i></div>
+                <div>
+                    <h2 class="text-xl font-bold text-white">TH8 AI Agent (LLM)</h2>
+                    <p class="text-xs text-indigo-300">Context-Aware, Adaptive Reasoning</p>
+                </div>
+            </div>
+
+            <!-- Scenario View AI -->
+            <div id="ai-screen" class="bg-slate-950 rounded-xl p-6 h-64 relative flex flex-col justify-between border border-indigo-900/50">
+                <div class="space-y-2 text-xs font-mono">
+                    <p class="text-slate-500">> <span id="ai-log-1">Waiting...</span></p>
+                    <p class="text-slate-500">> <span id="ai-log-2"></span></p>
+                    <p class="text-indigo-400 font-bold">> <span id="ai-log-3"></span></p>
+                </div>
+                <div id="ai-success" class="success-stamp">AUTO-RESOLVED</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
+        <button onclick="runScenario(1)" class="scenario-btn bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded-xl text-left transition hover:border-sky-500 group">
+            <div class="flex justify-between mb-2">
+                <span class="font-bold text-white group-hover:text-sky-400">Scenario 1: Template Change</span>
+                <i data-lucide="file-warning" class="text-slate-500 group-hover:text-sky-400"></i>
+            </div>
+            <p class="text-xs text-slate-400">Vendor ย้ายตำแหน่ง "Grand Total" ไปไว้บรรทัดอื่น หรือเปลี่ยนฟอนต์</p>
+        </button>
+
+        <button onclick="runScenario(2)" class="scenario-btn bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded-xl text-left transition hover:border-purple-500 group">
+            <div class="flex justify-between mb-2">
+                <span class="font-bold text-white group-hover:text-purple-400">Scenario 2: Semantic Match</span>
+                <i data-lucide="git-compare" class="text-slate-500 group-hover:text-purple-400"></i>
+            </div>
+            <p class="text-xs text-slate-400">ชื่อสินค้าในบิล (ภาษาไทย) ไม่ตรงกับใน SAP (ภาษาอังกฤษ/รหัส)</p>
+        </button>
+
+        <button onclick="runScenario(3)" class="scenario-btn bg-slate-800 hover:bg-slate-700 border border-slate-600 p-4 rounded-xl text-left transition hover:border-emerald-500 group">
+            <div class="flex justify-between mb-2">
+                <span class="font-bold text-white group-hover:text-emerald-400">Scenario 3: Logical Variance</span>
+                <i data-lucide="scale" class="text-slate-500 group-hover:text-emerald-400"></i>
+            </div>
+            <p class="text-xs text-slate-400">ราคาไม่ตรง แต่มีเหตุผลใน Remark หรือสัญญา (Unstructured)</p>
+        </button>
+    </div>
+
+    <div class="mt-8 bg-slate-800/50 p-6 rounded-xl border border-slate-700 max-w-3xl text-center">
+        <h3 class="text-lg font-bold text-white mb-2">บทสรุปสำหรับผู้บริหาร</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+            "RPA คือ <strong>'มือ'</strong> ที่ทำงานเร็ว แต่ต้องการคำสั่งที่เป๊ะๆ <br>
+            TH8 AI คือ <strong>'สมอง'</strong> ที่ทำงานยืดหยุ่น และแก้ปัญหาหน้างานแทนคนได้ <br>
+            เราไม่ได้มาแทน RPA แต่เรามาอุดช่องว่างที่ RPA ทำไม่ได้ครับ"
+        </p>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function runScenario(id) {
+            // Reset UI
+            document.getElementById('rpa-fail').style.opacity = '0';
+            document.getElementById('ai-success').style.opacity = '0';
+            document.getElementById('rpa-progress').style.width = '0%';
+            document.getElementById('ai-log-1').innerText = "Analyzing Input...";
+            document.getElementById('ai-log-2').innerText = "";
+            document.getElementById('ai-log-3').innerText = "";
+            
+            // Logic based on scenario
+            if (id === 1) {
+                // RPA Fails
+                document.getElementById('rpa-status').innerText = "Applying Template V1...";
+                setTimeout(() => { document.getElementById('rpa-progress').style.width = '50%'; }, 500);
+                setTimeout(() => { 
+                    document.getElementById('rpa-status').innerText = "Field 'Total' not found at (x:200, y:500)";
+                    document.getElementById('rpa-progress').className = "h-full bg-red-500 w-[50%]";
+                    document.getElementById('rpa-fail').style.opacity = '1';
+                }, 1500);
+
+                // AI Succeeds
+                setTimeout(() => { document.getElementById('ai-log-1').innerText = "Structure Analysis: Layout Changed"; }, 500);
+                setTimeout(() => { document.getElementById('ai-log-2').innerText = "Semantic Search: Found 'ยอดรวมสุทธิ' at bottom-left"; }, 1200);
+                setTimeout(() => { 
+                    document.getElementById('ai-log-3').innerText = "Extraction Successful: 50,000.00"; 
+                    document.getElementById('ai-success').style.opacity = '1';
+                }, 2000);
+            } 
+            
+            else if (id === 2) {
+                // RPA Fails
+                document.getElementById('rpa-status').innerText = "Matching String 'เหล็กเส้น' == 'STEEL-ROD'...";
+                setTimeout(() => { document.getElementById('rpa-progress').style.width = '80%'; }, 500);
+                setTimeout(() => { 
+                    document.getElementById('rpa-status').innerText = "Exact Match Failed. Confidence 0%";
+                    document.getElementById('rpa-fail').innerHTML = "MANUAL REVIEW<br><span class='text-xs font-normal'>Human Intervention Required</span>";
+                    document.getElementById('rpa-fail').style.opacity = '1';
+                }, 1500);
+
+                // AI Succeeds
+                setTimeout(() => { document.getElementById('ai-log-1').innerText = "Embedding: 'เหล็กเส้น' -> Vector[0.91, ...]"; }, 500);
+                setTimeout(() => { document.getElementById('ai-log-2').innerText = "Vector Search: Closest match 'STEEL-ROD' (0.95)"; }, 1200);
+                setTimeout(() => { 
+                    document.getElementById('ai-log-3').innerText = "Auto-Mapped: SKU-10022"; 
+                    document.getElementById('ai-success').style.opacity = '1';
+                }, 2000);
+            }
+
+            else if (id === 3) {
+                // RPA Fails
+                document.getElementById('rpa-status').innerText = "Comparing Price 105 vs 100...";
+                setTimeout(() => { document.getElementById('rpa-progress').style.width = '100%'; }, 500);
+                setTimeout(() => { 
+                    document.getElementById('rpa-status').innerText = "Rule Violation: Price > PO";
+                    document.getElementById('rpa-fail').innerHTML = "BLOCKED<br><span class='text-xs font-normal'>Strict Logic Violation</span>";
+                    document.getElementById('rpa-fail').style.opacity = '1';
+                }, 1500);
+
+                // AI Succeeds
+                setTimeout(() => { document.getElementById('ai-log-1').innerText = "Rule Check: Price > PO (+5%)"; }, 500);
+                setTimeout(() => { document.getElementById('ai-log-2').innerText = "RAG Check: Contract allows +5% for Rush Order"; }, 1200);
+                setTimeout(() => { 
+                    document.getElementById('ai-log-3').innerText = "Decision: APPROVED (With Annotation)"; 
+                    document.getElementById('ai-success').style.opacity = '1';
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

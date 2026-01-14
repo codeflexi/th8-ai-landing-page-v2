@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI Strategic Insight: Procurement Approval Control v3</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Prompt for Thai Business Professionalism -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        
+        /* Chart Container Rules - Responsive & Controlled */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Mobile base */
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px; /* Tablet/Desktop */
+            }
+        }
+
+        /* Palette Definition - 'Trust & Innovation' (Blue/Cyan/Orange) */
+        :root {
+            --color-primary: #0f172a; /* Slate 900 - Trust/Corporate */
+            --color-accent: #0ea5e9; /* Sky 500 - Innovation/AI */
+            --color-danger: #ef4444; /* Red 500 - Risk/Alert */
+            --color-warning: #f59e0b; /* Amber 500 - Warning */
+            --color-success: #10b981; /* Emerald 500 - Compliance */
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+        }
+
+        .bg-glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Custom Flowchart Nodes */
+        .flow-node {
+            transition: all 0.3s ease;
+        }
+        .flow-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+          /* Animation for Version Widget */
+        .version-widget { transition: all 0.3s ease; transform: translateY(0); }
+        .version-widget:hover { transform: translateY(-5px); }
+    </style>
+    
+    <!-- 
+        PLAN & SOURCE ANALYSIS:
+        1. Source: User Query (Rules: >3M Escalate, <6h SLA Warn) & Uploaded HTML (Context).
+        2. Target: Large Corp (>500M Revenue).
+        3. Narrative: "From Rule-Based to AI-Driven Assurance".
+        4. Sections:
+           - Executive Summary (Hook)
+           - The High-Value Risk (Data: 3M threshold)
+           - Operational Velocity (Data: SLA Countdown)
+           - The AI Workflow (Process: How it works)
+           - Strategic ROI (Comparison: Before vs After)
+           - Tech Trust (For Head of IT)
+        5. Visuals: Pareto Chart (Risk), Gauge (SLA), Flowchart (CSS), Radar (ROI).
+        6. Palette: Professional Blue/Slate with Vibrant Accents.
+    -->
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-sky-200 selection:text-slate-900">
+<div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 group">
+        <div class="bg-slate-900 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            Switch Implementation Phase
+        </div>
+
+        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-2xl w-64 version-widget">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-slate-100 pb-2">Build Steps</h4>
+            <ul class="space-y-2">
+                   <li>
+                    <a href="dcc-copilot.html"  class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Assistant</span>
+                            <span class="text-[9px]">Rag Copilot</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">UI-3</span>
+                    </a>
+                </li>  
+                <li>
+                    <a href="dcc-main-portal.html"  class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Functionality</span>
+                            <span class="text-[9px]">System Modules</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">UI-2</span>
+                    </a>
+                </li>  
+                <li>
+                    <a href="dcc-main-dashboard.html"  class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Dashboard</span>
+                            <span class="text-[9px]">System Dashboard</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">UI-1</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="dcc-product-ux.html"  class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Implement</span>
+                            <span class="text-[9px]">System Mapping</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">tech-1</span>
+                    </a>
+                </li>
+                  <li>
+                    <a href="dcc-rule-policy.html" class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Rule Setting</span>
+                            <span class="text-[9px]">Rule & Policy</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">Spec-0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="dcc-rule-appral-control.html" class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Rule Definition</span>
+                            <span class="text-[9px]">Detials rule</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">Spec-0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="dcc-agent-flow.html" class="flex items-center justify-between text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition group/link">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-700 group-hover/link:text-blue-700">Agent Flow</span>
+                            <span class="text-[9px]">End to End </span>
+                        </div>
+                        <span class="text-[10px] bg-slate-100 px-1.5 rounded text-slate-400">Spec-0</span>
+                    </a>
+                </li>
+                <li class="mt-2 pt-2 border-t border-slate-100">
+                    <div class="flex items-center justify-between text-xs p-2 bg-slate-900 text-white rounded-lg shadow-md cursor-default">
+                        <div class="flex flex-col">
+                            <span class="font-bold">v3.0 Master</span>
+                            <span class="text-[9px] text-slate-300">Unified Blueprint</span>
+                        </div>
+                        <div class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- NAVIGATION / HEADER -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">TH8</div>
+                    <div>
+                        <h1 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Procurement Approval AI (v3)</h1>
+                        <p class="text-[10px] text-slate-500 font-medium">Business & Technology Insight</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                    <span class="hover:text-sky-600 "><a href="dcc-business-impact.html" target="_self"> 
+                       Business Impact
+                    </a></span>
+                   
+                       <span class="hover:text-sky-600 "><a href="dcc-faq.html" target="_self"> 
+                       Any Questions?
+                    </a></span>
+                     <span class="hover:text-sky-600 "><a href="dcc-why-ai.html" target="_self"> 
+                       Why AI Agent?
+                    </a></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- HERO SECTION -->
+    <header class="relative overflow-hidden bg-slate-900 text-white py-16 md:py-24">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="inline-block py-1 px-3 rounded-full bg-sky-500/20 text-sky-300 text-xs font-bold tracking-wider mb-4 border border-sky-500/30">FOR ENTERPRISE REVENUE > 500M THB</span>
+                <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">เปลี่ยนการจัดซื้อ <br/>ให้เป็น <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">กลยุทธ์ที่ควบคุมได้</span></h2>
+                <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                    ระบบ AI Agent (v3) ไม่ใช่แค่การอนุมัติเอกสาร แต่คือการ "ตรวจจับความเสี่ยง" และ "เร่งความเร็ว" ในระดับที่มนุษย์ทำไม่ได้แม่นยำเท่า
+                    <br/><br/>
+                    <strong class="text-white">High Value Escalation</strong> &bull; <strong class="text-white">SLA Warning</strong> &bull; <strong class="text-white">Audit Trail</strong>
+                </p>
+                <div class="flex gap-4">
+                    <div class="px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-semibold shadow-lg shadow-sky-900/50 transition cursor-pointer text-center">
+                        สำหรับ CEO/CFO
+                    </div>
+                    <div class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg font-medium transition cursor-pointer text-center">
+                        สำหรับ Head of IT
+                    </div>
+                </div>
+            </div>
+            <!-- Key Stats Cards (Visual Hook) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 p-6 rounded-2xl">
+                    <div class="text-3xl font-bold text-sky-400 mb-1">3,000,000</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-wide">THB Threshold Risk</div>
+                    <p class="text-sm text-slate-300 mt-2">จุดตัดความเสี่ยงที่ AI ต้องส่งต่อให้ผู้จัดการตัดสินใจทันที</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 p-6 rounded-2xl">
+                    <div class="text-3xl font-bold text-amber-400 mb-1">&lt; 6 Hours</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-wide">SLA Critical Window</div>
+                    <p class="text-sm text-slate-300 mt-2">ระยะเวลาแจ้งเตือนก่อนเกิดความเสียหายทางธุรกิจ</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 p-6 rounded-2xl sm:col-span-2">
+                    <div class="text-3xl font-bold text-emerald-400 mb-1">100%</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-wide">Audit Ready</div>
+                    <p class="text-sm text-slate-300 mt-2">ทุกการตัดสินใจของ Rule Engine ถูกบันทึกเพื่อการตรวจสอบย้อนหลัง</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+
+        <!-- SECTION 1: HIGH VALUE RULE (PARETO) -->
+        <section>
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded bg-sky-100 text-sky-600 flex items-center justify-center text-lg">1</span>
+                    Deep Dive: กฎ 3 ล้านบาท (Financial Risk Control)
+                </h3>
+                <p class="text-slate-600 mt-2 max-w-3xl">
+                    จากการวิเคราะห์ข้อมูลจัดซื้อในองค์กรขนาดใหญ่ รายการที่มีมูลค่าสูงกว่า 3 ล้านบาทมักมีสัดส่วนจำนวนน้อย (High Value, Low Volume) 
+                    แต่กินสัดส่วนงบประมาณมหาศาล Rule <span class="font-mono text-sky-700 bg-sky-50 px-1 rounded">HIGH_AMOUNT_ESCALATION</span> ถูกออกแบบมาเพื่อดักจับรายการเหล่านี้
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Chart Col -->
+                <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase mb-4">Pareto Analysis: Purchase Requests Volume vs Value</h4>
+                    <div class="chart-container">
+                        <canvas id="paretoChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-slate-500 text-center">
+                        กราฟแสดงให้เห็นว่ารายการที่เกิน 3M (สีแดง) มีจำนวนน้อยแต่ผลกระทบต่องบประมาณสูง จำเป็นต้อง Escalate
+                    </div>
+                </div>
+                <!-- Text Insight Col -->
+                <div class="space-y-6">
+                    <div class="bg-sky-50 border-l-4 border-sky-500 p-5 rounded-r-xl">
+                        <h5 class="font-bold text-sky-900 mb-2">Business Intent</h5>
+                        <p class="text-sm text-slate-700">
+                            ป้องกัน "Phantom Approval" การอนุมัติงบประมาณสูงโดยระดับปฏิบัติการ ลด Vendor Risk และเพิ่มความโปร่งใสในงบประมาณก้อนใหญ่
+                        </p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <h5 class="font-bold text-slate-900 mb-3 border-b pb-2">AI Action Logic</h5>
+                        <ul class="space-y-3 text-sm text-slate-600">
+                            <li class="flex items-start gap-2">
+                                <span class="text-sky-500 font-bold">IF</span>
+                                <span>Amount Total > 3,000,000 THB</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-500 font-bold">THEN</span>
+                                <span>Status = <strong>ESCALATE</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-500 font-bold">ASSIGN</span>
+                                <span>Role = <strong>Procurement_Manager</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: SLA & EFFICIENCY -->
+        <section>
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded bg-amber-100 text-amber-600 flex items-center justify-center text-lg">2</span>
+                    Operational Efficiency: แข่งกับเวลา (SLA Risk)
+                </h3>
+                <p class="text-slate-600 mt-2 max-w-3xl">
+                    ในธุรกิจระดับ 500M+ ความล่าช้าในการจัดซื้อวัตถุดิบอาจหมายถึงการหยุดชะงักของสายการผลิต 
+                    Rule <span class="font-mono text-amber-700 bg-amber-50 px-1 rounded">SLA_RISK</span> ทำหน้าที่เป็น "Watchdog" เตือนก่อนเกิดความเสียหายจริง
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Insight Text -->
+                <div>
+                    <div class="bg-white rounded-xl shadow-lg p-8 border-t-4 border-amber-500 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-amber-100 rounded-full opacity-50 blur-xl"></div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-4">The 6-Hour Rule</h4>
+                        <p class="text-slate-600 mb-6 leading-relaxed">
+                            ระบบจะตรวจสอบเวลาที่เหลืออยู่เทียบกับ SLA ของแต่ละ Request หากเหลือน้อยกว่า 6 ชั่วโมง AI จะเปลี่ยนสถานะเป็น <strong>WARN</strong> ทันที 
+                            เพื่อให้ Officer เร่งดำเนินการ หรือขอความช่วยเหลือ
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-3 bg-slate-50 rounded-lg">
+                                <span class="block text-xs text-slate-500 uppercase">Current Impact</span>
+                                <span class="block text-lg font-bold text-amber-600">Proactive</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg">
+                                <span class="block text-xs text-slate-500 uppercase">Reduction in Late Penalties</span>
+                                <span class="block text-lg font-bold text-emerald-600">-25%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col items-center justify-center">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase mb-2 w-full text-left">Real-time Urgency Monitor</h4>
+                    <div class="chart-container" style="max-height: 300px;">
+                        <canvas id="slaChart"></canvas>
+                    </div>
+                    <div class="mt-2 text-center">
+                        <span class="inline-block w-3 h-3 bg-emerald-500 rounded-full mr-1"></span> Safe Zone
+                        <span class="inline-block w-3 h-3 bg-amber-500 rounded-full mr-1 ml-3"></span> Warning Zone (< 6hr)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PROCESS FLOW (NO MERMAID / NO SVG) -->
+        <section class="bg-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+            
+            <div class="text-center mb-12 relative z-10">
+                <h3 class="text-2xl md:text-3xl font-bold">TH8 Intelligent Workflow</h3>
+                <p class="text-slate-400 mt-2">กระบวนการตัดสินใจของ AI Agent ที่แม่นยำและตรวจสอบได้</p>
+            </div>
+
+            <!-- CSS Grid Flowchart -->
+            <div class="relative z-10 max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center text-center">
+                    
+                    <!-- Node 1 -->
+                    <div class="flow-node bg-white/10 backdrop-blur border border-white/20 p-4 rounded-xl flex flex-col items-center">
+                        <span class="text-2xl mb-2">📄</span>
+                        <div class="font-bold text-sm">Purchase Request</div>
+                        <div class="text-xs text-slate-400 mt-1">User Submits</div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="hidden md:flex justify-center text-slate-500 text-2xl">➔</div>
+                    <div class="md:hidden flex justify-center text-slate-500 text-2xl py-2">⬇</div>
+
+                    <!-- Node 2: AI Core -->
+                    <div class="flow-node bg-sky-600/90 shadow-lg shadow-sky-500/50 p-5 rounded-xl flex flex-col items-center transform scale-110 border border-sky-400">
+                        <span class="text-3xl mb-2">🤖</span>
+                        <div class="font-bold text-white">TH8 AI Agent</div>
+                        <div class="text-xs text-sky-100 mt-1">Evaluates Rules</div>
+                        <div class="mt-2 flex gap-1">
+                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                        </div>
+                    </div>
+
+                    <!-- Arrow Split -->
+                    <div class="hidden md:flex justify-center text-slate-500 text-2xl">➔</div>
+                    <div class="md:hidden flex justify-center text-slate-500 text-2xl py-2">⬇</div>
+
+                    <!-- Node 3: Decision Logic (Split) -->
+                    <div class="flex flex-col gap-4 w-full">
+                        <!-- Path A -->
+                        <div class="flow-node bg-amber-500/10 border border-amber-500/50 p-3 rounded-lg text-left">
+                            <div class="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Condition 1</div>
+                            <div class="text-xs text-slate-200 mt-1">SLA ≤ 6 Hours?</div>
+                            <div class="text-sm font-bold text-amber-400 mt-1">→ WARN Officer</div>
+                        </div>
+                        <!-- Path B -->
+                        <div class="flow-node bg-red-500/10 border border-red-500/50 p-3 rounded-lg text-left">
+                            <div class="text-[10px] text-red-400 font-bold uppercase tracking-wider">Condition 2</div>
+                            <div class="text-xs text-slate-200 mt-1">Value > 3,000,000?</div>
+                            <div class="text-sm font-bold text-red-400 mt-1">→ ESCALATE to Mgr</div>
+                        </div>
+                         <!-- Path C -->
+                         <div class="flow-node bg-emerald-500/10 border border-emerald-500/50 p-3 rounded-lg text-left">
+                            <div class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Default</div>
+                            <div class="text-xs text-slate-200 mt-1">Standard Criteria</div>
+                            <div class="text-sm font-bold text-emerald-400 mt-1">→ AUTO APPROVE</div>
+                        </div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="hidden md:flex justify-center text-slate-500 text-2xl">➔</div>
+                    <div class="md:hidden flex justify-center text-slate-500 text-2xl py-2">⬇</div>
+
+                    <!-- Node 4: Final State -->
+                    <div class="flow-node bg-white/10 backdrop-blur border border-white/20 p-4 rounded-xl flex flex-col items-center">
+                        <span class="text-2xl mb-2">✅</span>
+                        <div class="font-bold text-sm">Execution</div>
+                        <div class="text-xs text-slate-400 mt-1">Notify / Log / ERP</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: STRATEGIC ROI & TECH STACK -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            <!-- ROI Radar -->
+            <div>
+                <h3 class="text-xl font-bold text-slate-900 mb-6 border-l-4 border-sky-500 pl-4">
+                    Strategic ROI: Before vs After
+                </h3>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <strong class="block text-slate-900">Auditability (ความโปร่งใส)</strong>
+                        <span class="text-slate-600">เพิ่มขึ้นสูงสุดด้วย Automated Logs</span>
+                    </div>
+                    <div>
+                        <strong class="block text-slate-900">Decision Speed (ความเร็ว)</strong>
+                        <span class="text-slate-600">ลดเวลาคอขวดจาก 2 วันเหลือ < 6 ชม.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack for IT Head -->
+            <div>
+                <h3 class="text-xl font-bold text-slate-900 mb-6 border-l-4 border-slate-500 pl-4">
+                    Technology Stack (Enterprise Grade)
+                </h3>
+                <div class="space-y-4">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-2xl">🔒</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Security & Compliance</h4>
+                            <p class="text-xs text-slate-500 mt-1">SOC2 Compliant, Encrypted Data at Rest/Transit. ไม่มีการเก็บ Sensitive Data ไว้ใน Public Cloud.</p>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-2xl">🔌</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Seamless Integration</h4>
+                            <p class="text-xs text-slate-500 mt-1">API-First Architecture. เชื่อมต่อกับ SAP, Oracle, Microsoft Dynamics ได้ง่ายดาย.</p>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-2xl">📈</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Scalability</h4>
+                            <p class="text-xs text-slate-500 mt-1">Serverless Architecture รองรับ Transaction ได้ไม่จำกัด เมื่อธุรกิจขยายตัว.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="border-t border-slate-200 pt-12 pb-8 text-center">
+            <div class="inline-block p-4 bg-sky-50 rounded-2xl mb-6">
+                <p class="text-slate-700 font-medium">พร้อมยกระดับการจัดซื้อของคุณหรือยัง?</p>
+                <button class="mt-3 px-6 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition shadow-lg">
+                    Contact TH8 Sales Team
+                </button>
+            </div>
+            <p class="text-xs text-slate-400">© 2024 TH8.AI - Intelligent Business Solutions. All rights reserved.</p>
+        </footer>
+
+    </main>
+
+    <!-- CHART CONFIGURATION -->
+    <script>
+        // --- 1. CONFIGURATION & UTILS ---
+        
+        // Color Palette from CSS
+        const colors = {
+            slate900: '#0f172a',
+            sky500: '#0ea5e9',
+            amber500: '#f59e0b',
+            red500: '#ef4444',
+            emerald500: '#10b981',
+            slate200: '#e2e8f0',
+            slate400: '#94a3b8'
+        };
+
+        // Utility: Word Wrap for Labels > 16 chars
+        function wrapLabel(label) {
+            const maxLen = 16;
+            if (label.length <= maxLen) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length < maxLen) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // Global Chart Defaults
+        Chart.defaults.font.family = "'Prompt', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.9)';
+        Chart.defaults.plugins.tooltip.padding = 12;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+        
+        // Tooltip Callback for Multiline
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) return label.join(' ');
+            return label;
+        };
+
+        // --- 2. PARETO CHART (High Value Rule) ---
+        const ctxPareto = document.getElementById('paretoChart').getContext('2d');
+        const paretoData = {
+            // Processing labels for wrapping
+            labels: [
+                'Stationary (Low Value)', 
+                'Maintenance (Mid Value)', 
+                'IT Equipment (Mid Value)', 
+                'Raw Materials (High Value)', 
+                'Machinery (High Value)', 
+                'Construction (Ext. High)'
+            ].map(wrapLabel),
+            datasets: [
+                {
+                    type: 'line',
+                    label: 'Cumulative Value %',
+                    data: [10, 25, 45, 75, 90, 100],
+                    borderColor: colors.slate900,
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    yAxisID: 'y1',
+                    tension: 0.4,
+                    pointBackgroundColor: colors.slate900
+                },
+                {
+                    type: 'bar',
+                    label: 'Request Volume (Count)',
+                    data: [450, 300, 200, 80, 20, 5], // High volume for low value, low volume for high value
+                    backgroundColor: function(context) {
+                        const value = context.raw;
+                        // Highlight critical few (Low volume, high implication)
+                        return value < 100 ? colors.red500 : colors.sky500;
+                    },
+                    yAxisID: 'y',
+                    borderRadius: 4
+                }
+            ]
+        };
+
+        new Chart(ctxPareto, {
+            data: paretoData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: { title: tooltipTitleCallback }
+                    },
+                    annotation: { // Conceptual annotation logic
+                        // If using chartjs-plugin-annotation (not loaded here to keep clean), 
+                        // we would mark the 3M threshold.
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Volume (Transactions)' },
+                        grid: { display: false }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'Cumulative Value Impact %' },
+                        grid: { color: colors.slate200 },
+                        min: 0,
+                        max: 100
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // --- 3. GAUGE CHART (SLA Risk) ---
+        // Using Doughnut to simulate gauge
+        const ctxSLA = document.getElementById('slaChart').getContext('2d');
+        new Chart(ctxSLA, {
+            type: 'doughnut',
+            data: {
+                labels: ['Time Elapsed', 'Remaining (Critical)', 'Remaining (Safe)'],
+                datasets: [{
+                    data: [18, 4, 2], // 18hr passed, 4hr left (Critical < 6), 2hr buffer
+                    backgroundColor: [
+                        colors.slate200, // Elapsed
+                        colors.amber500, // Critical Window (Warning)
+                        colors.emerald500 // Safe buffer (if any)
+                    ],
+                    borderWidth: 0,
+                    cutout: '75%',
+                    circumference: 270,
+                    rotation: 225
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + ' hrs';
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [{
+                id: 'textCenter',
+                beforeDraw: function(chart) {
+                    var width = chart.width,
+                        height = chart.height,
+                        ctx = chart.ctx;
+                    
+                    ctx.restore();
+                    var fontSize = (height / 114).toFixed(2);
+                    ctx.font = "bold " + fontSize + "em sans-serif";
+                    ctx.textBaseline = "middle";
+                    ctx.fillStyle = colors.amber500;
+
+                    var text = "4 Hrs Left",
+                        textX = Math.round((width - ctx.measureText(text).width) / 2),
+                        textY = height / 1.8;
+
+                    ctx.fillText(text, textX, textY);
+                    
+                    ctx.font = "normal " + (fontSize*0.4).toFixed(2) + "em sans-serif";
+                    ctx.fillStyle = colors.slate400;
+                    var subtext = "Status: WARN",
+                        subtextX = Math.round((width - ctx.measureText(subtext).width) / 2),
+                        subtextY = height / 1.5;
+                    ctx.fillText(subtext, subtextX, subtextY);
+                    ctx.save();
+                }
+            }]
+        });
+
+        // --- 4. RADAR CHART (ROI Strategic Value) ---
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Speed of Approval', 
+                    'Risk Mitigation', 
+                    'Auditability', 
+                    'Cost Efficiency', 
+                    'User Experience'
+                ].map(wrapLabel),
+                datasets: [{
+                    label: 'Current Manual Process',
+                    data: [40, 50, 30, 60, 50],
+                    fill: true,
+                    backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                    borderColor: colors.slate400,
+                    pointBackgroundColor: colors.slate400,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: colors.slate400
+                }, {
+                    label: 'With TH8 AI Agent',
+                    data: [95, 90, 100, 85, 90],
+                    fill: true,
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                    borderColor: colors.sky500,
+                    pointBackgroundColor: colors.sky500,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: colors.sky500
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: { title: tooltipTitleCallback }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: colors.slate200 },
+                        grid: { color: colors.slate200 },
+                        pointLabels: {
+                            font: { size: 11, family: "'Prompt', sans-serif" },
+                            color: colors.slate900
+                        },
+                        ticks: { display: false, backdropColor: 'transparent' },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | End-to-End Demo Storyboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        .step-active { border-color: #dc2626; background-color: #fef2f2; }
+        .step-inactive { border-color: #e2e8f0; opacity: 0.6; }
+        
+        /* Flow Connector Lines */
+        .flow-line { position: absolute; left: 24px; top: 100%; height: 32px; width: 2px; background-color: #cbd5e1; z-index: 0; }
+        
+        /* Smooth transition for details */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased pb-32">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 bg-black rounded-lg flex items-center justify-center font-bold text-white text-sm">TH8</div>
+                <div>
+                    <span class="font-bold text-slate-900 block leading-tight">End-to-End Walkthrough</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Legacy Data → AI Decision → Audit</span>
+                </div>
+            </div>
+            <div class="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                Interactive Storyboard Mode
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 space-y-12">
+
+        <div class="text-center mb-16">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                เปิดเผย "เส้นทางข้อมูล" (Data Journey)
+            </h1>
+            <p class="text-slate-600 max-w-2xl mx-auto">
+                หน้านี้จะแสดงให้เห็นว่าระบบ TH8 เชื่อมต่อกับ <strong>ระบบเดิม (Legacy)</strong> ของคุณอย่างไร <br>
+                และแปลงข้อมูลดิบให้กลายเป็น <strong>Decision ที่ตรวจสอบได้</strong> ทีละขั้นตอน
+            </p>
+        </div>
+
+        <section id="step-1" class="relative pl-16">
+            <div class="absolute left-0 top-0 w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-600 z-10 border-4 border-slate-50">1</div>
+            <div class="flow-line h-full"></div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-slate-400 transition-colors">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">The Source</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">Existing Data (ระบบที่มีอยู่เดิม)</h2>
+                    </div>
+                    <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full mt-2 md:mt-0">Pre-requisite</span>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded flex items-center justify-center"><i data-lucide="database" class="w-4 h-4"></i></div>
+                            <h3 class="font-bold text-sm">ERP / Database</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2">แหล่งเก็บ Master Data: Vendor List, PO History, Budget</p>
+                        <div class="bg-white p-2 rounded border border-slate-200 font-mono text-[10px] text-slate-500">
+                            SELECT * FROM VENDORS WHERE CODE='V-TPACK'
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-8 h-8 bg-red-100 text-red-600 rounded flex items-center justify-center"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+                            <h3 class="font-bold text-sm">File Server / SharePoint</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2">แหล่งเก็บไฟล์สัญญา (PDF) ที่ไม่มีใครอ่าน</p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded flex items-center gap-1"><i data-lucide="file" class="w-3 h-3"></i> Contract_2024.pdf</span>
+                            <span class="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded flex items-center gap-1"><i data-lucide="file" class="w-3 h-3"></i> Policy_v1.pdf</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="step-2" class="relative pl-16">
+            <div class="absolute left-0 top-0 w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold z-10 border-4 border-slate-50">2</div>
+            <div class="flow-line h-full"></div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-blue-300 transition-colors">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">The Trigger</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">Operation Request (หน้างาน)</h2>
+                    </div>
+                    <span class="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full mt-2 md:mt-0">User Action</span>
+                </div>
+
+                <div class="flex gap-6 items-start">
+                    <div class="hidden md:block w-1/3">
+                        <div class="bg-slate-100 rounded-2xl p-4 text-xs space-y-3">
+                            <div class="bg-white p-3 rounded-xl rounded-tl-none shadow-sm">
+                                <p class="font-bold text-slate-900 mb-1">User (Purchasing)</p>
+                                <p class="text-slate-600">"ขอเปิด PO ซื้อเก้าอี้ Ergonomic 50 ตัว ราคาตัวละ 3,500 บาท จากร้าน Thai Packing ครับ"</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-sm text-slate-900 mb-2">สิ่งที่ระบบ "เข้าใจ" (Extraction)</h3>
+                        <div class="grid grid-cols-2 gap-2 text-xs mb-4">
+                            <div class="p-2 bg-blue-50 rounded border border-blue-100">
+                                <span class="text-blue-500 font-bold block">Item</span>
+                                Ergonomic Chair
+                            </div>
+                            <div class="p-2 bg-blue-50 rounded border border-blue-100">
+                                <span class="text-blue-500 font-bold block">Price</span>
+                                3,500 THB
+                            </div>
+                            <div class="p-2 bg-blue-50 rounded border border-blue-100">
+                                <span class="text-blue-500 font-bold block">Qty</span>
+                                50 Units
+                            </div>
+                            <div class="p-2 bg-blue-50 rounded border border-blue-100">
+                                <span class="text-blue-500 font-bold block">Vendor</span>
+                                Thai Packing
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 italic">
+                            *ข้อมูลนี้ถูกส่งไปตรวจสอบกับ Database ใน Step 1 ทันที
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="step-3" class="relative pl-16">
+            <div class="absolute left-0 top-0 w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold z-10 border-4 border-slate-50">3</div>
+            <div class="flow-line h-full"></div>
+
+            <div class="bg-white rounded-2xl border-2 border-amber-400 p-6 shadow-lg relative overflow-hidden">
+                <div class="absolute -right-6 -top-6 text-9xl opacity-5 select-none">⚙️</div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+                    <div>
+                        <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">The Engine</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">Logic Processing (การตรวจสอบ)</h2>
+                    </div>
+                    <span class="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full mt-2 md:mt-0 font-bold">Automated</span>
+                </div>
+
+                <div class="space-y-4 relative z-10">
+                    <div class="flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+                        <div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">✓</div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-slate-900">Vendor Check</h4>
+                            <p class="text-xs text-slate-500">Thai Packing = Approved Vendor (Found in ERP)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 bg-red-50 rounded-xl border border-red-200 shadow-sm">
+                        <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">✕</div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-red-700">Price Check (R-01 Violation)</h4>
+                            <div class="flex items-center gap-2 mt-1 text-xs">
+                                <span class="bg-white px-2 py-0.5 rounded border border-red-100 text-slate-500">Contract: 3,000</span>
+                                <span class="text-red-400">vs</span>
+                                <span class="bg-white px-2 py-0.5 rounded border border-red-200 text-red-600 font-bold">Request: 3,500</span>
+                            </div>
+                            <p class="text-[10px] text-red-500 mt-1">
+                                Evidence Source: <u>Contract_2024.pdf (Page 5)</u>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-amber-100 flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-500">System Action:</span>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-500 text-xs rounded-full line-through">Auto-Approve</span>
+                            <span class="text-slate-300">→</span>
+                            <span class="px-3 py-1 bg-red-600 text-white text-xs rounded-full font-bold shadow-md">Block & Route to CFO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="step-4" class="relative pl-16">
+            <div class="absolute left-0 top-0 w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold z-10 border-4 border-slate-50">4</div>
+            <div class="flow-line h-full"></div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-slate-900 transition-colors">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Management View</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">Decision Center (สิ่งที่ CFO เห็น)</h2>
+                    </div>
+                    <span class="bg-slate-900 text-white text-xs px-3 py-1 rounded-full mt-2 md:mt-0">Human-in-the-loop</span>
+                </div>
+
+                <div class="max-w-md mx-auto bg-white rounded-xl border border-slate-300 shadow-xl overflow-hidden">
+                    <div class="bg-slate-900 p-3 flex justify-between items-center text-white">
+                        <span class="text-xs font-bold">PO-2025-002</span>
+                        <span class="text-[10px] bg-red-500 px-2 py-0.5 rounded">High Risk</span>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        <div>
+                            <p class="text-xs text-slate-500 font-bold uppercase">Delta Summary</p>
+                            <p class="text-sm font-bold text-red-600 mt-1">ราคาเกินสัญญา +16% (รวม 25,000 บาท)</p>
+                        </div>
+                        
+                        <div class="flex gap-2 text-xs">
+                            <div class="flex-1 bg-slate-50 p-2 rounded border border-slate-200">
+                                <span class="block text-slate-400 text-[10px]">Contract</span>
+                                <span class="font-bold text-slate-700">3,000</span>
+                            </div>
+                            <div class="flex-1 bg-red-50 p-2 rounded border border-red-200">
+                                <span class="block text-red-400 text-[10px]">Request</span>
+                                <span class="font-bold text-red-700">3,500</span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button class="flex-1 py-2 rounded bg-white border border-slate-300 text-xs font-bold hover:bg-slate-50">Reject</button>
+                            <button class="flex-1 py-2 rounded bg-slate-900 text-white text-xs font-bold shadow hover:bg-slate-800">Approve (Reason Required)</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-center text-xs text-slate-500 mt-4">
+                    *CFO ตัดสินใจได้ใน < 30 วินาที เพราะเห็นข้อมูลสรุปและหลักฐานครบถ้วน
+                </p>
+            </div>
+        </section>
+
+        <section id="step-5" class="relative pl-16">
+            <div class="absolute left-0 top-0 w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold z-10 border-4 border-slate-50">5</div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-green-300 transition-colors">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-green-600 uppercase tracking-wider">The Value</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">Dashboard & Audit Trail</h2>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full mt-2 md:mt-0">Real-time Result</span>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4"></i> CFO Dashboard Updates
+                        </h4>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs text-slate-500">Prevented Leakage</span>
+                                <span class="text-lg font-bold text-green-600">฿ 25,000</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-2">ยอดเงินที่ประหยัดได้จากการ Reject หรือแก้ไขเคสนี้</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <i data-lucide="file-clock" class="w-4 h-4"></i> Immutable Audit Log
+                        </h4>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 font-mono text-[10px] text-slate-300 overflow-x-auto">
+                            <div class="mb-2 border-b border-slate-700 pb-1 text-slate-500">audit_event_1029.json</div>
+                            <p><span class="text-blue-400">"timestamp"</span>: "2026-01-05T14:30:00",</p>
+                            <p><span class="text-blue-400">"actor"</span>: "cfo_user",</p>
+                            <p><span class="text-blue-400">"action"</span>: "APPROVE_WITH_EXCEPTION",</p>
+                            <p><span class="text-blue-400">"reason"</span>: "Urgent production need",</p>
+                            <p><span class="text-blue-400">"evidence_hash"</span>: "sha256:7a9f..."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="text-center pt-12 border-t border-slate-200">
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">พร้อมเปลี่ยน Flow การจัดซื้อของคุณหรือยัง?</h3>
+            <div class="flex justify-center gap-4">
+                <button class="px-8 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-all shadow-xl shadow-red-200">
+                    นัดทีมเทคนิคติดตั้ง (Pilot)
+                </button>
+                <button class="px-8 py-3 bg-white border border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-all">
+                    ดาวน์โหลด PDF Flowchart นี้
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

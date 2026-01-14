@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Why AI Matters? (The Comparison)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        
+        /* Comparison Slider Styles */
+        .comparison-container { position: relative; overflow: hidden; }
+        .old-way { background-color: #f1f5f9; border-right: 1px solid #cbd5e1; }
+        .new-way { background-color: #ffffff; }
+        
+        /* Pulse Animation for AI Brain */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .ai-pulse::before {
+            content: '';
+            position: absolute; left: 50%; top: 50%; width: 20px; height: 20px;
+            background-color: rgba(220, 38, 38, 0.5); border-radius: 50%;
+            transform: translate(-50%, -50%); z-index: -1;
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased pb-32">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 bg-black rounded-lg flex items-center justify-center font-bold text-white text-sm">TH8</div>
+                <div>
+                    <span class="font-bold text-slate-900 block leading-tight">The AI Advantage</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Why Customize ERP is not enough</span>
+                </div>
+            </div>
+            <button class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-md shadow-red-100">
+                Contact Sales
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 space-y-20">
+
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                ทำไมต้องใช้ AI?<br>
+                <span class="text-slate-500 text-2xl md:text-3xl font-normal">ในเมื่อเราเขียน Code ใน ERP ก็ได้?</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                คำตอบคือ: ระบบ ERP ทำงานได้ดีกับ <strong>"ตัวเลข"</strong> แต่ล้มเหลวเมื่อเจอกับ <strong>"เอกสาร (PDF)"</strong> และ <strong>"บริบท (Context)"</strong>
+                <br>ดูความแตกต่างชัดๆ ด้านล่าง
+            </p>
+        </div>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">การตรวจสอบสัญญา (Unstructured Data)</h2>
+                    <p class="text-slate-600">โจทย์: ตรวจสอบราคา PO เทียบกับไฟล์สัญญา PDF ยาว 50 หน้า</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                <div class="old-way p-8 relative">
+                    <span class="absolute top-4 right-4 bg-slate-200 text-slate-600 text-xs font-bold px-2 py-1 rounded">Traditional Way</span>
+                    <h3 class="font-bold text-xl text-slate-500 mb-6 flex items-center gap-2">
+                        <i data-lucide="monitor-x" class="text-slate-400"></i> Customize ERP / Workflow
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white p-4 rounded-xl border border-slate-300 opacity-70">
+                            <p class="text-xs font-bold text-slate-400 uppercase mb-2">Process</p>
+                            <ol class="list-decimal list-inside text-sm text-slate-600 space-y-2">
+                                <li>พนักงานเปิด PDF อ่านด้วยตา (Manual)</li>
+                                <li><strong>คน (Admin)</strong> คีย์ราคาจาก PDF ลง ERP (Data Entry)</li>
+                                <li>ERP เทียบค่า A กับ B</li>
+                            </ol>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+                            <p class="text-xs font-bold text-red-600 uppercase mb-1">Pain Point</p>
+                            <p class="text-sm text-red-800 font-bold">
+                                "ERP อ่านไฟล์ PDF ไม่ได้"
+                            </p>
+                            <p class="text-xs text-red-600 mt-1">
+                                ต้องใช้ "คน" เป็นตัวกลาง (Middleware) เสมอ ทำให้เกิด Human Error และล่าช้า
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="new-way p-8 relative">
+                    <span class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">TH8 AI Way</span>
+                    <h3 class="font-bold text-xl text-slate-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="cpu" class="text-red-600 ai-pulse relative z-10"></i> AI-Native Extraction
+                    </h3>
+
+                    <div class="space-y-6">
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-white">
+                            <p class="text-xs font-bold text-slate-400 uppercase mb-2">Process</p>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="file-text" class="text-slate-400"></i>
+                                <span class="text-slate-500">→</span>
+                                <div class="px-3 py-1 bg-red-600 rounded text-xs font-bold">AI OCR & Extraction</div>
+                                <span class="text-slate-500">→</span>
+                                <i data-lucide="database" class="text-green-400"></i>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-3">
+                                AI อ่าน PDF -> แปลงเป็น JSON Structure -> ส่งให้ ERP โดยไม่ต้องใช้คน
+                            </p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+                            <p class="text-xs font-bold text-green-600 uppercase mb-1">The "Wow" Factor</p>
+                            <p class="text-sm text-green-800 font-bold">
+                                "เปลี่ยน Unstructured Data เป็น Structured Data ทันที"
+                            </p>
+                            <p class="text-xs text-green-600 mt-1">
+                                ลดงาน Admin 100% และตรวจสอบได้ทุกบรรทัดในเสี้ยววินาที
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">ความยืดหยุ่นของกฎ (Flexibility)</h2>
+                    <p class="text-slate-600">โจทย์: ต้องการเพิ่มเงื่อนไข "ถ้าเป็นสินค้าด่วน ให้ยอมแพงได้ 10% แต่ต้องมีเหตุผล"</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                <div class="old-way p-8 relative">
+                    <span class="absolute top-4 right-4 bg-slate-200 text-slate-600 text-xs font-bold px-2 py-1 rounded">Traditional Way</span>
+                    <h3 class="font-bold text-xl text-slate-500 mb-6 flex items-center gap-2">
+                        <i data-lucide="code" class="text-slate-400"></i> Hard-Coded Logic
+                    </h3>
+                    
+                    <div class="font-mono text-xs bg-white p-4 rounded-xl border border-slate-300 text-slate-500 mb-4">
+                        IF (item.is_urgent == TRUE) { <br>
+                        &nbsp;&nbsp; limit = limit * 1.10; <br>
+                        } ELSE { ... }
+                    </div>
+                    
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                        <p class="text-xs font-bold text-amber-600 uppercase mb-1">Pain Point</p>
+                        <p class="text-sm text-amber-800 font-bold">
+                            "ต้องแก้ Code ทุกครั้งที่เปลี่ยนกฎ"
+                        </p>
+                        <p class="text-xs text-amber-600 mt-1">
+                            และ ERP ไม่เข้าใจคำว่า "ด่วน" (Context) ถ้าผู้ใช้ไม่ได้ติ๊ก checkbox 'Urgent' ระบบก็ไม่รู้เรื่อง
+                        </p>
+                    </div>
+                </div>
+
+                <div class="new-way p-8 relative">
+                    <span class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">TH8 AI Way</span>
+                    <h3 class="font-bold text-xl text-slate-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="message-square" class="text-red-600"></i> Semantic Understanding
+                    </h3>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-4">
+                        <p class="text-xs text-slate-400 font-bold mb-1">User Chat:</p>
+                        <p class="text-sm text-slate-800">"พี่ครับ ขอซื้อของ A ด่วนมาก เครื่องจักรหยุดทำงาน ยอมจ่ายแพงหน่อยได้ไหม?"</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+                        <p class="text-xs font-bold text-green-600 uppercase mb-1">The "Wow" Factor</p>
+                        <p class="text-sm text-green-800 font-bold">
+                            "AI เข้าใจบริบท (Context) โดยไม่ต้องแก้ Code"
+                        </p>
+                        <p class="text-xs text-green-600 mt-1">
+                            AI แปลความหมาย "ด่วนมาก+เครื่องจักรหยุด" -> Trigger กฎข้อยกเว้นอัตโนมัติ โดยที่ User ไม่ต้องติ๊กช่องใดๆ
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-10">
+            <div class="text-center mb-10">
+                <span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Interactive Demo</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-4">ลองดูการทำงานจริง (Live Simulation)</h2>
+                <p class="text-slate-600">คลิกเพื่อดูว่าข้อมูลไหลผ่านระบบอย่างไร</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-slate-900 rounded-3xl p-2 md:p-8 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch relative">
+                    
+                    <div class="col-span-1 bg-slate-800 rounded-xl p-4 flex flex-col items-center justify-center text-center border border-slate-700">
+                        <i data-lucide="file-text" class="text-slate-400 w-8 h-8 mb-2"></i>
+                        <p class="text-xs text-slate-300 font-bold">Unstructured<br>PDF / Email</p>
+                    </div>
+
+                    <div class="hidden md:flex col-span-1 items-center justify-center">
+                        <i data-lucide="arrow-right" class="text-slate-600 w-6 h-6 animate-pulse"></i>
+                    </div>
+
+                    <div class="col-span-1 bg-slate-800/50 rounded-xl p-4 border border-dashed border-slate-600 opacity-50 flex flex-col items-center justify-center text-center">
+                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-2">Traditional ERP</p>
+                        <i data-lucide="x-circle" class="text-red-500 w-8 h-8 mb-1"></i>
+                        <p class="text-xs text-red-400">Cannot Read</p>
+                        <p class="text-[9px] text-slate-500 mt-1">(Need Human Entry)</p>
+                    </div>
+
+                    <div class="col-span-5 md:col-span-5 text-center text-xs text-slate-500 my-2 font-bold">- VS -</div>
+
+                    <div class="col-span-5 bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 border border-red-900/50 relative overflow-hidden group hover:border-red-600 transition-colors cursor-pointer" onclick="alert('Demo: AI Extracted Price=3500, Contract=3000 -> Violation Logic Triggered!')">
+                        <div class="absolute inset-0 bg-red-600/5 group-hover:bg-red-600/10 transition-colors"></div>
+                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="text-left">
+                                <h3 class="text-white font-bold flex items-center gap-2">
+                                    <i data-lucide="sparkles" class="text-red-500"></i> TH8 Intelligence Layer
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-1">1. Extract Data from PDF</p>
+                                <p class="text-xs text-slate-400">2. Retrieve Policy (RAG)</p>
+                                <p class="text-xs text-slate-400">3. Execute Python Logic</p>
+                            </div>
+                            <div class="bg-black/50 p-3 rounded-lg border border-red-500/30 font-mono text-xs text-green-400">
+                                { "status": "VIOLATION", "delta": "+10%" }
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-red-600 text-white text-xs px-4 py-2 rounded-lg font-bold shadow-lg shadow-red-900/50">
+                                    Actionable Insight
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="grid md:grid-cols-2 gap-8 mt-12">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <i data-lucide="briefcase" class="text-slate-900"></i> สำหรับ Business (CFO/CEO)
+                </h3>
+                <p class="text-sm text-slate-600">
+                    "ไม่ต้องรอ IT แก้ระบบเป็นเดือนๆ อยากเปลี่ยน Policy แค่อัปเดตไฟล์ PDF ให้ AI อ่าน ระบบก็ฉลาดขึ้นทันที Time-to-market เร็วกว่าเดิม 10 เท่า"
+                </p>
+            </div>
+            <div class="bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-800 text-white">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2">
+                    <i data-lucide="code-2" class="text-red-500"></i> สำหรับ IT Manager
+                </h3>
+                <p class="text-sm text-slate-400">
+                    "ไม่ต้องรื้อ Core ERP เดิม เราทำหน้าที่เป็น Middleware อัจฉริยะที่แปลง Unstructured Data ให้สะอาด ก่อนส่งเข้า Database ของคุณ (Clean Data Pipeline)"
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-12 text-center text-sm text-slate-500">
+        &copy; 2026 TH8.AI | Bridging the gap between ERP rigidity and AI flexibility.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

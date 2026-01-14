@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 Agentic RAG Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #0F172A; color: #E2E8F0; overflow: hidden; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Chat Bubble Animations */
+        .chat-enter { animation: slideIn 0.3s ease-out forwards; opacity: 0; transform: translateY(10px); }
+        @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* Typing Indicator */
+        .typing-dot {
+            width: 6px; height: 6px; background: #94A3B8; border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* Brain/Process Node Animation */
+        .process-node { transition: all 0.5s ease; border-left: 2px solid #334155; padding-left: 1rem; position: relative; opacity: 0.5; }
+        .process-node::before { content: ''; position: absolute; left: -5px; top: 0; width: 8px; height: 8px; border-radius: 50%; background: #334155; transition: all 0.5s; }
+        
+        .process-node.active { opacity: 1; border-color: #0EA5E9; }
+        .process-node.active::before { background: #0EA5E9; box-shadow: 0 0 10px #0EA5E9; }
+        
+        .process-node.completed { opacity: 0.7; border-color: #10B981; }
+        .process-node.completed::before { background: #10B981; }
+
+        /* RAG Document Highlight */
+        .rag-highlight { background-color: rgba(253, 224, 71, 0.2); border-bottom: 2px solid #FACC15; transition: all 0.3s; }
+        .rag-highlight.flash { background-color: rgba(253, 224, 71, 0.8); box-shadow: 0 0 15px rgba(253, 224, 71, 0.5); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1E293B; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748B; }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-white text-lg tracking-tight">TH8 Co-pilot <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded ml-2 border border-indigo-500/30">Agentic RAG</span></h1>
+                <p class="text-xs text-slate-400">Connected to: SAP S/4HANA • Legal Vault • Market Price API</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-900/20 px-3 py-1.5 rounded-full border border-emerald-900/50">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Brain Active
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN AREA -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- LEFT: CHAT INTERFACE -->
+        <div class="w-full md:w-1/2 flex flex-col bg-slate-900 relative">
+            
+            <!-- Chat Messages -->
+            <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6">
+                <!-- System Greeting -->
+                <div class="flex gap-4 chat-enter">
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 mt-1"><i data-lucide="bot" class="w-4 h-4 text-white"></i></div>
+                    <div class="space-y-2 max-w-[85%]">
+                        <div class="bg-slate-800 p-4 rounded-2xl rounded-tl-none border border-slate-700 text-sm text-slate-200 shadow-md">
+                            สวัสดีครับ ผมคือ AI ผู้ช่วยตรวจสอบการจัดซื้อ (Procurement Agent) <br>
+                            ท่านสามารถถามเรื่องราคาสินค้า, ตรวจสอบสัญญา หรือขอให้ช่วยวิเคราะห์ความเสี่ยงได้ครับ
+                        </div>
+                        <!-- Suggestion Chips -->
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="startDemoScenario()" class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sky-400 px-3 py-1.5 rounded-full transition cursor-pointer flex items-center gap-1">
+                                <i data-lucide="search" class="w-3 h-3"></i> เช็คราคา Server Rack กับสัญญาเก่า
+                            </button>
+                            <button class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 px-3 py-1.5 rounded-full transition cursor-not-allowed opacity-50">
+                                วิเคราะห์ Vendor A
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-slate-900 border-t border-slate-800">
+                <div class="relative">
+                    <input type="text" id="user-input" disabled placeholder="Type your request here..." class="w-full bg-slate-800 border border-slate-700 text-slate-200 rounded-xl pl-4 pr-12 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 placeholder-slate-500 transition">
+                    <button class="absolute right-2 top-2 p-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-white transition disabled:opacity-50">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: AGENT BRAIN (THE WOW FACTOR) -->
+        <div class="hidden md:flex w-1/2 bg-slate-950 border-l border-slate-800 flex-col relative overflow-hidden">
+            <!-- Background Grid -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:40px_40px] opacity-20 pointer-events-none"></div>
+
+            <div class="p-6 h-full overflow-y-auto relative z-10">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                        <i data-lucide="cpu" class="w-4 h-4"></i> Agent Workflow Trace
+                    </h3>
+                    <span id="agent-status" class="text-xs font-mono text-slate-500">IDLE</span>
+                </div>
+
+                <!-- Process Steps Container -->
+                <div id="process-steps" class="space-y-8 pl-2">
+                    <!-- Steps will be injected here via JS -->
+                    <div class="text-center text-slate-600 mt-20 italic" id="empty-state">
+                        Waiting for input to start reasoning process...
+                    </div>
+                </div>
+
+                <!-- RAG Evidence Preview (Hidden initially) -->
+                <div id="evidence-panel" class="mt-8 hidden opacity-0 transition-all duration-500 transform translate-y-10">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+                        <div class="bg-slate-800 px-4 py-2 flex justify-between items-center border-b border-slate-700">
+                            <span class="text-xs font-bold text-slate-300 flex items-center gap-2"><i data-lucide="file-text" class="w-3 h-3 text-sky-400"></i> Master_Contract_2024.pdf</span>
+                            <span class="text-[10px] bg-sky-900/30 text-sky-400 px-2 py-0.5 rounded border border-sky-800">Match Score: 98%</span>
+                        </div>
+                        <div class="p-4 font-serif text-sm text-slate-400 leading-relaxed h-40 overflow-y-auto">
+                            <p>...agreement made on 1st Jan 2024...</p>
+                            <p><strong>Section 4. Pricing Terms</strong></p>
+                            <p class="mt-2">4.1 The agreed unit price for <span class="rag-highlight" id="highlight-1">Server Rack 42U shall be fixed at <strong>32,000 THB</strong></span> for the duration of 12 months.</p>
+                            <p class="mt-2">4.2 Any price adjustment due to market volatility <span class="rag-highlight" id="highlight-2">must not exceed 5%</span> without prior written approval.</p>
+                            <p class="mt-2">...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        lucide.createIcons();
+
+        // SCENARIO DATA
+        const scenarioSteps = [
+            {
+                type: 'user',
+                text: "ช่วยตรวจสอบราคา Server Rack 42U ของเจ้า TechSpace ให้หน่อยครับ ว่าแพงกว่าสัญญาไหม? ถ้าแพงช่วยร่างอีเมลต่อรองให้ด้วย"
+            },
+            {
+                type: 'agent-thought',
+                title: "1. Intent Recognition",
+                desc: "User wants to: 1) Check Price vs Contract 2) Draft Negotiation Email",
+                status: 'completed',
+                delay: 1000
+            },
+            {
+                type: 'agent-thought',
+                title: "2. Tool Execution: SAP Lookup",
+                desc: "Querying latest PR from TechSpace... Found Price: 35,000 THB",
+                status: 'completed',
+                delay: 2000
+            },
+            {
+                type: 'agent-thought',
+                title: "3. Tool Execution: RAG Search",
+                desc: "Retrieving 'Master Contract TechSpace' for item 'Server Rack 42U'...",
+                status: 'active',
+                showEvidence: true,
+                delay: 3500
+            },
+            {
+                type: 'agent-thought',
+                title: "4. Logic & Reasoning",
+                desc: "Comparing: 35,000 (Quote) vs 32,000 (Contract). Variance: +9.3%. Rule Check: > 5% allowed variance. Conclusion: Overpriced.",
+                status: 'active',
+                delay: 5500
+            },
+            {
+                type: 'agent-response',
+                text: "จากการตรวจสอบพบว่าราคาที่ TechSpace เสนอมาคือ **35,000 บาท** ซึ่ง **สูงกว่า** ราคาสัญญา (32,000 บาท) อยู่ประมาณ **9.3%** ครับ \n\nซึ่งเกินเกณฑ์ที่ระบุไว้ในสัญญาข้อ 4.2 ที่ให้ปรับขึ้นได้ไม่เกิน 5% ครับ",
+                delay: 6500
+            },
+            {
+                type: 'agent-response-action',
+                text: "ผมได้ร่างอีเมลเพื่อต่อรองราคาให้กลับมาอยู่ในเกณฑ์สัญญาแล้วครับ ท่านต้องการปรับแก้ตรงไหนไหมครับ?",
+                actionHtml: `
+                    <div class="mt-3 bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs text-slate-300 font-mono">
+                        <div class="mb-2 border-b border-slate-700 pb-2"><strong>Subject:</strong> Price Adjustment Request - PO #88912</div>
+                        <p>Dear TechSpace Team,</p>
+                        <p class="mt-2">Regarding your quotation for Server Rack 42U at 35,000 THB, we noticed this exceeds our Master Agreement rate (32,000 THB) by >5%.</p>
+                        <p class="mt-2">Kindly revise the price to comply with Clause 4.2, or provide justification for this increase.</p>
+                        <p class="mt-2">Best Regards,<br>Procurement Team</p>
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                        <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Send Email</button>
+                        <button class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Edit Draft</button>
+                    </div>
+                `,
+                delay: 7500
+            }
+        ];
+
+        async function startDemoScenario() {
+            // Hide empty state
+            document.getElementById('empty-state').style.display = 'none';
+            
+            // Step 1: User types
+            const input = document.getElementById('user-input');
+            const userText = scenarioSteps[0].text;
+            
+            // Simulate typing
+            input.value = "";
+            for (let i = 0; i < userText.length; i++) {
+                input.value += userText[i];
+                await wait(20);
+            }
+            await wait(300);
+            
+            // Send Message
+            addMessage('user', userText);
+            input.value = "";
+            
+            // Show Typing Indicator
+            showTyping(true);
+
+            // Execute Agent Steps
+            for (let i = 1; i < scenarioSteps.length; i++) {
+                const step = scenarioSteps[i];
+                await wait(step.delay - (scenarioSteps[i-1].delay || 0)); // Relative delay
+
+                if (step.type === 'agent-thought') {
+                    addProcessNode(step.title, step.desc, step.status);
+                    if (step.showEvidence) showEvidencePanel();
+                } else if (step.type === 'agent-response') {
+                    showTyping(false);
+                    addMessage('agent', step.text);
+                } else if (step.type === 'agent-response-action') {
+                    addMessage('agent', step.text, step.actionHtml);
+                }
+            }
+            
+            // Finish
+            document.getElementById('agent-status').innerText = "WAITING FOR USER";
+            document.getElementById('agent-status').className = "text-xs font-mono text-emerald-400 animate-pulse";
+        }
+
+        // --- HELPER FUNCTIONS ---
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function addMessage(role, text, extraHtml = '') {
+            const container = document.getElementById('chat-container');
+            const div = document.createElement('div');
+            div.className = `flex gap-4 chat-enter ${role === 'user' ? 'flex-row-reverse' : ''}`;
+            
+            const avatar = role === 'user' 
+                ? `<div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center shrink-0 mt-1"><i data-lucide="user" class="w-4 h-4 text-slate-300"></i></div>`
+                : `<div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 mt-1"><i data-lucide="bot" class="w-4 h-4 text-white"></i></div>`;
+
+            const bubbleClass = role === 'user' 
+                ? 'bg-indigo-600 text-white rounded-tr-none' 
+                : 'bg-slate-800 text-slate-200 border border-slate-700 rounded-tl-none shadow-md';
+
+            div.innerHTML = `
+                ${avatar}
+                <div class="space-y-2 max-w-[85%]">
+                    <div class="${bubbleClass} p-4 rounded-2xl text-sm leading-relaxed">
+                        ${markedText(text)}
+                        ${extraHtml}
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            lucide.createIcons();
+        }
+
+        function showTyping(show) {
+            const container = document.getElementById('chat-container');
+            const existing = document.getElementById('typing-indicator');
+            
+            if (show && !existing) {
+                const div = document.createElement('div');
+                div.id = 'typing-indicator';
+                div.className = 'flex gap-4 chat-enter';
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center shrink-0 mt-1"><i data-lucide="bot" class="w-4 h-4 text-white"></i></div>
+                    <div class="bg-slate-800 p-4 rounded-2xl rounded-tl-none border border-slate-700 w-16 flex items-center justify-center gap-1">
+                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                    </div>
+                `;
+                container.appendChild(div);
+                container.scrollTop = container.scrollHeight;
+                
+                // Update Brain Status
+                document.getElementById('agent-status').innerText = "PROCESSING...";
+                document.getElementById('agent-status').className = "text-xs font-mono text-sky-400";
+
+            } else if (!show && existing) {
+                existing.remove();
+            }
+            lucide.createIcons();
+        }
+
+        function addProcessNode(title, desc, status) {
+            const container = document.getElementById('process-steps');
+            
+            // Mark previous active as completed
+            const prevActive = container.querySelector('.process-node.active');
+            if (prevActive) {
+                prevActive.classList.remove('active');
+                prevActive.classList.add('completed');
+                const icon = prevActive.querySelector('.status-icon');
+                if(icon) icon.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>';
+            }
+
+            const div = document.createElement('div');
+            div.className = `process-node active chat-enter pl-6 pb-2`;
+            div.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <h4 class="text-sm font-bold text-sky-400 mb-1">${title}</h4>
+                    <span class="status-icon"><i data-lucide="loader" class="w-4 h-4 text-sky-500 animate-spin"></i></span>
+                </div>
+                <p class="text-xs text-slate-400 font-mono">${desc}</p>
+            `;
+            
+            container.appendChild(div);
+            lucide.createIcons();
+        }
+
+        function showEvidencePanel() {
+            const panel = document.getElementById('evidence-panel');
+            panel.classList.remove('hidden');
+            setTimeout(() => {
+                panel.classList.remove('opacity-0', 'translate-y-10');
+                // Flash highlights
+                setTimeout(() => document.getElementById('highlight-1').classList.add('flash'), 500);
+                setTimeout(() => document.getElementById('highlight-2').classList.add('flash'), 1200);
+            }, 100);
+        }
+
+        function markedText(text) {
+            // Simple bold parser for demo
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+    </script>
+</body>
+</html>

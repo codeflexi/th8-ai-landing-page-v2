@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8: Legal-First Discounting Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #0F172A; color: #E2E8F0; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-legal { font-family: 'Sarabun', sans-serif; }
+        
+        .step-active { border-color: #38BDF8; background: rgba(56, 189, 248, 0.1); color: #38BDF8; }
+        .step-inactive { border-color: #334155; color: #64748B; opacity: 0.5; }
+
+        /* Highlight Animation */
+        .highlight-clause {
+            background-color: rgba(253, 224, 71, 0.3);
+            border-bottom: 2px solid #FACC15;
+            transition: all 0.5s;
+        }
+        .highlight-clause.active {
+            background-color: rgba(253, 224, 71, 0.8);
+            box-shadow: 0 0 15px rgba(253, 224, 71, 0.6);
+        }
+
+        .typing::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="h-16 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between px-6 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white text-lg">TH8</div>
+            <div>
+                <h1 class="font-bold text-white text-lg">Legal-First Engine</h1>
+                <p class="text-[10px] text-slate-400">RAG for Contract Compliance</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 text-xs bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Legal Vault Connected
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-6xl mx-auto w-full p-8 grid grid-cols-12 gap-8">
+
+        <!-- LEFT: PROCESS FLOW -->
+        <div class="col-span-4 space-y-4">
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Verification Steps</h3>
+            
+            <!-- Step 1: Trigger -->
+            <div id="step-1" class="p-4 rounded-xl border-2 step-active transition-all cursor-pointer" onclick="setStep(1)">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-lg">1. Invoice Received</span>
+                    <i data-lucide="file-input" class="w-5 h-5"></i>
+                </div>
+                <p class="text-xs">Invoice #INV-8891 (5.0 MB)</p>
+                <div class="mt-2 text-[10px] bg-slate-800 p-1 rounded font-mono">Status: APPROVED</div>
+            </div>
+
+            <!-- Step 2: RAG Check -->
+            <div id="step-2" class="p-4 rounded-xl border-2 step-inactive transition-all cursor-pointer" onclick="setStep(2)">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-lg">2. Contract Scan (RAG)</span>
+                    <i data-lucide="scale" class="w-5 h-5"></i>
+                </div>
+                <p class="text-xs">Check "Payment Terms" clause</p>
+                <div class="mt-2 flex gap-2">
+                    <span class="text-[10px] border border-slate-600 px-2 py-0.5 rounded">MSA-2023.pdf</span>
+                </div>
+            </div>
+
+            <!-- Step 3: Logic Decision -->
+            <div id="step-3" class="p-4 rounded-xl border-2 step-inactive transition-all cursor-pointer" onclick="setStep(3)">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-lg">3. AI Interpretation</span>
+                    <i data-lucide="brain-circuit" class="w-5 h-5"></i>
+                </div>
+                <p class="text-xs">Can we offer dynamic discount?</p>
+                <div id="logic-badge" class="mt-2 text-[10px] bg-slate-800 p-1 rounded font-bold text-center hidden">ALLOWED (SILENT CLAUSE)</div>
+            </div>
+
+            <!-- Step 4: Generate Addendum -->
+            <div id="step-4" class="p-4 rounded-xl border-2 step-inactive transition-all cursor-pointer" onclick="setStep(4)">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-lg">4. Generate Offer</span>
+                    <i data-lucide="file-signature" class="w-5 h-5"></i>
+                </div>
+                <p class="text-xs">Create Legal Addendum/Email</p>
+            </div>
+        </div>
+
+        <!-- RIGHT: VISUALIZATION -->
+        <div class="col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden h-[600px]">
+            
+            <!-- VIEW 1: INVOICE -->
+            <div id="view-1" class="h-full flex flex-col justify-center items-center text-center">
+                <div class="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center mb-6 shadow-xl border border-slate-700">
+                    <i data-lucide="file-spreadsheet" class="w-10 h-10 text-emerald-500"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">Invoice #INV-8891</h2>
+                <p class="text-slate-400 mb-6">Vendor: Siam Steel Co. | Amount: 5,000,000 THB</p>
+                <button onclick="nextStep(2)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-lg font-bold shadow-lg transition flex items-center gap-2">
+                    Initiate RAG Check <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- VIEW 2: CONTRACT SCAN (RAG) -->
+            <div id="view-2" class="hidden h-full flex flex-col">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="search" class="w-5 h-5 text-indigo-400 animate-pulse"></i>
+                        <span class="text-sm font-bold text-white">Scanning Master Supply Agreement...</span>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono">Doc ID: MSA-2023-SS</span>
+                </div>
+                
+                <div class="bg-white text-slate-800 p-8 rounded-lg shadow-inner flex-1 overflow-y-auto font-legal text-sm leading-relaxed relative">
+                    <div class="absolute top-0 right-0 p-2 opacity-50"><i data-lucide="file-text" class="w-16 h-16 text-slate-200"></i></div>
+                    <h3 class="text-center font-bold text-lg mb-6">MASTER SUPPLY AGREEMENT</h3>
+                    <p>...WHEREAS, the Supplier agrees to provide goods...</p>
+                    <br>
+                    <p><strong>ARTICLE 4: PAYMENT TERMS</strong></p>
+                    <p>4.1 The Buyer shall pay the Supplier within 60 days (Net 60) after receipt of the valid invoice.</p>
+                    
+                    <!-- The Clause AI Finds -->
+                    <div id="rag-highlight" class="highlight-clause mt-2 p-1 rounded">
+                        <p><strong>4.2 Early Payment:</strong> The Buyer may, at its sole discretion, offer early payment in exchange for a discount. Such discount rate shall be mutually agreed upon in writing for each transaction or via a supplementary agreement.</p>
+                    </div>
+                    
+                    <p class="mt-2">4.3 Currency: All payments shall be made in Thai Baht.</p>
+                    <br>
+                    <p><strong>ARTICLE 5: DELIVERY...</strong></p>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <button onclick="nextStep(3)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-lg font-bold shadow-lg transition">
+                        Analyze Clause
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 3: AI LOGIC -->
+            <div id="view-3" class="hidden h-full flex flex-col justify-center items-center">
+                <div class="grid grid-cols-2 gap-8 w-full max-w-2xl">
+                    <!-- Thinking Process -->
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                        <h4 class="text-sky-400 font-bold mb-4 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4"></i> AI Reasoning</h4>
+                        <ul class="space-y-3 text-xs text-slate-300 font-mono">
+                            <li class="flex gap-2">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                                <span>Found "Early Payment" clause (4.2).</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                                <span>Clause Type: <strong>"Open/Flexible"</strong> (No fixed rate).</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <i data-lucide="arrow-right-circle" class="w-4 h-4 text-amber-500"></i>
+                                <span>Action: Calculate Dynamic Rate.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Calculation -->
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                        <h4 class="text-emerald-400 font-bold mb-4 flex items-center gap-2"><i data-lucide="calculator" class="w-4 h-4"></i> Finance Engine</h4>
+                        <div class="text-center">
+                            <p class="text-xs text-slate-400">Recommended Rate</p>
+                            <p class="text-4xl font-bold text-white mt-2">1.5%</p>
+                            <p class="text-[10px] text-emerald-500 mt-1">Yield: 12% APR</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="nextStep(4)" class="mt-8 bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-lg font-bold shadow-lg transition flex items-center gap-2">
+                    Generate Legal Offer <i data-lucide="zap" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- VIEW 4: OUTPUT (OFFER LETTER) -->
+            <div id="view-4" class="hidden h-full flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-white">Generated Offer (Legal Compliant)</h3>
+                    <button class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded border border-slate-700">Download PDF</button>
+                </div>
+
+                <div class="bg-white text-slate-900 p-8 rounded-lg shadow-lg flex-1 overflow-y-auto font-serif text-sm relative">
+                    <div class="absolute top-4 right-4 text-right">
+                        <p class="font-bold text-lg">TH8 CORP</p>
+                        <p class="text-xs text-slate-500">Date: 4 Jan 2026</p>
+                    </div>
+
+                    <p class="mt-8"><strong>Subject: Proposal for Early Payment Discount (Addendum to MSA-2023-SS)</strong></p>
+                    <p class="mt-4">Dear Siam Steel Co.,</p>
+                    
+                    <p class="mt-4">Reference is made to the Master Supply Agreement dated 1 Jan 2023 ("Agreement").</p>
+                    
+                    <p class="mt-2">Pursuant to <strong>Clause 4.2</strong> of the Agreement, which permits early payment upon mutual agreement, we hereby propose an early settlement for the following invoice:</p>
+                    
+                    <table class="w-full mt-4 mb-4 border-collapse border border-slate-300 text-xs">
+                        <tr class="bg-slate-100">
+                            <th class="border border-slate-300 p-2">Invoice No.</th>
+                            <th class="border border-slate-300 p-2">Original Due Date</th>
+                            <th class="border border-slate-300 p-2">Original Amount</th>
+                            <th class="border border-slate-300 p-2">Discount Rate</th>
+                            <th class="border border-slate-300 p-2">Net Payment</th>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 p-2 text-center">INV-8891</td>
+                            <td class="border border-slate-300 p-2 text-center">30 Aug 2024</td>
+                            <td class="border border-slate-300 p-2 text-right">5,000,000</td>
+                            <td class="border border-slate-300 p-2 text-center font-bold">1.5%</td>
+                            <td class="border border-slate-300 p-2 text-right font-bold">4,925,000</td>
+                        </tr>
+                    </table>
+
+                    <p>By clicking "Accept" below, you agree that this payment constitutes full and final settlement of the referenced invoice.</p>
+                    
+                    <div class="mt-8 border-t border-slate-300 pt-4 flex gap-8">
+                        <div>
+                            <p class="mb-4">Proposed by:</p>
+                            <div class="font-signature text-xl">Th8 Procurement</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-lg font-bold shadow-lg transition flex items-center gap-2 mx-auto">
+                        <i data-lucide="send" class="w-4 h-4"></i> Send to Vendor
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function setStep(step) {
+            // Update Nav
+            document.querySelectorAll('[id^="step-"]').forEach(el => {
+                el.classList.remove('step-active');
+                el.classList.add('step-inactive');
+            });
+            document.getElementById(`step-${step}`).classList.remove('step-inactive');
+            document.getElementById(`step-${step}`).classList.add('step-active');
+
+            // Update View
+            document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${step}`).classList.remove('hidden');
+
+            // Trigger Animation for Step 2
+            if(step === 2) {
+                setTimeout(() => {
+                    document.getElementById('rag-highlight').classList.add('active');
+                }, 1000);
+            }
+            
+            // Logic Badge
+            if(step === 3) {
+                document.getElementById('logic-badge').classList.remove('hidden');
+            }
+        }
+
+        function nextStep(step) {
+            setStep(step);
+        }
+    </script>
+</body>
+</html>

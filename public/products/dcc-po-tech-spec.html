@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TH8.AI – Procurement Decision Center (Full Tech Map)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        html, body { font-family: "Prompt", sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .code-syntax { font-family: 'Menlo', 'Monaco', 'Courier New', monospace; }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-slate-900 selection:text-white pb-20">
+
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-slate-900/20">TH8</div>
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Procurement Decision Center</p>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">System Build Map <span class="text-slate-400 font-normal">|</span> Full Architecture</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] font-medium">
+                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">Tech Stack: Python / Vector DB</span>
+                <span class="px-3 py-1 rounded-full bg-red-50 text-red-700 border border-red-100 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span> Ovaltine Data
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-16">
+
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">System Blueprint</h2>
+                    <p class="text-sm text-slate-500 mt-1">Architecture Overview: ERP + RAG + Policy Engine</p>
+                </div>
+                 <div class="flex gap-2">
+                    <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Reset State</button>
+                    <button class="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">Replay Demo</button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
+                        <span class="text-[10px] uppercase font-bold text-slate-400">Source</span>
+                        <div class="font-bold text-slate-800 mt-1">ERP Data</div>
+                        <div class="text-[10px] text-slate-500">PO JSON Payload</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center relative">
+                        <span class="text-[10px] uppercase font-bold text-slate-400">Knowledge</span>
+                        <div class="font-bold text-slate-800 mt-1">Vector DB</div>
+                        <div class="text-[10px] text-slate-500">Contract Embedding</div>
+                    </div>
+                     <div class="p-4 bg-blue-50 rounded-xl border border-blue-200 text-center">
+                        <span class="text-[10px] uppercase font-bold text-blue-400">Brain</span>
+                        <div class="font-bold text-slate-900 mt-1">Policy Engine</div>
+                        <div class="text-[10px] text-slate-500">YAML Rules Logic</div>
+                    </div>
+                     <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 text-center">
+                        <span class="text-[10px] uppercase font-bold text-amber-700">Human</span>
+                        <div class="font-bold text-slate-900 mt-1">Decision UI</div>
+                        <div class="text-[10px] text-slate-500">Approve / Reject</div>
+                    </div>
+                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center">
+                        <span class="text-[10px] uppercase font-bold text-slate-400">Log</span>
+                        <div class="font-bold text-slate-800 mt-1">Audit Trail</div>
+                        <div class="text-[10px] text-slate-500">Immutable JSON</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">0</span>
+                <h3 class="text-xl font-bold text-slate-900">Policy Configuration <span class="text-slate-400 text-base font-normal">| กำหนด Logic ของ AI (YAML)</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm h-full">
+                        <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wide mb-4">Business Rules Map</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <span class="text-xs font-bold text-slate-800">R-01 Price Deviation</span>
+                                <span class="text-[10px] text-slate-500">Threshold: +1%, +5%</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <span class="text-xs font-bold text-slate-800">R-02 CFO Threshold</span>
+                                <span class="text-[10px] text-slate-500">Value > 500,000 THB</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <span class="text-xs font-bold text-slate-800">R-03 Vendor Match</span>
+                                <span class="text-[10px] text-slate-500">Strict String Match</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <span class="text-xs font-bold text-slate-800">R-04 Scope Check</span>
+                                <span class="text-[10px] text-slate-500">SKU in Contract List</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <span class="text-xs font-bold text-slate-800">R-05 Validity</span>
+                                <span class="text-[10px] text-slate-500">PO Date within Contract Period</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-4 italic">"Config นี้จะถูกโหลดเข้า Policy Engine เพื่อใช้ตรวจจับความผิดปกติ"</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden text-slate-300 font-mono text-xs relative group">
+                    <div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+                        <span class="text-slate-400 font-sans font-medium text-[10px]">policy_v1.0.yaml</span>
+                        <div class="flex gap-1.5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 overflow-x-auto code-syntax leading-relaxed">
+<pre>
+<span class="text-pink-400">rules_config:</span>
+  <span class="text-slate-500"># R-01: Price Tolerance Logic</span>
+  - <span class="text-blue-400">id:</span> <span class="text-green-400">"R-01"</span>
+    <span class="text-blue-400">type:</span> "price_deviation"
+    <span class="text-blue-400">thresholds:</span>
+      <span class="text-blue-400">warning:</span> <span class="text-yellow-400">1.0</span>  <span class="text-slate-500"># >1% = Warning</span>
+      <span class="text-blue-400">critical:</span> <span class="text-yellow-400">5.0</span>  <span class="text-slate-500"># >5% = Violation (Medium)</span>
+
+  <span class="text-slate-500"># R-02: Authority Limit</span>
+  - <span class="text-blue-400">id:</span> <span class="text-green-400">"R-02"</span>
+    <span class="text-blue-400">type:</span> "total_amount_threshold"
+    <span class="text-blue-400">max_value:</span> <span class="text-yellow-400">500000</span>
+    <span class="text-blue-400">currency:</span> "THB"
+    <span class="text-blue-400">action:</span> "escalate_to_cfo"
+
+  <span class="text-slate-500"># R-03: Vendor Verification</span>
+  - <span class="text-blue-400">id:</span> <span class="text-green-400">"R-03"</span>
+    <span class="text-blue-400">type:</span> "vendor_entity_match"
+    <span class="text-blue-400">strict_mode:</span> <span class="text-pink-400">true</span>
+    <span class="text-blue-400">severity:</span> "High"
+
+  <span class="text-slate-500"># R-04: Item Scope</span>
+  - <span class="text-blue-400">id:</span> <span class="text-green-400">"R-04"</span>
+    <span class="text-blue-400">type:</span> "sku_lookup"
+    <span class="text-blue-400">source:</span> "vector_db_line_items"
+
+  <span class="text-slate-500"># R-05: Contract Validity Period</span>
+  - <span class="text-blue-400">id:</span> <span class="text-green-400">"R-05"</span>
+    <span class="text-blue-400">type:</span> "date_range_check"
+    <span class="text-blue-400">reference:</span> "contract_effective_dates"
+</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+             <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-sm">1</span>
+                <h3 class="text-xl font-bold text-slate-900">ERP Data Ingestion <span class="text-slate-400 text-base font-normal">| ข้อมูล PO ที่วิ่งเข้ามา (JSON)</span></h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <div class="lg:col-span-4 space-y-4">
+                        <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wide">Input Requirements</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            ระบบต้องการข้อมูล PO (Purchase Order) จาก ERP (เช่น SAP, Oracle, MS Dynamics) เพื่อนำมาตรวจสอบเทียบกับสัญญา
+                        </p>
+                        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 mb-2">Key Fields Required:</p>
+                            <ul class="text-xs text-blue-700 space-y-1 list-disc list-inside">
+                                <li><strong>PO Header:</strong> Number, Date, Vendor ID, Currency</li>
+                                <li><strong>Line Items:</strong> SKU Code, Description, Quantity</li>
+                                <li><strong>Commercials:</strong> Unit Price, Total Amount</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8">
+                        <div class="rounded-xl border border-slate-200 bg-slate-50 relative">
+                             <div class="absolute top-0 right-0 px-3 py-1 bg-slate-200 rounded-bl-xl text-[10px] font-bold text-slate-500 uppercase">Incoming Payload</div>
+                             <div class="p-5 font-mono text-xs text-slate-700 overflow-x-auto">
+<pre>
+{
+  <span class="font-bold text-purple-600">"source_system"</span>: "SAP_S4HANA",
+  <span class="font-bold text-purple-600">"transaction_id"</span>: "TXN-99887766",
+  <span class="font-bold text-purple-600">"purchase_order"</span>: {
+    <span class="font-bold text-blue-600">"po_number"</span>: "PO-OVT-2025-002",
+    <span class="font-bold text-blue-600">"po_date"</span>: "2025-02-15T10:00:00Z",
+    <span class="font-bold text-blue-600">"vendor"</span>: {
+      "id": "V-10023",
+      "name": "Thai Packaging Solutions Co., Ltd.",
+      "tax_id": "0105558192xxx"
+    },
+    <span class="font-bold text-blue-600">"currency"</span>: "THB",
+    <span class="font-bold text-blue-600">"items"</span>: [
+      {
+        "line_id": 1,
+        "sku": "PKG-CAN-400G",
+        "description": "Metal Can 400g Ovaltine Standard",
+        "quantity": 30000,
+        "unit_of_measure": "EA",
+        <span class="bg-amber-100 px-1 rounded">"unit_price": 12.80,</span>  <span class="text-slate-400">// Highlight: This triggers R-01</span>
+        "total_amount": 384000.00
+      }
+    ],
+    <span class="font-bold text-blue-600">"total_po_value"</span>: 384000.00
+  }
+}
+</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">2</span>
+                <h3 class="text-xl font-bold text-slate-900">RAG Document Maintenance <span class="text-slate-400 text-base font-normal">| การจัดการความรู้ใน Vector DB</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wide mb-4">Ingestion Process (Loading)</h4>
+                    <div class="relative pl-8 space-y-6 before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
+                        <div class="relative">
+                            <span class="absolute -left-[29px] top-0 h-6 w-6 bg-slate-100 rounded-full text-[10px] font-bold flex items-center justify-center text-slate-500">1</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900">PDF Parsing (OCR)</p>
+                                <p class="text-xs text-slate-500 mt-1">Extract text, tables, and headers from <span class="font-mono bg-slate-50 px-1">contract.pdf</span>.</p>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[29px] top-0 h-6 w-6 bg-indigo-100 rounded-full text-[10px] font-bold flex items-center justify-center text-indigo-600">2</span>
+                            <div>
+                                <p class="text-sm font-bold text-indigo-700">Chunking & Metadata</p>
+                                <p class="text-xs text-slate-500 mt-1">Split text into smaller pieces (500-1000 tokens) and tag with metadata (Vendor, Date).</p>
+                            </div>
+                        </div>
+                         <div class="relative">
+                            <span class="absolute -left-[29px] top-0 h-6 w-6 bg-slate-100 rounded-full text-[10px] font-bold flex items-center justify-center text-slate-500">3</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900">Vector Embedding</p>
+                                <p class="text-xs text-slate-500 mt-1">Convert text to vector array <span class="font-mono text-[10px]">[0.02, -0.15, ...]</span> via OpenAI/Cohere.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative">
+                     <div class="absolute top-4 right-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Vector Database View</div>
+                     <h4 class="text-sm font-bold text-slate-700 uppercase tracking-wide mb-4">Stored Chunk Example</h4>
+                    
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">
+                                DOC
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Vector ID: vec_9982aa</p>
+                                <p class="text-xs text-slate-800 font-serif leading-relaxed italic bg-slate-50 p-2 rounded border border-slate-100">
+                                    "...Price Schedule A: For Item <span class="bg-yellow-100">PKG-CAN-400G</span>, the agreed unit price is <span class="bg-yellow-100">12.50 THB</span>. This price is fixed for the duration of the contract term..."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="h-px bg-slate-100"></div>
+
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Attached Metadata (Key for Retrieval)</p>
+                            <div class="flex flex-wrap gap-2 text-[10px] font-mono">
+                                <span class="px-2 py-1 rounded bg-blue-50 text-blue-700 border border-blue-100">vendor_id: "V-10023"</span>
+                                <span class="px-2 py-1 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">doc_type: "contract_main"</span>
+                                <span class="px-2 py-1 rounded bg-slate-100 text-slate-600 border border-slate-200">page: 6</span>
+                                <span class="px-2 py-1 rounded bg-purple-50 text-purple-700 border border-purple-100">valid_from: "2024-01-01"</span>
+                                <span class="px-2 py-1 rounded bg-purple-50 text-purple-700 border border-purple-100">valid_to: "2024-12-31"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                     <p class="text-[10px] text-slate-400 mt-3 text-center">
+                        *ระบบจะใช้ Metadata เหล่านี้ในการ Filter ก่อน Search เพื่อความแม่นยำ (Hybrid Search)
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-sm">3</span>
+                <h3 class="text-xl font-bold text-slate-900">Decision Center <span class="text-slate-400 text-base font-normal">| หน้าจอสำหรับ CFO</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-4 space-y-3">
+                    <div class="bg-white p-3 rounded-xl border border-slate-900 shadow-md cursor-pointer">
+                        <div class="flex justify-between">
+                            <span class="font-bold text-slate-800 text-sm">PO-OVT-2025-002</span>
+                            <span class="text-[10px] bg-amber-100 text-amber-700 px-2 rounded-full">Med</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-1">R-01 Price Deviation (+2.4%)</p>
+                    </div>
+                    <div class="bg-white/60 p-3 rounded-xl border border-slate-200 hover:bg-white cursor-pointer transition">
+                         <div class="flex justify-between">
+                            <span class="font-bold text-slate-800 text-sm">PO-OVT-2025-003</span>
+                            <span class="text-[10px] bg-red-100 text-red-700 px-2 rounded-full">High</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-1">R-02 CFO Threshold</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h4 class="font-bold text-slate-900">Review: PO-OVT-2025-002</h4>
+                            <p class="text-xs text-slate-500">Detected: <span class="text-amber-600 font-semibold">Unit Price mismatch vs Contract</span></p>
+                        </div>
+                        <button class="text-xs bg-slate-100 px-3 py-1 rounded-lg hover:bg-slate-200 transition">View PDF Evidence</button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                            <p class="text-[10px] uppercase text-slate-500 font-bold">Contract Price</p>
+                            <p class="text-xl font-bold text-slate-700 mt-1">฿12.50</p>
+                            <p class="text-[10px] text-slate-400">Ref: Page 6</p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100 text-center">
+                            <p class="text-[10px] uppercase text-red-500 font-bold">PO Requested</p>
+                            <p class="text-xl font-bold text-red-600 mt-1">฿12.80</p>
+                            <p class="text-[10px] text-red-400">+2.4% Variance</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                         <textarea class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none" rows="2" placeholder="Reason for approval/rejection (Required)..."></textarea>
+                         <div class="flex gap-3">
+                             <button class="flex-1 bg-slate-900 text-white py-2 rounded-xl text-sm font-bold hover:bg-slate-800 transition">Approve (Exception)</button>
+                             <button class="flex-1 bg-white border border-slate-200 text-slate-700 py-2 rounded-xl text-sm font-bold hover:bg-slate-50 transition">Reject</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="h-6 w-6 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-[10px]">TH8</div>
+                <span class="text-xs text-slate-500 font-medium">© 2026 TH8.AI</span>
+            </div>
+            <div class="text-xs text-slate-400">
+                System Build Map v2.0
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

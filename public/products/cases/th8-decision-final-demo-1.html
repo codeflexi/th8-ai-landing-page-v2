@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Ep.2: The Glass Box Operation | TH8.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Sarabun', sans-serif; line-height: 1.8; color: #334155; background-color: #f8fafc; }
+        h1, h2, h3, h4, .font-head { font-family: 'Prompt', sans-serif; }
+        
+        /* Mockup Window Styling */
+        .mockup-window {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .mockup-header {
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .browser-dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; }
+        
+        /* Table Styles */
+        .case-table th { font-family: 'Prompt', sans-serif; font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 600; padding: 0.75rem 1rem; text-align: left; background: #f8fafc; }
+        .case-table td { padding: 1rem; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
+        .case-row:hover { background-color: #fef2f2; cursor: pointer; transition: background-color 0.2s; }
+        
+        /* Audit Line */
+        .audit-line { position: absolute; left: 1.25rem; top: 2rem; bottom: -1rem; width: 2px; background: #e2e8f0; z-index: 0; }
+        .audit-item:last-child .audit-line { display: none; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-black rounded flex items-center justify-center font-bold text-white text-sm font-head">T8</div>
+                <span class="font-bold font-head tracking-tight text-slate-900">TH8.AI Insights</span>
+            </div>
+            <a href="#" class="text-sm font-head text-slate-500 hover:text-red-600 transition-colors">
+                ← Back to Series
+            </a>
+        </div>
+    </nav>
+
+    <header class="pt-16 pb-12 px-6 max-w-4xl mx-auto text-center">
+        <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider mb-4 font-head">
+            Governance Series: Episode 2
+        </span>
+        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6 text-slate-900 font-head">
+            เปิดกล่องดำการจัดซื้อ: <br>
+            <span class="text-red-600">โปร่งใส (Glass Box)</span> ตั้งแต่ต้นจนจบ
+        </h1>
+        <p class="text-xl text-slate-500 font-light max-w-2xl mx-auto">
+            พาดูหน้าจอการทำงานจริง: เมื่อ AI ช่วยกรองงานให้ CFO เหลือแค่ "การตัดสินใจ" ที่สำคัญจริงๆ
+        </p>
+    </header>
+
+    <article class="max-w-5xl mx-auto px-6 pb-24 space-y-20">
+        
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold font-head text-lg">1</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 font-head">The "Panic-Free" Inbox</h2>
+                    <p class="text-slate-500">แทนที่ CFO จะต้องไล่เช็คอีเมลเป็นร้อยฉบับ ระบบสรุปเฉพาะ **"เคสที่มีปัญหา" (Pending Cases)** มาให้ในหน้าเดียว</p>
+                </div>
+            </div>
+
+            <div class="mockup-window">
+                <div class="mockup-header">
+                    <div class="browser-dot bg-red-400"></div><div class="browser-dot bg-yellow-400"></div><div class="browser-dot bg-green-400"></div>
+                    <div class="ml-4 text-xs text-slate-400 font-mono bg-white px-2 py-1 rounded border border-slate-200">th8.ai/dashboard/pending</div>
+                </div>
+                <div class="p-6 bg-white min-h-[300px]">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-lg text-slate-800">Action Required (3)</h3>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">Filter: All Risks</span>
+                            <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">Sort: Severity</span>
+                        </div>
+                    </div>
+                    
+                    <table class="w-full case-table">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Vendor</th>
+                                <th>Issue Detected</th>
+                                <th>Value Risk</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="case-row bg-red-50/50 border-l-4 border-l-red-500">
+                                <td class="font-mono font-bold text-slate-700">#CASE-2025-089</td>
+                                <td>Thai Packing Co.</td>
+                                <td>
+                                    <span class="inline-flex items-center gap-1 text-red-600 font-bold text-xs bg-white border border-red-200 px-2 py-1 rounded">
+                                        <i data-lucide="trending-up" class="w-3 h-3"></i> Price > Contract
+                                    </span>
+                                </td>
+                                <td class="font-bold text-red-600">฿ 25,000</td>
+                                <td><span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded">Pending CFO</span></td>
+                                <td class="text-right"><button class="text-xs bg-slate-900 text-white px-3 py-1.5 rounded hover:bg-slate-700 transition">Review</button></td>
+                            </tr>
+                            <tr class="case-row">
+                                <td class="font-mono text-slate-500">#CASE-2025-088</td>
+                                <td>Office Mate</td>
+                                <td><span class="text-slate-500 text-xs">Duplicate Invoice</span></td>
+                                <td class="text-slate-500">฿ 4,200</td>
+                                <td><span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Pending AP</span></td>
+                                <td class="text-right"><button class="text-xs border border-slate-300 text-slate-600 px-3 py-1.5 rounded hover:bg-slate-50 transition">Review</button></td>
+                            </tr>
+                            <tr class="case-row">
+                                <td class="font-mono text-slate-500">#CASE-2025-087</td>
+                                <td>Logistics Partner</td>
+                                <td><span class="text-slate-500 text-xs">Missing Tax ID</span></td>
+                                <td class="text-slate-500">-</td>
+                                <td><span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Pending Vendor</span></td>
+                                <td class="text-right"><button class="text-xs border border-slate-300 text-slate-600 px-3 py-1.5 rounded hover:bg-slate-50 transition">Review</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold font-head text-lg">2</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 font-head">AI-Powered Investigation</h2>
+                    <p class="text-slate-500">เมื่อกดเข้ามาดูเคส... ระบบจะ **"กางหลักฐาน"** ให้ดูทันที (Split View) ไม่ต้องไปรื้อหาไฟล์สัญญาเอง</p>
+                </div>
+            </div>
+
+            <div class="mockup-window">
+                <div class="mockup-header justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="browser-dot bg-slate-300"></div>
+                        <span class="font-bold text-sm text-slate-700">Review Case: #CASE-2025-089</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded font-bold">Risk: High</span>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row h-[500px]">
+                    
+                    <div class="w-full md:w-2/3 bg-slate-100 p-4 border-r border-slate-200 overflow-y-auto">
+                        <div class="flex justify-center mb-4">
+                            <div class="bg-white border border-slate-300 rounded-lg shadow-sm flex text-xs overflow-hidden">
+                                <button class="px-4 py-2 bg-slate-800 text-white font-bold">Compare View</button>
+                                <button class="px-4 py-2 text-slate-600 hover:bg-slate-50">Invoice Only</button>
+                                <button class="px-4 py-2 text-slate-600 hover:bg-slate-50">Contract Only</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="flex-1 bg-white shadow-md p-4 min-h-[400px] relative">
+                                <span class="absolute top-0 right-0 bg-slate-200 text-slate-600 text-[10px] px-2 py-1 font-bold">Reference: Contract 2024</span>
+                                <div class="opacity-50 text-[10px] space-y-2 mt-4 font-serif">
+                                    <div class="h-2 bg-slate-200 w-3/4"></div>
+                                    <div class="h-2 bg-slate-200 w-full"></div>
+                                    <div class="h-2 bg-slate-200 w-5/6"></div>
+                                    <div class="bg-yellow-100 border border-yellow-300 p-2 rounded mt-4">
+                                        <p class="font-bold text-slate-800">4.1 Price Agreement</p>
+                                        <p>Unit price for "Ergonomic Chair" is fixed at <strong>3,000 THB</strong>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex-1 bg-white shadow-md p-4 min-h-[400px] relative border-2 border-red-500/20">
+                                <span class="absolute top-0 right-0 bg-blue-100 text-blue-600 text-[10px] px-2 py-1 font-bold">Incoming Invoice</span>
+                                <div class="text-xs font-mono mt-4 space-y-4">
+                                    <div class="flex justify-between border-b pb-2">
+                                        <span class="font-bold">INVOICE #INV-001</span>
+                                        <span>05 Jan 2026</span>
+                                    </div>
+                                    <table class="w-full text-left">
+                                        <tr class="text-[10px] text-slate-400"><th>Item</th><th class="text-right">Price</th></tr>
+                                        <tr>
+                                            <td>Ergonomic Chair</td>
+                                            <td class="text-right font-bold text-red-600 bg-red-50 px-1 rounded">3,500</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-1/3 bg-white p-6 flex flex-col">
+                        <h4 class="text-sm font-bold text-slate-400 uppercase mb-4">AI Analysis</h4>
+                        
+                        <div class="bg-red-50 border border-red-100 rounded-xl p-4 mb-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600"></i>
+                                <span class="font-bold text-red-700">Violation Detected</span>
+                            </div>
+                            <p class="text-sm text-slate-700 mb-2">
+                                ราคาใน Invoice (3,500) สูงกว่าสัญญา (3,000) อยู่ <strong>+16.6%</strong>
+                            </p>
+                            <p class="text-xs text-slate-500">
+                                *Threshold ที่ยอมรับได้คือ +/- 5%
+                            </p>
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-auto">
+                            <span class="text-xs font-bold text-blue-600 uppercase">Impact</span>
+                            <p class="text-2xl font-bold text-slate-900 mt-1">฿ 25,000</p>
+                            <p class="text-xs text-slate-500">Potential Loss (Total)</p>
+                        </div>
+
+                        <div class="mt-6 border-t border-slate-100 pt-6">
+                            <label class="block text-xs font-bold text-slate-700 mb-2">Decision Note (Required for Approval)</label>
+                            <textarea class="w-full border border-slate-300 rounded-lg p-2 text-sm mb-3 focus:ring-2 focus:ring-slate-900 focus:outline-none" rows="2" placeholder="Enter reason..."></textarea>
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <button class="w-full py-2.5 border border-slate-300 rounded-lg text-slate-700 font-bold hover:bg-slate-50 transition text-sm">
+                                    Reject
+                                </button>
+                                <button class="w-full py-2.5 bg-slate-900 text-white rounded-lg font-bold hover:bg-slate-800 transition shadow-lg text-sm">
+                                    Approve (Exception)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-10 h-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold font-head text-lg">3</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 font-head">Immutable Audit Trail</h2>
+                    <p class="text-slate-500">หลังจากตัดสินใจ ทุกอย่างจะถูกบันทึกเป็นเส้นเวลา (Timeline) ที่แก้ไขไม่ได้</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                <div class="relative pl-4">
+                    <div class="relative pl-8 pb-8 audit-item">
+                        <div class="audit-line"></div>
+                        <div class="absolute left-0 top-0 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200 text-slate-500">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono text-slate-400">10:00:05 AM</span>
+                            <h4 class="font-bold text-slate-800">System Received Invoice</h4>
+                            <p class="text-sm text-slate-600">Ingested from email (billing@thaipacking.com)</p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 pb-8 audit-item">
+                        <div class="audit-line"></div>
+                        <div class="absolute left-0 top-0 w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center border border-blue-200 text-blue-600">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono text-slate-400">10:00:08 AM</span>
+                            <h4 class="font-bold text-slate-800">AI Analysis & Rule Check</h4>
+                            <p class="text-sm text-slate-600">
+                                Executed <span class="font-mono bg-slate-100 px-1 rounded">check_price_variance</span> tool. <br>
+                                Result: <span class="text-red-600 font-bold">FAILED</span> (Delta +16.6%)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 pb-8 audit-item">
+                        <div class="audit-line"></div>
+                        <div class="absolute left-0 top-0 w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center border border-amber-200 text-amber-600">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono text-slate-400">10:45:00 AM</span>
+                            <h4 class="font-bold text-slate-800">CFO Decision: Approved with Exception</h4>
+                            <div class="bg-slate-50 border-l-4 border-slate-400 p-3 mt-2 rounded-r text-sm italic text-slate-600">
+                                "อนุมัติเนื่องจากเป็นงานด่วน แต่ให้ฝ่ายจัดซื้อต่อรองราคาใหม่ในรอบหน้า"
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2">Actor ID: user_cfo_01 | IP: 203.144.x.x</p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 audit-item">
+                        <div class="audit-line"></div>
+                        <div class="absolute left-0 top-0 w-10 h-10 bg-green-50 rounded-full flex items-center justify-center border border-green-200 text-green-600">
+                            <i data-lucide="database" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono text-slate-400">10:45:05 AM</span>
+                            <h4 class="font-bold text-slate-800">Synced to ERP</h4>
+                            <p class="text-sm text-slate-600">Status updated to 'Ready for Payment' in SAP.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-16 text-center">
+            <h3 class="text-2xl font-bold text-slate-900 mb-4 font-head">อยากเห็นข้อมูลของคุณในหน้าจอนี้ไหม?</h3>
+            <p class="text-slate-500 mb-8">เราสามารถทำ Pilot Demo ด้วยไฟล์ Invoice ย้อนหลังของคุณได้ภายใน 3 วัน</p>
+            <button class="bg-slate-900 text-white px-8 py-3 rounded-full font-bold hover:bg-slate-800 transition shadow-lg font-head">
+                Book a Live Demo
+            </button>
+        </div>
+
+    </article>
+
+    <footer class="bg-white border-t border-slate-200 py-12 text-center text-sm text-slate-500">
+        <p>© 2026 TH8.AI | Enterprise Grade Governance Platform</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

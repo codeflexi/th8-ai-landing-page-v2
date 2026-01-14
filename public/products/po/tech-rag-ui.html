@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TH8 Procurement Decision Center – Evidence Panel (Audit-Grade)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html, body { font-family: "Prompt", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      /* simple modal */
+      .modal-backdrop { display:none; }
+      .modal-backdrop.show { display:flex; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <!-- PAGE WRAP -->
+    <div class="min-h-screen">
+      <!-- Top Bar -->
+      <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-semibold">TH8</div>
+            <div>
+              <div class="text-sm text-slate-500">Procurement Decision Center</div>
+              <div class="text-lg font-semibold leading-tight">Evidence Panel (RAG-as-Evidence)</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="hidden sm:inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-slate-200 bg-white">
+              <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+              Read-only / Audit-grade
+            </span>
+            <button class="text-sm px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50">
+              Export Evidence Log
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Context Header -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs px-2 py-1 rounded-md bg-slate-900 text-white">CASE</span>
+                <span class="mono text-sm text-slate-700">CASE-PO-OVT-2025-006</span>
+                <span class="text-xs px-2 py-1 rounded-md border border-slate-200 bg-slate-50 text-slate-700">Domain: Procurement</span>
+              </div>
+
+              <div class="text-2xl font-semibold">Evidence & Clause Review</div>
+
+              <div class="text-sm text-slate-600 leading-relaxed max-w-3xl">
+                หลักฐานที่แสดงในหน้านี้มาจาก <span class="font-medium">Audit Events (Immutable Fact)</span> เท่านั้น
+                — ระบบไม่ “สรุปคำตอบ” แทนคน แต่ให้เปิดดูเอกสาร/มาตราได้ตรงจุดเพื่อความรับผิดชอบและตรวจสอบย้อนกลับ
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="text-xs text-slate-500">Evidence Attached</div>
+                <div class="text-2xl font-semibold">2</div>
+              </div>
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="text-xs text-slate-500">Source</div>
+                <div class="text-sm font-semibold">vector_search</div>
+              </div>
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="text-xs text-slate-500">Policy</div>
+                <div class="text-sm font-semibold">PROCUREMENT-001</div>
+              </div>
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="text-xs text-slate-500">Last Attach</div>
+                <div class="text-sm font-semibold">2026-01-02 00:28</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Two-column layout -->
+        <section class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- LEFT: Evidence List -->
+          <div class="lg:col-span-7 space-y-6">
+            <!-- Evidence controls -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <div class="text-lg font-semibold">Evidence Items</div>
+                  <div class="text-sm text-slate-600">
+                    แสดงรายการหลักฐานที่ถูก <span class="font-medium">แนบ (EVIDENCE_ATTACHED)</span> ให้กับเคสนี้แล้ว
+                  </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <div class="relative">
+                    <input
+                      class="w-full sm:w-72 px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-slate-300"
+                      placeholder="ค้นหา doc / clause / keyword…"
+                      value=""
+                    />
+                    <div class="absolute right-3 top-2.5 text-slate-400 text-sm">⌘K</div>
+                  </div>
+                  <select class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm">
+                    <option>Sort: Highest Score</option>
+                    <option>Sort: Latest Attached</option>
+                    <option>Sort: Document</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700 inline-flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-slate-900"></span> Audit-only
+                </span>
+                <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700 inline-flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span> Clause Deep-link
+                </span>
+                <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700 inline-flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-600"></span> Score shown
+                </span>
+                <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700 inline-flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-amber-600"></span> Read-only UX
+                </span>
+              </div>
+            </div>
+
+            <!-- Evidence card 1 -->
+            <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-md bg-slate-900 text-white">EVIDENCE</span>
+                    <span class="text-xs px-2 py-1 rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                      Source: vector_search
+                    </span>
+                    <span class="text-xs px-2 py-1 rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                      Score: <span class="font-semibold text-emerald-700">0.72</span>
+                    </span>
+                  </div>
+
+                  <h3 class="mt-2 text-lg font-semibold leading-snug">
+                    Procurement Policy 2024 — <span class="mono text-slate-600">CL-4.2</span>
+                  </h3>
+
+                  <div class="mt-2 text-sm text-slate-600">
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                      <span><span class="text-slate-500">Doc ID:</span> <span class="mono">PROC-2024-STD</span></span>
+                      <span><span class="text-slate-500">Pages:</span> 12–13</span>
+                      <span class="truncate max-w-[28rem]">
+                        <span class="text-slate-500">URI:</span>
+                        <span class="mono">s3://policies/procurement_2024.pdf</span>
+                      </span>
+                    </div>
+                    <div class="mt-1 text-slate-500">
+                      Section Path: 4.Approval / 4.2 High Value Procurement
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-2 shrink-0">
+                  <button
+                    class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800"
+                    onclick="openViewer('PROC-2024-STD','CL-4.2','s3://policies/procurement_2024.pdf',12,13,'4.Approval / 4.2 High Value Procurement')"
+                  >
+                    Open PDF
+                  </button>
+                  <button
+                    class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm hover:bg-slate-50"
+                    onclick="openClause('CL-4.2')"
+                  >
+                    Copy Clause Link
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs text-slate-500 mb-2">Extracted Clause (read-only)</div>
+                <p class="text-sm leading-relaxed text-slate-800">
+                  Any procurement with total value exceeding <span class="font-semibold">200,000 THB</span>
+                  must be escalated for <span class="font-semibold">COO approval</span>.
+                </p>
+              </div>
+
+              <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="text-xs text-slate-500">
+                  Attached via audit event: <span class="mono">EVIDENCE_ATTACHED</span> • Actor: <span class="mono">SYSTEM</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700">No edit</span>
+                  <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700">Traceable</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Evidence card 2 -->
+            <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-md bg-slate-900 text-white">EVIDENCE</span>
+                    <span class="text-xs px-2 py-1 rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                      Source: vector_search
+                    </span>
+                    <span class="text-xs px-2 py-1 rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                      Score: <span class="font-semibold text-emerald-700">0.52</span>
+                    </span>
+                  </div>
+
+                  <h3 class="mt-2 text-lg font-semibold leading-snug">
+                    Procurement Policy 2024 — <span class="mono text-slate-600">CL-3.1</span>
+                  </h3>
+
+                  <div class="mt-2 text-sm text-slate-600">
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                      <span><span class="text-slate-500">Doc ID:</span> <span class="mono">PROC-2024-STD</span></span>
+                      <span><span class="text-slate-500">Pages:</span> 9–9</span>
+                      <span class="truncate max-w-[28rem]">
+                        <span class="text-slate-500">URI:</span>
+                        <span class="mono">s3://policies/procurement_2024.pdf</span>
+                      </span>
+                    </div>
+                    <div class="mt-1 text-slate-500">
+                      Section Path: 3.Risk / 3.1 SLA Risk
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-2 shrink-0">
+                  <button
+                    class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800"
+                    onclick="openViewer('PROC-2024-STD','CL-3.1','s3://policies/procurement_2024.pdf',9,9,'3.Risk / 3.1 SLA Risk')"
+                  >
+                    Open PDF
+                  </button>
+                  <button
+                    class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm hover:bg-slate-50"
+                    onclick="openClause('CL-3.1')"
+                  >
+                    Copy Clause Link
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs text-slate-500 mb-2">Extracted Clause (read-only)</div>
+                <p class="text-sm leading-relaxed text-slate-800">
+                  Procurement requests approaching SLA deadline within <span class="font-semibold">24 hours</span>
+                  must be prioritized.
+                </p>
+              </div>
+
+              <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="text-xs text-slate-500">
+                  Attached via audit event: <span class="mono">EVIDENCE_ATTACHED</span> • Actor: <span class="mono">SYSTEM</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700">No edit</span>
+                  <span class="text-xs px-2 py-1 rounded-full border border-slate-200 bg-white text-slate-700">Traceable</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Empty state example (for demo toggles) -->
+            <div class="hidden bg-white border border-slate-200 rounded-2xl p-10 text-center">
+              <div class="mx-auto h-12 w-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-lg font-semibold">E</div>
+              <div class="mt-4 text-lg font-semibold">ยังไม่มี Evidence ที่ถูกแนบ</div>
+              <div class="mt-2 text-sm text-slate-600">
+                ให้ใช้ฟังก์ชัน “Suggest Evidence” แล้วแนบเป็น <span class="mono">EVIDENCE_ATTACHED</span> ก่อน
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Audit facts + lightweight viewer -->
+          <div class="lg:col-span-5 space-y-6">
+            <!-- Audit Fact Card -->
+            <aside class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-lg font-semibold">Audit Fact</div>
+                  <div class="text-sm text-slate-600">
+                    Evidence ที่แสดงมาจากเหตุการณ์ <span class="mono">EVIDENCE_ATTACHED</span> ใน audit timeline เท่านั้น
+                  </div>
+                </div>
+                <span class="text-xs px-2 py-1 rounded-md border border-slate-200 bg-slate-50 text-slate-700">
+                  Immutable
+                </span>
+              </div>
+
+              <div class="mt-4 space-y-3">
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="text-xs text-slate-500">Latest event</div>
+                  <div class="mt-1 flex items-center justify-between gap-3">
+                    <div class="font-semibold">EVIDENCE_ATTACHED</div>
+                    <div class="text-xs text-slate-500">2026-01-02 00:28</div>
+                  </div>
+                  <div class="mt-2 text-sm text-slate-700">
+                    Actor: <span class="mono">SYSTEM</span> • Source: <span class="mono">vector_search</span>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                  <div class="text-xs text-slate-500">Policy reference</div>
+                  <div class="mt-1 flex items-center justify-between gap-3">
+                    <div class="font-semibold">PROCUREMENT-001</div>
+                    <div class="text-xs text-slate-500">Version: v3</div>
+                  </div>
+                  <div class="mt-2 text-sm text-slate-700">
+                    การอ้างอิง policy เป็นค่าคงที่ใน event payload (ไม่ derive จาก backend)
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5 pt-5 border-t border-slate-200">
+                <div class="text-sm font-semibold">UX Notes (Demo)</div>
+                <ul class="mt-2 text-sm text-slate-700 space-y-2 list-disc pl-5">
+                  <li>หน้าจอนี้ <span class="font-medium">Read-only</span> (ไม่มีปุ่มแก้ไขหลักฐาน)</li>
+                  <li>ทุก item ต้องเปิด PDF/Clause ได้จริง (deep link)</li>
+                  <li>Score แสดงเพื่อ “จัดลำดับ” ไม่ใช่ความจริงแทนเอกสาร</li>
+                </ul>
+              </div>
+            </aside>
+
+            <!-- Mini “Viewer” (placeholder) -->
+            <aside class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-lg font-semibold">Document Preview</div>
+                  <div class="text-sm text-slate-600">
+                    สำหรับ demo: แสดงพื้นที่ preview / หรือเปิดในแท็บใหม่
+                  </div>
+                </div>
+                <button class="text-sm px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50" onclick="openViewer()">
+                  Open Viewer
+                </button>
+              </div>
+
+              <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs text-slate-500">Selected</div>
+                <div class="mt-1 font-semibold" id="selTitle">Procurement Policy 2024</div>
+                <div class="mt-1 text-sm text-slate-700">
+                  Clause: <span class="mono" id="selClause">CL-4.2</span> • Pages: <span id="selPages">12–13</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 truncate">
+                  URI: <span class="mono" id="selUri">s3://policies/procurement_2024.pdf</span>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                  <button
+                    class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800"
+                    onclick="openViewer('PROC-2024-STD','CL-4.2','s3://policies/procurement_2024.pdf',12,13,'4.Approval / 4.2 High Value Procurement')"
+                  >
+                    View PDF
+                  </button>
+                  <button
+                    class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm hover:bg-slate-50"
+                    onclick="openClause('CL-4.2')"
+                  >
+                    Clause Link
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-4 text-xs text-slate-500 leading-relaxed">
+                หมายเหตุ: ใน implementation (Vue) ปุ่ม “Open PDF” ควรเปิด URL ที่ backend สร้างให้ (เช่น signed URL หรือ proxy route)
+                และรองรับการเลื่อนไปหน้าที่ระบุ (page_start/page_end) เพื่อให้ auditor ตรวจสอบได้เร็ว
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-slate-200 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-600 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>TH8.AI Demo • Evidence is traceable to audit events • No AI-generated “answers”</div>
+          <div class="mono text-xs text-slate-500">/api/audit/case/{id} → derive UI state</div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Modal Viewer -->
+    <div id="viewerBackdrop" class="modal-backdrop fixed inset-0 z-50 items-center justify-center bg-black/50 p-4">
+      <div class="w-full max-w-5xl rounded-2xl bg-white shadow-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-200 flex items-start justify-between gap-4">
+          <div class="min-w-0">
+            <div class="text-sm text-slate-500">Document Viewer (demo)</div>
+            <div class="text-lg font-semibold truncate" id="viewerTitle">Procurement Policy 2024</div>
+            <div class="mt-1 text-sm text-slate-700">
+              Doc: <span class="mono" id="viewerDoc">PROC-2024-STD</span>
+              • Clause: <span class="mono" id="viewerClause">CL-4.2</span>
+              • Pages: <span id="viewerPages">12–13</span>
+            </div>
+            <div class="mt-1 text-xs text-slate-500 truncate">
+              URI: <span class="mono" id="viewerUri">s3://policies/procurement_2024.pdf</span>
+            </div>
+          </div>
+          <button class="px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-sm" onclick="closeViewer()">
+            Close
+          </button>
+        </div>
+
+        <div class="p-5">
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div class="text-xs text-slate-500 mb-2">Preview placeholder</div>
+            <div class="text-sm text-slate-700 leading-relaxed">
+              ใน demo นี้ใช้ placeholder แทน PDF viewer จริง<br />
+              ใน implementation แนะนำ:
+              <ul class="list-disc pl-6 mt-2 space-y-1">
+                <li>เปิด PDF ในแท็บใหม่ หรือ embedded viewer</li>
+                <li>รองรับ “jump to page” ด้วย page_start</li>
+                <li>รองรับ deep-link ไป clause_id (ถ้ามี mapping)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="text-xs text-slate-500">
+              Action: Read-only • No annotations stored here (future: EVIDENCE_NOTE_ADDED event)
+            </div>
+            <div class="flex gap-2">
+              <button class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800" onclick="copyText('OpenPDF:' + document.getElementById('viewerUri').innerText)">
+                Copy PDF URI
+              </button>
+              <button class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm hover:bg-slate-50" onclick="copyText('Clause:' + document.getElementById('viewerClause').innerText)">
+                Copy Clause ID
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
+      <div class="px-4 py-3 rounded-xl bg-slate-900 text-white text-sm shadow-lg">
+        Copied
+      </div>
+    </div>
+
+    <script>
+      function openViewer(docId, clauseId, uri, pStart, pEnd, sectionPath) {
+        const backdrop = document.getElementById("viewerBackdrop");
+        backdrop.classList.add("show");
+
+        // update selected summary (right panel)
+        if (docId) document.getElementById("selTitle").innerText = "Procurement Policy 2024";
+        if (clauseId) document.getElementById("selClause").innerText = clauseId;
+        if (pStart != null && pEnd != null) document.getElementById("selPages").innerText = `${pStart}–${pEnd}`;
+        if (uri) document.getElementById("selUri").innerText = uri;
+
+        // update modal fields
+        if (docId) document.getElementById("viewerDoc").innerText = docId;
+        if (clauseId) document.getElementById("viewerClause").innerText = clauseId;
+        if (pStart != null && pEnd != null) document.getElementById("viewerPages").innerText = `${pStart}–${pEnd}`;
+        if (uri) document.getElementById("viewerUri").innerText = uri;
+      }
+
+      function closeViewer() {
+        document.getElementById("viewerBackdrop").classList.remove("show");
+      }
+
+      function openClause(clauseId) {
+        // demo: copy a deep link pattern (future UI)
+        const deepLink = `${location.origin}${location.pathname}#clause=${encodeURIComponent(clauseId)}`;
+        copyText(deepLink);
+      }
+
+      function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard"));
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.querySelector("div").innerText = msg;
+        t.classList.remove("hidden");
+        setTimeout(() => t.classList.add("hidden"), 1400);
+      }
+
+      // close modal on backdrop click (safe demo)
+      document.getElementById("viewerBackdrop").addEventListener("click", (e) => {
+        if (e.target.id === "viewerBackdrop") closeViewer();
+      });
+    </script>
+  </body>
+</html>

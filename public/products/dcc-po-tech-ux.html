@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TH8.AI – Procurement Decision Center (Demo Map)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        html, body { font-family: "Prompt", sans-serif; }
+        /* Custom Scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-slate-900 selection:text-white pb-20">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-slate-900/20">TH8</div>
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Procurement Decision Center</p>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">Demo Build Map <span class="text-slate-400 font-normal">|</span> Ovaltine Dataset</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] font-medium">
+                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">Policy v1.0</span>
+                <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">FMCG / Mfg</span>
+                <span class="px-3 py-1 rounded-full bg-red-50 text-red-700 border border-red-100 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span> Ovaltine
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-12">
+
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-1.447-.894L15 7m0 13V7m0 0L9 17"></path></svg>
+                        End-to-End Data Pipeline
+                    </h2>
+                    <p class="text-sm text-slate-500 mt-1">แผนที่การไหลของข้อมูล: ตั้งแต่รับเอกสาร จนถึงการตรวจสอบย้อนหลัง (Map for Dev & Biz)</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Reset State</button>
+                    <button class="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">Replay Demo</button>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-slate-50 rounded-xl border border-slate-200 -z-10 group-hover:shadow-md transition"></div>
+                        <div class="p-4">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Input</span>
+                            <div class="font-bold text-slate-800 mt-1">Contract PDF</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Raw File Ingestion</div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 hidden md:block">→</div>
+                        <div class="absolute inset-0 bg-white rounded-xl border border-slate-200 -z-10 group-hover:shadow-md transition"></div>
+                        <div class="p-4">
+                            <span class="text-[10px] uppercase tracking-widest text-blue-600 font-bold">Phase 1</span>
+                            <div class="font-bold text-slate-800 mt-1">Evidence Extract</div>
+                            <div class="text-[10px] text-slate-500 mt-1">OCR / Snippets</div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 hidden md:block">→</div>
+                        <div class="absolute inset-0 bg-white rounded-xl border border-slate-200 -z-10 group-hover:shadow-md transition"></div>
+                        <div class="p-4">
+                            <span class="text-[10px] uppercase tracking-widest text-blue-600 font-bold">Phase 1</span>
+                            <div class="font-bold text-slate-800 mt-1">Policy Engine</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Rule Violation Check</div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 hidden md:block">→</div>
+                        <div class="absolute inset-0 bg-amber-50 rounded-xl border border-amber-200 -z-10 group-hover:shadow-md transition"></div>
+                        <div class="p-4">
+                            <span class="text-[10px] uppercase tracking-widest text-amber-700 font-bold">Phase 2</span>
+                            <div class="font-bold text-slate-800 mt-1">Pending Case</div>
+                            <div class="text-[10px] text-amber-800/70 mt-1">CFO Decision Queue</div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 hidden md:block">→</div>
+                        <div class="absolute inset-0 bg-white rounded-xl border border-slate-200 -z-10 group-hover:shadow-md transition"></div>
+                        <div class="p-4">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Phase 3</span>
+                            <div class="font-bold text-slate-800 mt-1">Dashboard</div>
+                            <div class="text-[10px] text-slate-500 mt-1">KPIs from Data</div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 hidden md:block">→</div>
+                        <div class="absolute inset-0 bg-white rounded-xl border border-slate-200 -z-10 group-hover:shadow-md transition"></div>
+                        <div class="p-4">
+                            <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Phase 4</span>
+                            <div class="font-bold text-slate-800 mt-1">Audit Trail</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Immutable Log</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">0</span>
+                <h3 class="text-xl font-bold text-slate-900">Demo Scenarios & Policy <span class="text-slate-400 text-base font-normal">| กำหนดเรื่องให้จบก่อนทำระบบ</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">6 Scenarios (Ovaltine Dataset)</h4>
+                        <button class="text-xs text-blue-600 font-semibold hover:underline">Reload Dataset</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-slate-800">A · Clean pass</span>
+                                <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Auto</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 space-y-1">
+                                <p>PO-OVT-2025-001</p>
+                                <p>PKG-CAN-400G · ฿250,000</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-slate-800">B · Price deviation</span>
+                                <span class="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Medium</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 space-y-1">
+                                <p>PO-OVT-2025-002</p>
+                                <p>PKG-CAN-400G · ฿384,000</p>
+                                <p class="text-amber-600 font-medium">Trigger: R-01 (+2.4%)</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-red-500 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-slate-800">C · High price + threshold</span>
+                                <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">High</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 space-y-1">
+                                <p>PO-OVT-2025-003</p>
+                                <p>RAW-MALT-POWDER · ฿552,000</p>
+                                <p class="text-red-600 font-medium">Trigger: R-01 (+8.2%), R-02</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-red-500 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-slate-800">D · Vendor mismatch</span>
+                                <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">High</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 space-y-1">
+                                <p>PO-OVT-2025-004</p>
+                                <p>PKG-LABEL-400G · ฿160,000</p>
+                                <p class="text-red-600 font-medium">Trigger: R-03</p>
+                            </div>
+                        </div>
+                        
+                         <div class="bg-white p-4 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-slate-800">E · Item out of scope</span>
+                                <span class="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Medium</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 space-y-1">
+                                <p>PO-OVT-2025-005</p>
+                                <p>PKG-CAN-800G · ฿185,000</p>
+                                <p class="text-amber-600 font-medium">Trigger: R-04</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border-l-4 border-red-500 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-slate-800">F · Contract expired</span>
+                                <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">High</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600 space-y-1">
+                                <p>PO-OVT-2026-001</p>
+                                <p>PKG-CAN-400G · ฿187,500</p>
+                                <p class="text-red-600 font-medium">Trigger: R-05</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                    <h4 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-4">Policy v1.0 Config</h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-800">R-01 Price tolerance</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1">≤ +1% Pass · +1-5% Med · >5% High</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-800">R-02 CFO threshold</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1">> ฿500,000 → Pending (Med)</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-800">R-03 Vendor mismatch</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1">Vendor ≠ คู่สัญญา → High</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-800">R-04 Item out of scope</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1">SKU ไม่อยู่ในสัญญา → Med</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-800">R-05 Validity</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-1">PO date นอกช่วงสัญญา → High</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-sm">1</span>
+                <h3 class="text-xl font-bold text-slate-900">Evidence + Policy Engine <span class="text-slate-400 text-base font-normal">| ทำให้ Pending เกิดจาก "หลักฐานจริง"</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"></path></svg>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Input Processing</span>
+                    <h4 class="text-lg font-bold text-slate-900 mt-1">Evidence Extract</h4>
+                    <p class="text-xs text-slate-500 mb-4">From: C-OVALTINE-RAW-2024.pdf</p>
+
+                    <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-3 font-mono text-xs">
+                        <div class="flex items-start gap-3">
+                            <div class="w-1 h-full bg-blue-400 rounded-full"></div>
+                            <div>
+                                <p class="text-slate-400">Vendor Identity</p>
+                                <p class="font-semibold text-slate-800">Thai Packaging Solutions Co., Ltd.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-1 h-full bg-blue-400 rounded-full"></div>
+                            <div>
+                                <p class="text-slate-400">Validity Period (Page 2)</p>
+                                <p class="font-semibold text-slate-800">2024-01-01 → 2024-12-31</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-1 h-full bg-blue-400 rounded-full"></div>
+                            <div>
+                                <p class="text-slate-400">Price Table Snippet (Page 6)</p>
+                                <p class="font-semibold text-slate-800">"Metal Can 400g – Unit Price ฿12.50"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 relative">
+                    <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">System Output</span>
+                    <h4 class="text-lg font-bold text-slate-900 mt-1">Policy Violation Object</h4>
+                    <p class="text-xs text-slate-500 mb-4">Example: PO-OVT-2025-002</p>
+
+                    <div class="bg-amber-50 rounded-xl border border-amber-200 p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                            <span class="text-xs font-bold text-amber-800 uppercase">Violation Detected</span>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs border-b border-amber-200/50 pb-2">
+                                <span class="text-amber-900/60">Rule ID</span>
+                                <span class="font-bold text-amber-900">R-01 (Price Deviation)</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs border-b border-amber-200/50 pb-2">
+                                <span class="text-amber-900/60">Severity</span>
+                                <span class="font-bold bg-white px-2 py-0.5 rounded text-amber-700 border border-amber-200">Medium</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs border-b border-amber-200/50 pb-2">
+                                <span class="text-amber-900/60">Calculation</span>
+                                <span class="font-bold text-amber-900">฿12.50 → ฿12.80 (+2.4%)</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-amber-900/60">Evidence Ref</span>
+                                <a href="#" class="text-blue-600 underline font-medium">contract_ovaltine_raw.pdf (p.6)</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                         <p class="text-[10px] text-slate-400 font-mono bg-slate-900 text-slate-300 p-3 rounded-lg overflow-x-auto">
+                            {"rule":"R-01", "delta_pct":2.4, "delta_amt":9000, "evidence":{"page":6}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-sm">2</span>
+                <h3 class="text-xl font-bold text-slate-900">Decision Flow <span class="text-slate-400 text-base font-normal">| CFO ตัดสินใจบน "ข้อมูล + หลักฐาน"</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide">Pending Queue (2)</h4>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-xl border border-slate-900 shadow-md relative cursor-pointer">
+                        <div class="absolute -left-1 top-4 w-1 h-8 bg-slate-900 rounded-r"></div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-slate-800 text-sm">PO-OVT-2025-002</span>
+                            <span class="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Medium</span>
+                        </div>
+                        <p class="text-xs text-slate-600">R-01 Price Deviation (+2.4%)</p>
+                        <p class="text-[10px] text-slate-400 mt-2 flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Due in 8h
+                        </p>
+                    </div>
+
+                    <div class="bg-white/60 p-4 rounded-xl border border-slate-200 hover:bg-white transition cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-slate-800 text-sm">PO-OVT-2025-003</span>
+                            <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">High</span>
+                        </div>
+                        <p class="text-xs text-slate-600">R-02 CFO Threshold (>500k)</p>
+                         <p class="text-[10px] text-slate-400 mt-2 flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Due in 8h
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden flex flex-col">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-slate-900">Decision Center</h4>
+                            <p class="text-xs text-slate-500">Case: PO-OVT-2025-002</p>
+                        </div>
+                        <a href="#" class="text-xs flex items-center gap-1 text-blue-600 font-medium hover:underline">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            View Contract PDF (p.6)
+                        </a>
+                    </div>
+
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Comparison</h5>
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-4">
+                                <div class="flex justify-between items-end">
+                                    <div>
+                                        <p class="text-[10px] uppercase text-slate-500 font-semibold">Contract Price</p>
+                                        <p class="text-lg font-bold text-slate-700">฿ 12.50</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-[10px] uppercase text-slate-500 font-semibold">Requested</p>
+                                        <p class="text-lg font-bold text-red-600">฿ 12.80</p>
+                                    </div>
+                                </div>
+                                <div class="h-px bg-slate-200"></div>
+                                <div class="flex justify-between">
+                                    <span class="text-xs font-semibold text-slate-600">Delta Impact</span>
+                                    <span class="text-xs font-bold text-red-600">+2.4% (฿9,000 Total)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Action</h5>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 p-3 rounded-xl border-2 border-slate-900 bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="decision" checked class="text-slate-900 focus:ring-slate-900">
+                                    <div>
+                                        <span class="block text-sm font-bold text-slate-900">Approve with Exception</span>
+                                        <span class="block text-[10px] text-slate-500">One-time waiver (Price Exception)</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                                    <input type="radio" name="decision" class="text-slate-900 focus:ring-slate-900">
+                                    <div>
+                                        <span class="block text-sm font-semibold text-slate-600">Reject / Return</span>
+                                        <span class="block text-[10px] text-slate-400">Send back to procurement</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Reason (Mandatory)</label>
+                                <textarea class="w-full mt-1 p-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:outline-none" rows="2">อนุมัติครั้งเดียวเพื่อไม่กระทบแผนการผลิต แต่ให้จัดซื้อเจรจาราคาใน PO ถัดไป</textarea>
+                            </div>
+                            
+                            <button class="w-full mt-4 bg-slate-900 text-white text-sm font-bold py-2.5 rounded-xl hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">Submit Decision</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="h-8 w-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">3</span>
+                <h3 class="text-xl font-bold text-slate-900">Executive KPI <span class="text-slate-400 text-base font-normal">| ผลลัพธ์จากการตัดสินใจจริง</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Amount at Risk</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-2">฿ 1.47M</p>
+                    <p class="text-xs text-slate-400 mt-1">Σ pending PO totals</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Prevented Leakage</p>
+                    <p class="text-3xl font-bold text-emerald-600 mt-2">฿ 236k</p>
+                    <p class="text-xs text-slate-400 mt-1">From rejected deltas</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Auto-pass Rate</p>
+                    <p class="text-3xl font-bold text-blue-600 mt-2">17%</p>
+                    <p class="text-xs text-slate-400 mt-1">1/6 Cases (Demo)</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Decision SLA</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-2">80%</p>
+                    <p class="text-xs text-slate-400 mt-1">Within 8 hours</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="h-8 w-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">4</span>
+                    <h3 class="text-xl font-bold text-slate-900">Audit Trail <span class="text-slate-400 text-base font-normal">| ตรวจสอบย้อนหลัง</span></h3>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <div class="relative pl-6 space-y-8 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                        <div class="relative">
+                            <div class="absolute -left-[25px] top-1 h-3 w-3 rounded-full bg-slate-300 ring-4 ring-white"></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Policy Check Started</p>
+                                    <p class="text-xs text-slate-500">System evaluated PO vs Contract (v1.0)</p>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-mono mt-1 sm:mt-0">10:10:00</span>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[25px] top-1 h-3 w-3 rounded-full bg-slate-300 ring-4 ring-white"></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Evidence Extracted</p>
+                                    <div class="mt-2 text-xs bg-slate-50 border border-slate-200 rounded p-2 inline-block">
+                                        <span class="font-semibold">contract_ovaltine_raw.pdf (p.6)</span>
+                                        <br/>"Metal Can 400g – Unit Price ฿12.50"
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-mono mt-1 sm:mt-0">10:11:15</span>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[25px] top-1 h-3 w-3 rounded-full bg-amber-500 ring-4 ring-white"></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                                <div>
+                                    <p class="text-sm font-bold text-amber-700">Rule Violation Detected</p>
+                                    <p class="text-xs text-slate-600">R-01 Price Deviation (Medium)</p>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-mono mt-1 sm:mt-0">10:12:00</span>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[25px] top-1 h-3 w-3 rounded-full bg-slate-900 ring-4 ring-white"></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Decision Made (CFO)</p>
+                                    <p class="text-xs text-slate-600 mb-1">Status: <span class="font-semibold text-slate-900">Approve with Exception</span></p>
+                                    <p class="text-xs italic text-slate-500">"อนุมัติครั้งเดียวเพื่อไม่กระทบแผนการผลิต..."</p>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-mono mt-1 sm:mt-0">14:32:05</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4">
+                 <div class="flex items-center gap-3 mb-6">
+                    <span class="h-8 w-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">5</span>
+                    <h3 class="text-xl font-bold text-slate-900">Demo Script</h3>
+                </div>
+                
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sticky top-24">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">10-Minute Walkthrough</h4>
+                    <ol class="space-y-4">
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">1</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">Intro KPIs (1m)</p>
+                                <p class="text-xs text-slate-500">Show "Amount at Risk" to grab attention.</p>
+                            </div>
+                        </li>
+                         <li class="flex gap-3">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">2</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">The "Pass" Case (1m)</p>
+                                <p class="text-xs text-slate-500">PO-001 passed automatically. Efficiency.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">3</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">The Problem (2m)</p>
+                                <p class="text-xs text-slate-500">PO-002 Violation. Show Contract PDF side-by-side.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-slate-900 text-white text-xs font-bold flex items-center justify-center">4</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">The Solution (2m)</p>
+                                <p class="text-xs text-slate-500">CFO Decision with Reason. Submit.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="flex-shrink-0 h-6 w-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">5</span>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">The Outcome (2m)</p>
+                                <p class="text-xs text-slate-500">KPIs updated instantly. Audit trail generated.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="h-6 w-6 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-[10px]">TH8</div>
+                <span class="text-xs text-slate-500 font-medium">© 2026 TH8.AI</span>
+            </div>
+            <div class="flex gap-6 text-xs text-slate-500">
+                <span>Demo Build Map</span>
+                <span>Ovaltine Dataset</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -3,6 +3,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import Chart from 'chart.js/auto';
 
+const publicPath = import.meta.env.BASE_URL;
+
 const router = useRouter();
 const revenueChartCanvas = ref(null);
 const currentDateTag = ref('');
@@ -318,28 +320,30 @@ const viewAuditLog = () => alert("Navigating to Audit Trail system...");
                     </div>
                 </div>
 
-                <div class="mt-6">
-                    <a href="/demo_dashboard.html" target="_blank" class="group block bg-gradient-to-r from-slate-900/80 to-slate-800/50 border border-slate-800 hover:border-blue-500/50 p-4 rounded-2xl transition-all shadow-lg backdrop-blur-sm relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 blur-[50px] rounded-full group-hover:bg-blue-500/20 transition-all pointer-events-none"></div>
-                        <div class="flex items-center justify-between relative z-10">
-                            <div class="flex items-center gap-5">
-                                <div class="w-14 h-14 bg-blue-500/10 rounded-xl border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 group-hover:bg-blue-500/20 transition-all">
-                                    <i class="fas fa-code text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
-                                        Legacy HTML Dashboard
-                                        <span class="ml-2 text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">Static View</span>
-                                    </h4>
-                                    <p class="text-sm text-slate-400 leading-relaxed">
-                                        คลิกเพื่อเปิดไฟล์ HTML ต้นฉบับในแท็บใหม่ (ไม่ได้เชื่อมต่อข้อมูลจริง)
-                                    </p>
-                                </div>
-                            </div>
-                            <i class="fas fa-chevron-right text-slate-600 text-xl group-hover:text-blue-400 group-hover:translate-x-1 transition-all mr-4"></i>
-                        </div>
-                    </a>
+                <div class="mt-6"> 
+    <a :href="`${publicPath}demo_dashboard.html`" target="_blank" class="group block bg-gradient-to-r from-slate-900/80 to-slate-800/50 border border-slate-800 hover:border-blue-500/50 p-4 rounded-2xl transition-all shadow-lg backdrop-blur-sm relative overflow-hidden">
+        
+        <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 blur-[50px] rounded-full group-hover:bg-blue-500/20 transition-all pointer-events-none"></div>
+
+        <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-5">
+                <div class="w-14 h-14 bg-blue-500/10 rounded-xl border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 group-hover:bg-blue-500/20 transition-all">
+                    <i class="fas fa-code text-2xl"></i>
                 </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
+                        Legacy HTML Dashboard
+                        <span class="ml-2 text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">Static View</span>
+                    </h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        คลิกเพื่อเปิดไฟล์ HTML ต้นฉบับในแท็บใหม่ (ไม่ได้เชื่อมต่อข้อมูลจริง)
+                    </p>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right text-slate-600 text-xl group-hover:text-blue-400 group-hover:translate-x-1 transition-all mr-4"></i>
+        </div>
+    </a>
+</div>
                 </div>
 
         </div>

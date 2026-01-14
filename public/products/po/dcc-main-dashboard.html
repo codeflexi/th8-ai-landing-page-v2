@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TH8.AI – Procurement Decision Center (Enterprise Demo)</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Prompt -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    html, body {
+      font-family: "Prompt", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .25rem .7rem;
+      border-radius: 9999px;
+      font-size: .7rem;
+      font-weight: 600;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+    .pill-amber { background:#fffbeb; color:#92400e; border-color:#fde68a; }
+    .pill-rose { background:#fff1f2; color:#9f1239; border-color:#fecdd3; }
+    .pill-emerald { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+
+    .nav-item {
+      display:flex;
+      align-items:center;
+      padding:.6rem .8rem;
+      border-radius:.75rem;
+      font-weight:500;
+      color:#334155;
+    }
+    .nav-item:hover { background:#f1f5f9; }
+    .nav-item.active { background:#0f172a; color:white; }
+
+    .btn {
+      padding:.5rem 1rem;
+      border-radius:.75rem;
+      font-size:.85rem;
+      font-weight:500;
+      border:1px solid #e2e8f0;
+    }
+    .btn-primary {
+      background:#0f172a;
+      color:white;
+      border-color:#0f172a;
+    }
+    .btn-secondary {
+      background:white;
+    }
+
+    .table th {
+      font-size:.7rem;
+      text-transform:uppercase;
+      color:#64748b;
+      background:#f8fafc;
+    }
+    .table th, .table td {
+      padding:.7rem;
+      border-top:1px solid #e2e8f0;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+
+<!-- ================= App Shell ================= -->
+<div class="min-h-screen">
+
+  <!-- ================= Top Bar ================= -->
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200">
+    <div class="max-w-[1440px] mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
+          TH8
+        </div>
+        <div>
+          <p class="font-semibold">Procurement Decision Center</p>
+          <p class="text-xs text-slate-500">Enterprise-grade Interactive Demo</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="pill">
+          Policy <span class="mono">PROCUREMENT-001</span> / <span class="mono">v3</span>
+        </span>
+        <button class="btn btn-secondary">Load Demo Data</button>
+        <div class="text-right">
+          <p class="text-sm font-medium">Procurement Manager</p>
+          <p class="text-xs text-slate-500">Human-in-the-loop</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= Body ================= -->
+  <div class="max-w-[1440px] mx-auto px-6 py-6 grid grid-cols-12 gap-6">
+
+    <!-- ================= Sidebar ================= -->
+    <aside class="col-span-12 lg:col-span-3 space-y-4">
+      <div class="card p-4">
+        <p class="label mb-3">Navigation</p>
+        <nav class="space-y-1">
+          <a href="#dashboard" class="nav-item active">Dashboard</a>
+          <a href="#cases" class="nav-item">Case Portfolio</a>
+          <a href="#case-detail" class="nav-item">Case Detail</a>
+          <a href="#monitoring" class="nav-item">Monitoring</a>
+          <a href="#audit" class="nav-item">Audit Trail</a>
+          <a href="#policy" class="nav-item">Policy & Rules</a>
+        </nav>
+      </div>
+
+      <div class="card p-4">
+        <p class="label mb-2">Executive Message</p>
+        <p class="text-sm text-slate-700 leading-relaxed">
+          ระบบนี้ไม่ใช้สถานะที่แก้ไขได้  
+          ทุกการตัดสินใจ derive จาก <strong>Audit Event แบบ append-only</strong>
+          เพื่อรองรับการตรวจสอบระดับองค์กร
+        </p>
+      </div>
+    </aside>
+
+    <!-- ================= Main ================= -->
+    <main class="col-span-12 lg:col-span-9 space-y-16">
+
+      <!-- ================= Dashboard ================= -->
+      <section id="dashboard">
+        <h2 class="text-2xl font-semibold mb-6">Executive Dashboard</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="card p-5">
+            <p class="label">Open Cases</p>
+            <p class="text-3xl font-semibold mt-1">12</p>
+          </div>
+          <div class="card p-5">
+            <p class="label">Financial Exposure</p>
+            <p class="text-3xl font-semibold mt-1 mono">THB 18.4M</p>
+          </div>
+          <div class="card p-5">
+            <p class="label">High Risk</p>
+            <p class="text-3xl font-semibold mt-1 text-rose-600">3</p>
+          </div>
+          <div class="card p-5">
+            <p class="label">Pending Approval</p>
+            <p class="text-3xl font-semibold mt-1 text-amber-600">5</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= Case Portfolio ================= -->
+      <section id="cases">
+        <h2 class="text-2xl font-semibold mb-6">Case Portfolio</h2>
+        <div class="card overflow-hidden">
+          <table class="w-full table text-sm">
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Vendor</th>
+                <th class="text-right">Amount</th>
+                <th>Status</th>
+                <th>Decision</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">CASE-PO-OVT-2025-006</td>
+                <td>Ovaltine</td>
+                <td class="text-right mono">THB 3,200,000</td>
+                <td><span class="pill">OPEN</span></td>
+                <td><span class="pill pill-amber">RECOMMENDED</span></td>
+                <td><button class="btn btn-secondary">Open</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= Case Detail ================= -->
+      <section id="case-detail">
+        <h2 class="text-2xl font-semibold mb-6">Case Detail</h2>
+
+        <div class="grid grid-cols-12 gap-6">
+          <aside class="col-span-12 lg:col-span-4 space-y-4">
+            <div class="card p-5">
+              <p class="label">Decision Case</p>
+              <p class="mono font-semibold mt-1">CASE-PO-OVT-2025-006</p>
+              <p class="text-sm text-slate-600">Vendor: Ovaltine</p>
+            </div>
+
+            <div class="card p-5">
+              <p class="label">Policy Binding</p>
+              <p class="mono mt-2">PROCUREMENT-001 / v3</p>
+              <p class="text-xs text-slate-500 mt-2">
+                Policy ถูก bind กับ case แบบ immutable
+              </p>
+            </div>
+          </aside>
+
+          <div class="col-span-12 lg:col-span-8 space-y-4">
+            <div class="card p-5">
+              <p class="font-semibold mb-2">Decision Summary</p>
+              <span class="pill pill-emerald">APPROVE</span>
+              <span class="pill pill-rose ml-2">HIGH RISK</span>
+            </div>
+
+            <div class="card p-5">
+              <p class="font-semibold mb-2">Evidence</p>
+              <p class="text-sm">
+                Procurement Policy 2024 – Clause 4.2  
+                <span class="mono">(EVIDENCE_ATTACHED)</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= Monitoring ================= -->
+      <section id="monitoring">
+        <h2 class="text-2xl font-semibold mb-6">Monitoring & Alerts</h2>
+        <div class="card p-5">
+          <ul class="list-disc pl-5 text-sm space-y-2">
+            <li>High-risk decision pending approval</li>
+            <li>SLA threshold approaching</li>
+            <li>Evidence attached after recommendation</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= Audit Trail ================= -->
+      <section id="audit">
+        <h2 class="text-2xl font-semibold mb-6">Audit Trail</h2>
+        <div class="card p-5 space-y-3">
+          <div>
+            <span class="pill">SYSTEM</span>
+            <span class="mono ml-2">CASE_LOADED</span>
+          </div>
+          <div>
+            <span class="pill pill-amber">DECISION</span>
+            <span class="mono ml-2">DECISION_RECOMMENDED</span>
+          </div>
+          <div>
+            <span class="pill">EVIDENCE</span>
+            <span class="mono ml-2">EVIDENCE_ATTACHED</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= Policy & Rules ================= -->
+      <section id="policy">
+        <h2 class="text-2xl font-semibold mb-6">Policy & Rules</h2>
+
+        <div class="card p-6 space-y-4">
+          <div>
+            <p class="font-semibold">PROCUREMENT-001 (v3)</p>
+            <p class="text-sm text-slate-600">
+              Policy นี้ไม่ฝังใน code และสามารถ version ได้
+            </p>
+          </div>
+
+          <div>
+            <p class="label mb-2">Rules</p>
+            <ul class="list-disc pl-5 text-sm space-y-2">
+              <li>
+                <span class="mono">HIGH_AMOUNT_ESCALATION</span>  
+                – ถ้ายอดเกิน threshold ต้องขออนุมัติระดับ Manager
+              </li>
+              <li>
+                <span class="mono">SLA_RISK</span>  
+                – ถ้าใกล้ SLA deadline ให้เพิ่ม risk level
+              </li>
+            </ul>
+          </div>
+
+          <p class="text-xs text-slate-500">
+            ทุก rule จะถูก evaluate และเขียนเป็น
+            <span class="mono">RULE_EVALUATED</span> audit event
+          </p>
+        </div>
+      </section>
+
+      <footer class="py-6 text-center text-xs text-slate-500">
+        TH8.AI • Enterprise Decision Center Demo  
+        Audit-first • Policy-driven • Traceable by design
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

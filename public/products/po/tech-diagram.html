@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TH8 Procurement Decision Center — Sequence Diagram (Decision → Evidence → Approval)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html, body { font-family: "Prompt", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      /* subtle grid background for slide look */
+      .gridbg{
+        background-image:
+          linear-gradient(to right, rgba(15,23,42,0.06) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(15,23,42,0.06) 1px, transparent 1px);
+        background-size: 28px 28px;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <div class="gridbg min-h-screen">
+      <div class="mx-auto max-w-6xl px-6 py-10">
+        <!-- Header -->
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div class="text-xs font-semibold tracking-wider text-slate-500">
+              TH8.AI • Procurement Decision Center
+            </div>
+            <h1 class="mt-2 text-2xl md:text-3xl font-semibold">
+              Sequence Diagram: Decision → Evidence → Approval
+            </h1>
+            <p class="mt-2 text-sm text-slate-600 max-w-3xl">
+              Audit-first, immutable facts. Backend returns facts only. Frontend derives decision status from audit.
+              RAG is used as Evidence (open PDF/clause), not as an answer.
+            </p>
+          </div>
+
+          <!-- Legend -->
+          <div class="mt-2 md:mt-0">
+            <div class="rounded-2xl bg-white/90 border border-slate-200 shadow-sm px-4 py-3">
+              <div class="text-xs font-semibold text-slate-700 mb-2">Legend</div>
+              <div class="flex flex-wrap gap-2 text-xs">
+                <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                  <span class="h-2 w-2 rounded-full bg-slate-900"></span> Actor / UI
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1">
+                  <span class="h-2 w-2 rounded-full bg-amber-600"></span> API call
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1">
+                  <span class="h-2 w-2 rounded-full bg-emerald-600"></span> Audit write (append-only)
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1">
+                  <span class="h-2 w-2 rounded-full bg-indigo-600"></span> Audit read
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actors row -->
+        <div class="mt-8 rounded-2xl border border-slate-200 bg-white/90 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-200">
+            <div class="text-sm font-semibold">Actors</div>
+            <p class="text-xs text-slate-600 mt-1">
+              ใช้ภาพนี้อธิบาย flow แบบ end-to-end ใน demo/slide ได้ทันที
+            </p>
+          </div>
+
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+              <!-- Actor cards -->
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs font-semibold text-slate-500">Actor</div>
+                <div class="mt-1 font-semibold">User</div>
+                <div class="mt-1 text-xs text-slate-600">Reviewer / Approver</div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs font-semibold text-slate-500">Client</div>
+                <div class="mt-1 font-semibold">Frontend</div>
+                <div class="mt-1 text-xs text-slate-600">Vue 3 Decision Center</div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs font-semibold text-slate-500">API</div>
+                <div class="mt-1 font-semibold">Decision API</div>
+                <div class="mt-1 text-xs text-slate-600">FastAPI /decisions/*</div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs font-semibold text-slate-500">Service</div>
+                <div class="mt-1 font-semibold">Evidence Service</div>
+                <div class="mt-1 text-xs text-slate-600">RAG-as-Evidence</div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs font-semibold text-slate-500">Source of Truth</div>
+                <div class="mt-1 font-semibold">Audit Service</div>
+                <div class="mt-1 text-xs text-slate-600">Supabase audit_events</div>
+              </div>
+
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="text-xs font-semibold text-slate-500">Repository</div>
+                <div class="mt-1 font-semibold">Case Repo</div>
+                <div class="mt-1 text-xs text-slate-600">Supabase cases.payload</div>
+              </div>
+            </div>
+
+            <!-- Lifelines -->
+            <div class="mt-6">
+              <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <!-- lifeline column -->
+                <div class="relative">
+                  <div class="h-2 w-2 rounded-full bg-slate-900 mx-auto"></div>
+                  <div class="h-24 border-l border-dashed border-slate-300 mx-auto w-0"></div>
+                </div>
+                <div class="relative">
+                  <div class="h-2 w-2 rounded-full bg-slate-900 mx-auto"></div>
+                  <div class="h-24 border-l border-dashed border-slate-300 mx-auto w-0"></div>
+                </div>
+                <div class="relative">
+                  <div class="h-2 w-2 rounded-full bg-slate-900 mx-auto"></div>
+                  <div class="h-24 border-l border-dashed border-slate-300 mx-auto w-0"></div>
+                </div>
+                <div class="relative">
+                  <div class="h-2 w-2 rounded-full bg-slate-900 mx-auto"></div>
+                  <div class="h-24 border-l border-dashed border-slate-300 mx-auto w-0"></div>
+                </div>
+                <div class="relative">
+                  <div class="h-2 w-2 rounded-full bg-slate-900 mx-auto"></div>
+                  <div class="h-24 border-l border-dashed border-slate-300 mx-auto w-0"></div>
+                </div>
+                <div class="relative">
+                  <div class="h-2 w-2 rounded-full bg-slate-900 mx-auto"></div>
+                  <div class="h-24 border-l border-dashed border-slate-300 mx-auto w-0"></div>
+                </div>
+              </div>
+              <div class="text-center text-xs text-slate-500 mt-2">
+                Lifelines (slide-friendly — visual only)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sequence Phases -->
+        <div class="mt-8 grid grid-cols-1 gap-6">
+          <!-- Phase A -->
+          <section class="rounded-2xl border border-slate-200 bg-white/90 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-start justify-between gap-4">
+              <div>
+                <div class="text-sm font-semibold">Phase A — Run Decision (Step 3)</div>
+                <div class="text-xs text-slate-600 mt-1">
+                  เขียน <span class="font-semibold">RULE_EVALUATED</span> + <span class="font-semibold">DECISION_RECOMMENDED</span> (audit only)
+                </div>
+              </div>
+              <span class="text-xs rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-700">
+                Result: Frontend derives status = <span class="font-semibold">PENDING</span>
+              </span>
+            </div>
+
+            <div class="p-6">
+              <ol class="space-y-3 text-sm">
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">1</span>
+                  <div>
+                    <div class="font-medium">User → Frontend</div>
+                    <div class="text-slate-600 text-xs mt-1">Click “Run Decision”</div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-amber-600 text-white text-xs font-semibold">2</span>
+                  <div class="w-full">
+                    <div class="font-medium">Frontend → Decision API</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      <span class="font-mono">POST /api/v1/decisions/run</span>
+                      <span class="text-slate-400">•</span>
+                      { case_id, policy_id, policy_version }
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">3</span>
+                  <div class="w-full">
+                    <div class="font-medium">Decision API → Case Repo</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      get_case(case_id) → payload (facts only, no decision state)
+                    </div>
+                    <div class="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+                      <div class="font-semibold mb-1">Guardrail</div>
+                      Backend must not derive decision status; case.status is not decision state.
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">4</span>
+                  <div class="w-full">
+                    <div class="font-medium">Decision API</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      Load policy (YAML) → Evaluate rules → Produce recommendation (facts)
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-semibold">5</span>
+                  <div class="w-full">
+                    <div class="font-medium">Decision API → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      write <span class="font-mono">RULE_EVALUATED</span> (n events) + <span class="font-mono">DECISION_RECOMMENDED</span> (1 event)
+                    </div>
+                    <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs">
+                        <div class="font-semibold text-emerald-900">RULE_EVALUATED</div>
+                        <div class="text-emerald-800 mt-1">
+                          per rule: hit/matched clauses + inputs_snapshot
+                        </div>
+                      </div>
+                      <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs">
+                        <div class="font-semibold text-emerald-900">DECISION_RECOMMENDED</div>
+                        <div class="text-emerald-800 mt-1">
+                          decision + required_role + reason_codes (+ run_id)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-semibold">6</span>
+                  <div class="w-full">
+                    <div class="font-medium">Frontend → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      <span class="font-mono">GET /api/v1/audit/case/{case_id}</span> → derive Decision Status = <span class="font-semibold">PENDING</span>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </section>
+
+          <!-- Phase B -->
+          <section class="rounded-2xl border border-slate-200 bg-white/90 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-start justify-between gap-4">
+              <div>
+                <div class="text-sm font-semibold">Phase B — Attach Evidence (Step 4)</div>
+                <div class="text-xs text-slate-600 mt-1">
+                  RAG-as-Evidence: แนบหลักฐานแบบเปิด PDF/Clause ได้ และเขียน <span class="font-semibold">EVIDENCE_ATTACHED</span> เป็น audit facts
+                </div>
+              </div>
+              <span class="text-xs rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-700">
+                Trigger: On-demand (user clicks “Evidence”)
+              </span>
+            </div>
+
+            <div class="p-6">
+              <ol class="space-y-3 text-sm">
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">1</span>
+                  <div>
+                    <div class="font-medium">User → Frontend</div>
+                    <div class="text-slate-600 text-xs mt-1">Click “Evidence” tab</div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-amber-600 text-white text-xs font-semibold">2</span>
+                  <div class="w-full">
+                    <div class="font-medium">Frontend → Evidence Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      <span class="font-mono">POST /api/v1/evidence/attach</span>
+                      <span class="text-slate-400">•</span>
+                      { case_id, run_id }
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-semibold">3</span>
+                  <div class="w-full">
+                    <div class="font-medium">Evidence Service → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      Read audit facts to locate latest recommendation & rule hits
+                      (<span class="font-mono">GET /audit/case/{id}</span> internally or via AuditService.list_by_case)
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">4</span>
+                  <div class="w-full">
+                    <div class="font-medium">Evidence Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      Build deterministic queries per rule → retrieve from Vector DB → return evidence refs (doc/page/clause/snippet)
+                    </div>
+                    <div class="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+                      <div class="font-semibold mb-1">Guardrail</div>
+                      Evidence service does not summarize or interpret. It only attaches references that can be opened.
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-semibold">5</span>
+                  <div class="w-full">
+                    <div class="font-medium">Evidence Service → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      write <span class="font-mono">EVIDENCE_ATTACHED</span> (n events) (append-only)
+                    </div>
+                    <div class="mt-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs">
+                      <div class="font-semibold text-emerald-900">EVIDENCE_ATTACHED payload includes</div>
+                      <div class="text-emerald-800 mt-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>doc_id + source_uri</div>
+                        <div>page + clause_id/anchor</div>
+                        <div>snippet (short quote)</div>
+                        <div>relevance + rule_id + run_id</div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-semibold">6</span>
+                  <div class="w-full">
+                    <div class="font-medium">Frontend → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      <span class="font-mono">GET /api/v1/audit/case/{case_id}</span> → render Evidence list (from audit)
+                    </div>
+                    <div class="mt-2 rounded-xl border border-slate-200 bg-white p-3">
+                      <div class="text-xs font-semibold text-slate-700">UI behavior</div>
+                      <div class="text-xs text-slate-600 mt-1">
+                        Click evidence item → open PDF at page/clause (no AI answer).
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </section>
+
+          <!-- Phase C -->
+          <section class="rounded-2xl border border-slate-200 bg-white/90 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-start justify-between gap-4">
+              <div>
+                <div class="text-sm font-semibold">Phase C — Approve / Reject (Step 5)</div>
+                <div class="text-xs text-slate-600 mt-1">
+                  เขียน <span class="font-semibold">DECISION_APPROVED</span> / <span class="font-semibold">DECISION_REJECTED</span> พร้อม reason (accountability)
+                </div>
+              </div>
+              <span class="text-xs rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-700">
+                Result: Frontend derives status = APPROVED / REJECTED
+              </span>
+            </div>
+
+            <div class="p-6">
+              <ol class="space-y-3 text-sm">
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-slate-900 text-white text-xs font-semibold">1</span>
+                  <div>
+                    <div class="font-medium">User → Frontend</div>
+                    <div class="text-slate-600 text-xs mt-1">Click “Approve” / “Reject” and provide reason</div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-amber-600 text-white text-xs font-semibold">2</span>
+                  <div class="w-full">
+                    <div class="font-medium">Frontend → Decision API</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      <span class="font-mono">POST /api/v1/decisions/approve</span> (or <span class="font-mono">/reject</span>)
+                      <span class="text-slate-400">•</span>
+                      { case_id, reason, actor_role }
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-semibold">3</span>
+                  <div class="w-full">
+                    <div class="font-medium">Decision API → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      write <span class="font-mono">DECISION_APPROVED</span> / <span class="font-mono">DECISION_REJECTED</span> (append-only)
+                    </div>
+                    <div class="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
+                      <div class="font-semibold mb-1">Guardrail</div>
+                      No backend decision-status derivation. No overwriting. One more fact appended.
+                    </div>
+                  </div>
+                </li>
+
+                <li class="flex gap-3">
+                  <span class="mt-1 h-6 w-6 flex items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-semibold">4</span>
+                  <div class="w-full">
+                    <div class="font-medium">Frontend → Audit Service</div>
+                    <div class="text-slate-600 text-xs mt-1">
+                      <span class="font-mono">GET /api/v1/audit/case/{case_id}</span> → derive status (APPROVED/REJECTED)
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </section>
+
+          <!-- Phase D -->
+          <section class="rounded-2xl border border-slate-200 bg-white/90 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-start justify-between gap-4">
+              <div>
+                <div class="text-sm font-semibold">Phase D — Audit Timeline (Step 6)</div>
+                <div class="text-xs text-slate-600 mt-1">
+                  Canonical timeline จาก <span class="font-mono">/api/v1/audit/case/{case_id}</span> (facts only)
+                </div>
+              </div>
+              <span class="text-xs rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-700">
+                Accountability end-to-end
+              </span>
+            </div>
+
+            <div class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <div class="text-xs font-semibold text-slate-700">What Auditor sees</div>
+                  <ul class="mt-2 space-y-1 text-xs text-slate-600 list-disc list-inside">
+                    <li>CASE_INGESTED / ESCALATION_TRIGGERED</li>
+                    <li>RULE_EVALUATED</li>
+                    <li>DECISION_RECOMMENDED</li>
+                    <li>EVIDENCE_ATTACHED</li>
+                    <li>DECISION_APPROVED / DECISION_REJECTED</li>
+                  </ul>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-4">
+                  <div class="text-xs font-semibold text-slate-700">Key selling point</div>
+                  <p class="mt-2 text-xs text-slate-600">
+                    Decision is explainable by policy rules. Evidence is traceable to real documents
+                    (page/clause). Approval has named accountability. No hidden state.
+                  </p>
+                  <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                    <span class="rounded-full bg-slate-900 text-white px-3 py-1">Immutable Audit</span>
+                    <span class="rounded-full bg-slate-900 text-white px-3 py-1">Evidence Links</span>
+                    <span class="rounded-full bg-slate-900 text-white px-3 py-1">Accountability</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Footer / Guardrails -->
+        <div class="mt-8 rounded-2xl border border-slate-200 bg-white/90 shadow-sm p-6">
+          <div class="text-sm font-semibold">Non-negotiables (Guardrails)</div>
+          <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="text-xs font-semibold text-slate-700">Backend</div>
+              <ul class="mt-2 space-y-1 text-xs text-slate-600 list-disc list-inside">
+                <li>Returns facts only (no UI narrative)</li>
+                <li>No decision status derivation</li>
+                <li>No use of case.status as decision state</li>
+                <li>All writes are audit append-only</li>
+              </ul>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="text-xs font-semibold text-slate-700">Frontend</div>
+              <ul class="mt-2 space-y-1 text-xs text-slate-600 list-disc list-inside">
+                <li>Derives decision status from audit events</li>
+                <li>Renders Evidence list from audit (EVIDENCE_ATTACHED)</li>
+                <li>Evidence opens PDF/page/clause (RAG-as-Evidence)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-4 text-xs text-slate-500">
+            Tip: In slides, screenshot this page and use as “single source” flow explanation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

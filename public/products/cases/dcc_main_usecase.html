@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8: Advanced Audit Use Cases</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Kanit', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .card-gradient { background: linear-gradient(145deg, #1e293b, #0f172a); }
+        .badge-rule { background-color: #1e3a8a; color: #93c5fd; border: 1px solid #3b82f6; }
+        .badge-ai { background-color: #581c87; color: #d8b4fe; border: 1px solid #a855f7; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">TH8 <span class="text-cyan-400">Advanced Use Cases</span></h1>
+            <p class="text-slate-400">5 รูปแบบความเสี่ยงในธุรกิจไทย และ Logic การตรวจจับ</p>
+        </header>
+
+        <!-- Use Case 1: Maverick Buying -->
+        <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg flex flex-col md:flex-row">
+            <div class="bg-indigo-900/50 p-6 md:w-1/3 flex flex-col justify-center border-r border-slate-700">
+                <div class="text-indigo-400 font-bold text-sm uppercase mb-1">Source-to-Pay</div>
+                <h2 class="text-2xl font-bold text-white mb-2">1. Maverick Buying & Price Creep</h2>
+                <p class="text-slate-300 text-sm">การแอบซื้อของแพงกว่าสัญญา หรือ Supplier แอบขึ้นราคาเนียนๆ (1-2%)</p>
+            </div>
+            <div class="p-6 md:w-2/3 space-y-4">
+                <div class="flex space-x-2 mb-2">
+                    <span class="text-xs px-2 py-1 rounded badge-rule">Rule-Based</span>
+                    <span class="text-xs px-2 py-1 rounded badge-ai">Vector AI</span>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-lg mono text-xs text-green-400">
+                    <span class="text-purple-400">Logic:</span><br>
+                    1. <span class="text-yellow-300">Vector Search:</span> Match "A4 Paper Double A" (Invoice) <-> "Office Paper A4" (Contract Master)<br>
+                    2. <span class="text-blue-400">Compare:</span> IF Invoice_Price > Contract_Price THEN Alert<br>
+                    3. <span class="text-blue-400">Trend:</span> IF Price increase > 3% in 3 months (Price Creep) THEN Alert
+                </div>
+                <div class="text-sm text-slate-400 border-l-2 border-indigo-500 pl-3">
+                    <strong class="text-white">Thai Context:</strong> โรงงานต่างจังหวัดชอบซื้อร้านข้างนอก (ร้านเพื่อน) โดยอ้างว่า "ของขาด" หรือ "ชื่อไม่เหมือนในระบบ" AI จะช่วยจับคู่ชื่อสินค้าที่เขียนไม่เหมือนกันได้
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Case 2: Phantom Logistics -->
+        <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg flex flex-col md:flex-row">
+            <div class="bg-cyan-900/50 p-6 md:w-1/3 flex flex-col justify-center border-r border-slate-700">
+                <div class="text-cyan-400 font-bold text-sm uppercase mb-1">Logistics & Supply Chain</div>
+                <h2 class="text-2xl font-bold text-white mb-2">2. Phantom Accessorials</h2>
+                <p class="text-slate-300 text-sm">ค่าใช้จ่ายแฝงที่ตรวจสอบยาก (ค่ายก, ค่ารอ, ค่าล้างตู้)</p>
+            </div>
+            <div class="p-6 md:w-2/3 space-y-4">
+                <div class="flex space-x-2 mb-2">
+                    <span class="text-xs px-2 py-1 rounded badge-ai">LLM Analysis</span>
+                    <span class="text-xs px-2 py-1 rounded badge-rule">Rule-Based</span>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-lg mono text-xs text-green-400">
+                    <span class="text-purple-400">Logic:</span><br>
+                    1. <span class="text-yellow-300">LLM Scan:</span> อ่าน Description หายอดที่เป็น "Service" หรือ "Surcharge" (เช่น 'ค่าผ่านทาง', 'ค่าล่วงเวลา')<br>
+                    2. <span class="text-blue-400">Validation:</span> IF Surcharge > 0 AND No_Attachment (GPS/Receipt) THEN Block<br>
+                    3. <span class="text-blue-400">Ratio Check:</span> IF Surcharge > 15% of Base_Freight THEN Flag Manager
+                </div>
+                <div class="text-sm text-slate-400 border-l-2 border-cyan-500 pl-3">
+                    <strong class="text-white">Thai Context:</strong> ใบวางบิลขนส่งไทยมักมีรายการ "Kha Borikan" (ค่าบริการ) ที่คลุมเครือ TH8 จะบังคับให้แจกแจงและขอหลักฐาน
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Case 3: WHT Misclassification -->
+        <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg flex flex-col md:flex-row">
+            <div class="bg-amber-900/50 p-6 md:w-1/3 flex flex-col justify-center border-r border-slate-700">
+                <div class="text-amber-400 font-bold text-sm uppercase mb-1">Tax & Compliance</div>
+                <h2 class="text-2xl font-bold text-white mb-2">3. WHT Error (Withholding Tax)</h2>
+                <p class="text-slate-300 text-sm">หัก ณ ที่จ่ายผิดประเภท หรือลืมหัก (โดนค่าปรับย้อนหลัง)</p>
+            </div>
+            <div class="p-6 md:w-2/3 space-y-4">
+                <div class="flex space-x-2 mb-2">
+                    <span class="text-xs px-2 py-1 rounded badge-ai">LLM Reasoning</span>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-lg mono text-xs text-green-400">
+                    <span class="text-purple-400">Logic:</span><br>
+                    1. <span class="text-yellow-300">LLM Interpret:</span> "ค่าจ้างทำของ" (3%) vs "ค่าเช่า" (5%) vs "ค่าโฆษณา" (2%) vs "ค่าขนส่ง" (1%)<br>
+                    2. <span class="text-blue-400">Cross Check:</span> เปรียบเทียบกับยอด WHT ใน Invoice ที่ Vendor คำนวณมา<br>
+                    3. <span class="text-blue-400">Alert:</span> IF Calculated_Rate != Vendor_Rate THEN "Potential Tax Penalty"
+                </div>
+                <div class="text-sm text-slate-400 border-l-2 border-amber-500 pl-3">
+                    <strong class="text-white">Thai Context:</strong> เป็น Pain Point ใหญ่สุดของ AP ไทย เช่น "ค่าเช่าเครื่องถ่ายเอกสารพร้อมคนดูแล" ต้องแยกค่าเช่า (5%) กับค่าบริการ (3%) หรือเหมา? AI ช่วยตัดสินได้แม่นยำขึ้น
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Case 4: Duplicate Invoice (Advanced) -->
+        <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg flex flex-col md:flex-row">
+            <div class="bg-rose-900/50 p-6 md:w-1/3 flex flex-col justify-center border-r border-slate-700">
+                <div class="text-rose-400 font-bold text-sm uppercase mb-1">Fraud Prevention</div>
+                <h2 class="text-2xl font-bold text-white mb-2">4. Fuzzy Duplicate Invoice</h2>
+                <p class="text-slate-300 text-sm">การเวียนเทียนใบแจ้งหนี้ หรือเปลี่ยนเลขที่บิลนิดเดียว</p>
+            </div>
+            <div class="p-6 md:w-2/3 space-y-4">
+                <div class="flex space-x-2 mb-2">
+                    <span class="text-xs px-2 py-1 rounded badge-rule">Rule-Based</span>
+                    <span class="text-xs px-2 py-1 rounded badge-ai">Fuzzy Logic</span>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-lg mono text-xs text-green-400">
+                    <span class="text-purple-400">Logic:</span><br>
+                    1. <span class="text-blue-400">Exact Match:</span> Vendor + Amount + Date (Basic)<br>
+                    2. <span class="text-yellow-300">Fuzzy Match:</span> Vendor + Amount (Same) + Inv_No (Similarity > 90%)<br>
+                    <span class="text-gray-500">Ex: INV-2024-01 vs INV/2024/01 vs 202401 (AI มองว่าเป็นใบเดียวกัน)</span>
+                </div>
+                <div class="text-sm text-slate-400 border-l-2 border-rose-500 pl-3">
+                    <strong class="text-white">Thai Context:</strong> ปัญหา Coding ผิด หรือ Vendor ส่งมาทั้ง PDF และ Paper แล้วบัญชีเผลอ Key เข้าไปทั้งคู่
+                </div>
+            </div>
+        </div>
+
+         <!-- Use Case 5: Three-Way Match Failure -->
+         <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg flex flex-col md:flex-row">
+            <div class="bg-emerald-900/50 p-6 md:w-1/3 flex flex-col justify-center border-r border-slate-700">
+                <div class="text-emerald-400 font-bold text-sm uppercase mb-1">Inventory Control</div>
+                <h2 class="text-2xl font-bold text-white mb-2">5. Short Shipment (GR Mismatch)</h2>
+                <p class="text-slate-300 text-sm">จ่ายเงินเต็มจำนวน แต่ของเข้าคลังไม่ครบ</p>
+            </div>
+            <div class="p-6 md:w-2/3 space-y-4">
+                <div class="flex space-x-2 mb-2">
+                    <span class="text-xs px-2 py-1 rounded badge-rule">Rule-Based</span>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-lg mono text-xs text-green-400">
+                    <span class="text-purple-400">Logic:</span><br>
+                    1. <span class="text-blue-400">Fetch GR:</span> ดึงข้อมูล Goods Receipt (GR) จาก Warehouse<br>
+                    2. <span class="text-blue-400">Compare:</span> IF Invoice_Qty > GR_Accepted_Qty THEN Block<br>
+                    3. <span class="text-blue-400">Tolerance:</span> ยอมรับ Variance ได้ไม่เกิน 0.5% (สำหรับสินค้าชั่งน้ำหนัก เช่น แป้ง/น้ำตาล)
+                </div>
+                <div class="text-sm text-slate-400 border-l-2 border-emerald-500 pl-3">
+                    <strong class="text-white">Thai Context:</strong> ในธุรกิจอาหาร สินค้าพวก Bulk (น้ำตาล/น้ำมัน) มักมีน้ำหนักหายระหว่างทาง (Shrinkage) ต้องคุมเข้มไม่ให้จ่ายเงินส่วนที่หายไป
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

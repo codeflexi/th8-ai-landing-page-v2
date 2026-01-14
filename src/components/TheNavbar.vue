@@ -54,9 +54,9 @@ const toggleMobileMenu = () => {
         </div>
 
         <div class="hidden md:block">
-             <button class="px-5 py-2 text-sm font-bold bg-white text-th8-dark rounded hover:bg-gray-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-            Contact Sales
-            </button>
+             <a href="products/pitch/th8-pitch-slide-F1.html" class="px-5 py-2 text-sm font-bold bg-white text-th8-dark rounded hover:bg-gray-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+            TH8AI-DCC Solution
+             </a>
         </div>
 
         <button @click="toggleMobileMenu" class="md:hidden text-gray-300 hover:text-white focus:outline-none z-50 relative">
@@ -88,9 +88,9 @@ const toggleMobileMenu = () => {
             {{ item.label }}
             <i class="fas fa-chevron-right text-xs opacity-50"></i>
           </button>
-           <button class="mt-4 w-full px-5 py-3 text-center font-bold bg-th8-red text-white rounded hover:bg-red-700 transition-colors">
-            Contact Sales
-          </button>
+          <a href="products/pitch/th8-pitch-slide-F1.html" class="px-5 py-2 text-sm font-bold bg-white text-th8-dark rounded hover:bg-gray-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+            TH8AI-DCC Solution
+             </a>
         </div>
       </div>
     </transition>

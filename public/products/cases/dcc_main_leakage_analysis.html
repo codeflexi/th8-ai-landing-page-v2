@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurement & AP Leakage Patterns | Thai Industry Analysis</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Fonts: Kanit for Thai, Inter for English/Numbers -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif; /* Primary for Thai context */
+            background-color: #f3f4f6;
+        }
+        .en-font {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Chart Container Utilities */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        /* Specific heights for responsiveness */
+        .h-chart-sm { height: 300px; }
+        .h-chart-md { height: 400px; }
+        
+        @media (min-width: 768px) {
+            .h-chart-sm { height: 350px; }
+            .h-chart-md { height: 450px; }
+        }
+
+        /* Process Flow CSS Nodes */
+        .flow-node {
+            position: relative;
+        }
+        .flow-line::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 2px;
+            height: 2rem;
+            background-color: #cbd5e1;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        @media (min-width: 768px) {
+            .flow-line::after {
+                top: 50%;
+                left: 100%;
+                width: 2rem;
+                height: 2px;
+                transform: translateY(-50%);
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header Section -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-3xl font-bold tracking-tight">Financial Leakage Radar</h1>
+                <p class="text-cyan-400 text-sm font-semibold uppercase mt-1">
+                    ระบบตรวจจับรอยรั่วไหลทางการเงิน <span class="text-indigo-200">| Thai Food, Retail & FMCG</span>
+                </p>
+            </div>
+            <div class="hidden md:block text-right">
+                <p class="text-xs text-indigo-200">Thailand Outlook</p>
+                <p class="font-bold en-font">Fiscal Year 2025</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- Executive Summary Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-rose-500 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-rose-100 px-2 py-1 text-xs text-rose-700 font-bold rounded-bl-lg">Impact</div>
+                <h3 class="text-slate-500 text-sm uppercase font-bold">Estimated Leakage</h3>
+                <div class="flex items-baseline mt-2 en-font">
+                    <span class="text-4xl font-bold text-slate-900">1.8%</span>
+                    <span class="ml-2 text-sm text-rose-600 font-semibold">of Gross Spend</span>
+                </div>
+                <p class="mt-4 text-sm text-slate-600">
+                    ในอุตสาหกรรมอาหารและค้าปลีกไทย ค่าเฉลี่ยความสูญเสียอยู่ที่ 1.8% จากยอดซื้อรวม โดยส่วนใหญ่เกิดจาก <span class="font-bold">ราคาที่ไม่เป็นไปตามสัญญา (Price Variance)</span>
+                </p>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-amber-500">
+                <h3 class="text-slate-500 text-sm uppercase font-bold">Top Vulnerability</h3>
+                <div class="mt-2 text-xl font-bold text-slate-900">Maverick Buying</div>
+                <p class="mt-4 text-sm text-slate-600">
+                    การจัดซื้อนอกสัญญา (Off-contract) เป็นปัญหาหลักในโรงงานผลิต (Manufacturing) ที่สาขาต่างจังหวัดมักซื้อจากซัพพลายเออร์ท้องถิ่นแทน HQ
+                </p>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-cyan-500">
+                <h3 class="text-slate-500 text-sm uppercase font-bold">Recovery Potential</h3>
+                <div class="mt-2 text-2xl font-bold text-slate-900 en-font">฿ 45M THB</div>
+                <p class="mt-4 text-sm text-slate-600">
+                    โอกาสในการเรียกคืนกำไรต่อยอดขาย 1 หมื่นล้านบาท สำหรับธุรกิจ Retail Supply Chain ในไทยผ่านการทำ Audit Automation
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTOR OVERVIEW -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div class="md:col-span-1 space-y-4">
+                <h2 class="text-2xl font-bold text-indigo-900">Sector Risk Profile</h2>
+                <h3 class="text-lg text-indigo-700 font-semibold">ความเสี่ยงแยกรายอุตสาหกรรม</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    ธุรกิจแต่ละประเภทในไทยมี "ลายเซ็น" ของการรั่วไหลที่ต่างกัน:
+                    <br><br>
+                    <strong>🥗 Food & Beverage:</strong> เสี่ยงเรื่องราคาวัตถุดิบผันผวน (Commodity Price) และ Yield loss.
+                    <br>
+                    <strong>🛒 Retail:</strong> เจอปัญหา Duplicate Payment สูงสุดเนื่องจากปริมาณ Invoice มหาศาล.
+                </p>
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mt-4">
+                    <h4 class="font-bold text-indigo-800 mb-1 text-sm">💡 Thai Context Insight</h4>
+                    <p class="text-xs text-indigo-700">
+                        ธุรกิจ <strong>Logistics</strong> ในไทยมักมีการเรียกเก็บ "ค่าบริการอื่นๆ" (Accessorial Charges) ที่คลุมเครือ เช่น ค่าผ่านทางที่ไม่มีใบเสร็จ หรือค่าล่วงเวลาที่ท่าเรือ
+                    </p>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2">
+                <div class="chart-container h-chart-md max-w-2xl shadow-lg">
+                    <canvas id="sectorRadarChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-slate-400 mt-2">Risk Score (1-10) ประเมินจากความถี่และมูลค่าผลกระทบ</p>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- DEEP DIVE: PATTERN 1 & 2 -->
+        <section class="space-y-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">Top 5 Leakage Patterns</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-3">เจาะลึก 5 รูปแบบการรั่วไหล</h2>
+                <p class="text-slate-600 mt-2">
+                    วิเคราะห์รูปแบบพฤติกรรมที่พบบ่อยในการจัดซื้อและการจ่ายเงิน (AP) ของบริษัทชั้นนำในไทย
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- PATTERN 1: SPLIT POs -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">1. The "Split PO" Evasion</h3>
+                                <p class="text-sm text-slate-500">การแตกใบสั่งซื้อเพื่อเลี่ยงอนุมัติ</p>
+                            </div>
+                            <div class="bg-slate-200 px-2 py-1 rounded text-xs font-bold text-slate-600">Compliance</div>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-slate-600 mb-4">
+                            พนักงานมักแตกยอดซื้อใหญ่เป็น PO ย่อยๆ เพื่อให้อยู่ในวงเงินที่ตนเองอนุมัติได้ (เช่น < 50,000 บาท) เพื่อหลีกเลี่ยงการขอเซ็นจากผู้บริหารระดับสูง (Director Level)
+                        </p>
+                        <div class="chart-container h-chart-sm">
+                            <canvas id="splitPoChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800">
+                            <strong>ข้อสังเกต:</strong> พบยอดกระจุกตัวสูงผิดปกติในช่วง 45,000 - 49,999 บาท (เมื่อลิมิตคือ 50k)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PATTERN 2: LOGISTICS LEAKAGE -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-800">2. Phantom Logistics Charges</h3>
+                                <p class="text-sm text-slate-500">ค่าขนส่งแฝงที่ตรวจสอบยาก</p>
+                            </div>
+                            <div class="bg-slate-200 px-2 py-1 rounded text-xs font-bold text-slate-600">Logistic</div>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-slate-600 mb-4">
+                            ค่าขนส่งหลัก (Base Freight) มักถูกต้อง แต่กำไรจะรั่วไหลผ่าน "Accessorial Charges" เช่น ค่ายกตู้, ค่ารอคิว, หรือ Fuel Surcharge ที่ปรับขึ้นโดยไม่มีเอกสารอ้างอิง
+                        </p>
+                        <div class="chart-container h-chart-sm">
+                            <canvas id="logisticsAreaChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-indigo-50 border-l-4 border-indigo-400 text-xs text-indigo-800">
+                            <strong>Thai Context:</strong> ในไทยมักพบค่าใช้จ่ายหมวด "Miscellaneous" สูงผิดปกติในช่วงสิ้นเดือนหรือเทศกาล
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEEP DIVE: PATTERN 3 -->
+        <section class="bg-indigo-900 rounded-2xl p-6 md:p-12 text-white">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                
+                <!-- Chart Side -->
+                <div class="order-2 md:order-1">
+                    <div class="chart-container h-chart-md bg-white/10 backdrop-blur-sm border border-white/20">
+                        <canvas id="duplicateScatterChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Text Side -->
+                <div class="order-1 md:order-2 space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-cyan-400">3. The Duplicate Invoice Trap</h3>
+                        <p class="text-indigo-200 text-lg">การจ่ายเงินซ้ำซ้อน (Duplicate Payments)</p>
+                    </div>
+                    <p class="text-indigo-100 leading-relaxed text-sm">
+                        ในธุรกิจ Retail และ FMCG ที่มี Volume สูง ปัญหานี้เกิดบ่อยที่สุด สาเหตุหลักในไทยคือ:
+                    </p>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start bg-indigo-800/50 p-3 rounded-lg">
+                            <span class="text-rose-400 mr-3 text-lg">⚠</span>
+                            <div>
+                                <strong class="text-white block">Tax Invoice vs Commercial Invoice</strong>
+                                <span class="text-indigo-300">Supplier ส่งใบวางบิลมาก่อน (Commercial) และส่งใบกำกับภาษี (Tax Inv) ตามมาทีหลัง ทำให้บัญชีเผลอ key เข้าระบบ 2 ครั้ง</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-indigo-800/50 p-3 rounded-lg">
+                            <span class="text-rose-400 mr-3 text-lg">⚠</span>
+                            <div>
+                                <strong class="text-white block">Coding Error</strong>
+                                <span class="text-indigo-300">การกรอกเลขที่บิลผิดรูปแบบ เช่น `INV-001` กับ `INV001` ระบบ ERP ทั่วไปอาจมองเป็นคนละใบ</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEEP DIVE: PATTERN 4 & 5 -->
+        <section class="space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- PATTERN 4: MAVERICK SPEND -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <h3 class="text-lg font-bold text-slate-800">4. Maverick Buying (Price Variance)</h3>
+                        <p class="text-sm text-slate-500">ซื้อนอกสัญญา / ซื้อแพงกว่าราคา HQ</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-600 mb-6">
+                            HQ เจรจาราคาส่วนกลางไว้แล้ว (Contract Price) แต่โรงงานสาขา (Local Plant) กลับไปซื้อจาก Supplier เจ้าเดิมที่คุ้นเคยในราคาที่สูงกว่า (Relationship-based Buying)
+                        </p>
+                        <div class="chart-container h-chart-sm">
+                            <canvas id="maverickChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PATTERN 5: LOST DISCOUNTS -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50">
+                        <h3 class="text-lg font-bold text-slate-800">5. Missed Early Payment Discounts</h3>
+                        <p class="text-sm text-slate-500">พลาดส่วนลดเงินสด (Process Inefficiency)</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-600 mb-6">
+                            Supplier เสนอ Term "2/10 Net 30" แต่บริษัทจ่ายไม่ทันเพราะติดกระบวนการ <strong>"หนังสือรับรองหัก ณ ที่จ่าย (WHT Cert)"</strong> หรือรอผู้มีอำนาจเซ็นเช็ค
+                        </p>
+                        <div class="chart-container h-chart-sm">
+                            <canvas id="discountChart"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-xs text-red-800">
+                            <strong>Impact:</strong> การพลาดส่วนลด 2% เทียบเท่ากับดอกเบี้ยประจำปีมหาศาล
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSION & PROCESS FLOW -->
+        <section class="bg-white p-8 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 text-center">The 3-Way Match Defense Strategy</h2>
+            <p class="text-center text-slate-500 mb-8 text-sm">แนวทางการป้องกันด้วยระบบตรวจสอบอัตโนมัติ</p>
+            
+            <!-- Process Flow Visualization -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+                
+                <!-- Step 1 -->
+                <div class="flow-node flow-line p-4 border-2 border-indigo-200 rounded-lg bg-indigo-50 text-center">
+                    <div class="text-2xl mb-2">📄</div>
+                    <h4 class="font-bold text-indigo-900 text-sm">Purchase Order (PO)</h4>
+                    <p class="text-xs text-indigo-700 mt-1">อนุมัติตาม Authority Matrix</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flow-node flow-line p-4 border-2 border-cyan-200 rounded-lg bg-cyan-50 text-center">
+                    <div class="text-2xl mb-2">📦</div>
+                    <h4 class="font-bold text-cyan-900 text-sm">Goods Receipt (GR)</h4>
+                    <p class="text-xs text-cyan-700 mt-1">ตรวจรับของจริงหน้างาน</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flow-node flow-line p-4 border-2 border-amber-200 rounded-lg bg-amber-50 text-center">
+                    <div class="text-2xl mb-2">🧾</div>
+                    <h4 class="font-bold text-amber-900 text-sm">Vendor Invoice (IR)</h4>
+                    <p class="text-xs text-amber-700 mt-1">ใบกำกับภาษีถูกต้อง</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flow-node p-4 border-2 border-rose-200 rounded-lg bg-rose-50 text-center">
+                    <div class="text-2xl mb-2">🤖</div>
+                    <h4 class="font-bold text-rose-900 text-sm">Auto-Reconciliation</h4>
+                    <p class="text-xs text-rose-700 mt-1">จับคู่ 3 ทางอัตโนมัติ</p>
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 bg-slate-100 rounded text-center text-sm text-slate-600">
+                <strong>Recommendation:</strong> การใช้ระบบ AI ตรวจสอบเอกสาร (OCR) สามารถลดปัญหา WHT และ Duplicate Invoice ในไทยได้กว่า 80%
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+        <p>© 2025 Audit Analytics | Thai Industry Focus</p>
+        <p class="mt-2 text-xs text-slate-600">Visualization powered by Chart.js & Tailwind CSS</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- UTILITY: Label Wrapping ---
+        function wrapLabel(label) {
+            const MAX_LENGTH = 16;
+            if (typeof label !== 'string' || label.length <= MAX_LENGTH) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length < MAX_LENGTH) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- GLOBAL CONFIG ---
+        Chart.defaults.font.family = "'Kanit', sans-serif"; // Global Font Change for Chart.js
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.scale.grid.color = '#e2e8f0';
+        Chart.defaults.maintainAspectRatio = false;
+
+        // --- TOOLTIP CONFIG ---
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) return label.join(' ');
+                    return label;
+                }
+            },
+            titleFont: { family: "'Kanit', sans-serif", size: 14 },
+            bodyFont: { family: "'Kanit', sans-serif", size: 13 }
+        };
+
+        // --- PALETTE ---
+        const colors = {
+            primary: '#4338ca', // Indigo
+            secondary: '#06b6d4', // Cyan
+            accent: '#f59e0b', // Amber
+            danger: '#e11d48', // Rose
+            success: '#10b981', // Emerald
+            light: '#e0e7ff'
+        };
+
+        // --- 1. SECTOR RADAR CHART ---
+        const ctxRadar = document.getElementById('sectorRadarChart').getContext('2d');
+        const radarLabels = ["Maverick Buying", "Duplicate Invoices", "Logistics Surcharges", "WHT/Tax Issues", "Split POs"];
+        
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: radarLabels.map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'Food & FMCG (อาหาร/สินค้าอุปโภค)',
+                        data: [9, 5, 6, 8, 4], // High Maverick
+                        fill: true,
+                        backgroundColor: 'rgba(67, 56, 202, 0.2)',
+                        borderColor: colors.primary,
+                        pointBackgroundColor: colors.primary
+                    },
+                    {
+                        label: 'Retail & Logistics (ค้าปลีก/ขนส่ง)',
+                        data: [4, 9, 10, 5, 8], // High Duplicates & Logistics
+                        fill: true,
+                        backgroundColor: 'rgba(6, 182, 212, 0.2)',
+                        borderColor: colors.secondary,
+                        pointBackgroundColor: colors.secondary
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { tooltip: tooltipConfig, legend: { position: 'bottom', labels: { font: { family: "'Kanit', sans-serif" } } } },
+                scales: {
+                    r: {
+                        angleLines: { color: '#cbd5e1' },
+                        grid: { color: '#e2e8f0' },
+                        pointLabels: { font: { size: 12, weight: '600', family: "'Kanit', sans-serif" }, color: '#1e293b' },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                }
+            }
+        });
+
+        // --- 2. SPLIT PO HISTOGRAM ---
+        const ctxSplit = document.getElementById('splitPoChart').getContext('2d');
+        const splitLabels = ['10k-20k', '20k-30k', '30k-40k', '40k-45k', '45k-49.9k', '50k-60k', '60k+'];
+        
+        new Chart(ctxSplit, {
+            type: 'bar',
+            data: {
+                labels: splitLabels,
+                datasets: [{
+                    label: 'จำนวน PO (Transaction Count)',
+                    data: [120, 150, 180, 220, 650, 80, 45], // Spike at 45-49.9k
+                    backgroundColor: [
+                        colors.light, colors.light, colors.light, 
+                        '#fcd34d', // Warning
+                        colors.danger, // Red Flag
+                        colors.light, colors.light
+                    ],
+                    borderColor: 'transparent',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { tooltip: tooltipConfig, legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'จำนวนเอกสาร (ใบ)', font: { family: "'Kanit', sans-serif" } } },
+                    x: { title: { display: true, text: 'มูลค่า PO (บาท)', font: { family: "'Kanit', sans-serif" } } }
+                }
+            }
+        });
+
+        // --- 3. LOGISTICS AREA CHART ---
+        const ctxLogistics = document.getElementById('logisticsAreaChart').getContext('2d');
+        const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+        
+        new Chart(ctxLogistics, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'ค่าบริการแฝง (Hidden Surcharges)',
+                        data: [12, 14, 13, 25, 28, 35, 42, 45, 50, 55, 60, 75],
+                        borderColor: colors.danger,
+                        backgroundColor: 'rgba(225, 29, 72, 0.5)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'ค่าขนส่งตามสัญญา (Base Freight)',
+                        data: [100, 102, 101, 103, 105, 104, 106, 105, 107, 108, 110, 112],
+                        borderColor: colors.primary,
+                        backgroundColor: 'rgba(67, 56, 202, 0.5)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { tooltip: tooltipConfig, legend: { position: 'top', labels: { font: { family: "'Kanit', sans-serif" } } } },
+                scales: {
+                    y: { stacked: true, title: { display: true, text: 'ค่าใช้จ่าย (พันบาท)', font: { family: "'Kanit', sans-serif" } } }
+                }
+            }
+        });
+
+        // --- 4. DUPLICATE SCATTER ---
+        const ctxScatter = document.getElementById('duplicateScatterChart').getContext('2d');
+        const scatterData = [
+            {x: 40, y: 15000, r: 6}, {x: 42, y: 15000, r: 6}, // Duplicate Cluster 1
+            {x: 120, y: 45200, r: 8}, {x: 121, y: 45200, r: 8}, // Duplicate Cluster 2
+            {x: 200, y: 12500, r: 5}, {x: 205, y: 12500, r: 5}, // Duplicate Cluster 3
+            {x: 10, y: 12000, r: 3}, {x: 55, y: 34000, r: 3}, {x: 89, y: 22000, r: 3}, {x: 150, y: 56000, r: 3} // Normal
+        ];
+
+        new Chart(ctxScatter, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Invoice Payments',
+                    data: scatterData,
+                    backgroundColor: context => {
+                        const val = context.raw;
+                        if(val && (val.y === 15000 || val.y === 45200 || val.y === 12500)) return colors.secondary;
+                        return 'rgba(255, 255, 255, 0.2)';
+                    },
+                    borderColor: 'white',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: context => `Day: ${context.raw.x}, Amt: ${context.raw.y.toLocaleString()} THB`
+                        }
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { type: 'linear', position: 'bottom', title: { display: true, text: 'ระยะเวลา (วัน)', color: '#a5b4fc', font: { family: "'Kanit', sans-serif" } }, grid: { color: '#4f46e5' }, ticks: { color: '#c7d2fe' } },
+                    y: { title: { display: true, text: 'มูลค่า Invoice (บาท)', color: '#a5b4fc', font: { family: "'Kanit', sans-serif" } }, grid: { color: '#4f46e5' }, ticks: { color: '#c7d2fe' } }
+                }
+            }
+        });
+
+        // --- 5. MAVERICK SPEND ---
+        const ctxMaverick = document.getElementById('maverickChart').getContext('2d');
+        const materialLabels = ['Palm Oil (น้ำมันปาล์ม)', 'Sugar (น้ำตาล)', 'Flour (แป้ง)', 'Packaging (บรรจุภัณฑ์)', 'Fuel (น้ำมันเชื้อเพลิง)'];
+        
+        new Chart(ctxMaverick, {
+            type: 'bar',
+            data: {
+                labels: materialLabels.map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'ราคาที่ซื้อจริง (Actual)',
+                        data: [45, 22, 30, 150, 35],
+                        backgroundColor: colors.danger,
+                        order: 2
+                    },
+                    {
+                        label: 'ราคาตามสัญญา HQ (Contract)',
+                        data: [40, 20, 28, 140, 32],
+                        type: 'line',
+                        borderColor: colors.primary,
+                        backgroundColor: colors.primary,
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { tooltip: tooltipConfig },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'ราคาต่อหน่วย (บาท)', font: { family: "'Kanit', sans-serif" } } }
+                }
+            }
+        });
+
+        // --- 6. DISCOUNTS ---
+        const ctxDiscount = document.getElementById('discountChart').getContext('2d');
+        
+        new Chart(ctxDiscount, {
+            type: 'bar',
+            data: {
+                labels: ['ไตรมาส 1', 'ไตรมาส 2', 'ไตรมาส 3', 'ไตรมาส 4'],
+                datasets: [
+                    {
+                        label: 'ส่วนลดที่ได้รับ (Captured)',
+                        data: [2.5, 2.8, 3.0, 3.2],
+                        backgroundColor: colors.success,
+                    },
+                    {
+                        label: 'ส่วนลดที่พลาดไป (Lost)',
+                        data: [1.2, 1.5, 1.1, 0.9],
+                        backgroundColor: colors.accent,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { tooltip: tooltipConfig, legend: { position: 'bottom', labels: { font: { family: "'Kanit', sans-serif" } } } },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, title: { display: true, text: 'มูลค่า (ล้านบาท)', font: { family: "'Kanit', sans-serif" } } }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

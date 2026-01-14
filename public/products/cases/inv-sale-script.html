@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI Sales Playbook: Strategic Partner Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        th8: {
+                            red: '#D9232E',
+                            dark: '#0F172A',
+                            gold: '#B45309', // Owner
+                            blue: '#1E40AF', // CFO
+                            green: '#047857', // COO
+                            purple: '#7E22CE', // CIO/CTO
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .role-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .role-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .script-card {
+            border-left-width: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased pb-20">
+
+    <header class="bg-th8-dark text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">TH8.AI Sales Playbook</h1>
+                <p class="text-xs text-slate-400">Target: Siam Winery / AB Food / S.Khon Kaen</p>
+            </div>
+            <div class="text-right hidden sm:block">
+                <p class="text-xs font-bold text-th8-red uppercase tracking-wider">Strategic Partner Mode</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white border-b border-slate-200 sticky top-[70px] z-40 overflow-x-auto">
+        <div class="max-w-5xl mx-auto flex">
+            <button onclick="switchRole('owner')" id="btn-owner" class="role-btn flex-1 py-4 px-4 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 transition flex items-center justify-center gap-2 whitespace-nowrap active-role text-th8-gold border-th8-gold bg-orange-50/50">
+                <span class="text-xl">👑</span> Owner / CEO
+            </button>
+            <button onclick="switchRole('cfo')" id="btn-cfo" class="role-btn flex-1 py-4 px-4 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 transition flex items-center justify-center gap-2 whitespace-nowrap">
+                <span class="text-xl">💰</span> CFO
+            </button>
+            <button onclick="switchRole('coo')" id="btn-coo" class="role-btn flex-1 py-4 px-4 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 transition flex items-center justify-center gap-2 whitespace-nowrap">
+                <span class="text-xl">⚙️</span> COO / MD
+            </button>
+            <button onclick="switchRole('tech')" id="btn-tech" class="role-btn flex-1 py-4 px-4 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 transition flex items-center justify-center gap-2 whitespace-nowrap">
+                <span class="text-xl">🛡️</span> CIO / CTO
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+
+        <div id="content-owner" class="role-content active">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-orange-100">
+                <h2 class="text-2xl font-bold text-th8-gold mb-2">Focus: Legacy, Trust, Net Profit</h2>
+                <p class="text-slate-600">ไม่ต้องลง Detail เทคนิค แต่เน้นเรื่อง "ความสบายใจ" และ "กำไรที่ควรจะเป็น"</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="script-card bg-white p-6 rounded-xl shadow-sm border-th8-gold">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-th8-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        Opening Script (บทเปิด)
+                    </h3>
+                    <p class="text-slate-700 italic leading-relaxed">
+                        "สวัสดีครับ... วันนี้ผมไม่ได้มาเพื่อขาย Software ใหม่ให้ท่านต้องปวดหัวเรื่องการรื้อระบบครับ<br><br>
+                        แต่ผมมาในฐานะ <strong>'ผู้ช่วยรักษาผลประโยชน์ (Guardian Partner)'</strong> ครับ... ผมทราบดีว่าธุรกิจของท่านเติบโตเร็วมากและมีคนดูแลการเงินที่เก่งอยู่แล้ว
+                        แต่ในสเกลระดับพันล้าน มันมีจุดเล็กๆ ที่เรียกว่า <strong>'Blind Spot'</strong> ที่ระบบบัญชีทั่วโลกมองไม่เห็น เช่น การแตกบิลย่อยๆ เพื่อหลบสายตา หรือเอกสารหน้างานที่ตรวจสอบยาก<br><br>
+                        TH8.AI ถูกสร้างมาเพื่อเป็น <strong>'ตาทิพย์คู่ที่สอง'</strong> ให้ท่านครับ... เพื่อให้ท่านมั่นใจว่า ทุกบาทที่จ่ายออกไป มีเหตุผลทางธุรกิจรองรับ 100% และไม่มีใครเอาเปรียบองค์กรของท่านได้"
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-4">Killer Q&A (คำถามวัดใจเจ้าของ)</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-gold mb-2">Q: "คุณกำลังบอกว่าลูกน้องผมโกงเหรอ? หรือระบบตรวจสอบภายในผมไม่ดี?"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "ไม่เลยครับ ทีมงานท่านเก่งและซื่อสัตย์ครับ แต่ปัญหาคือ <strong>'เครื่องมือ'</strong> ครับ... ERP ถูกออกแบบมาให้ <strong>'บันทึก'</strong> ไม่ได้ถูกออกแบบมาให้ <strong>'เอ๊ะ'</strong>... ต่อให้เก่งแค่ไหน ถ้าต้องตรวจบิลวันละ 500 ใบด้วยตาเปล่า มันย่อมมีความผิดพลาด (Human Error) หรือหลุดลอดได้ครับ ระบบนี้จะไปช่วยทีมงานท่าน ให้เขาทำงานได้สบายใจขึ้นครับ"
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-gold mb-2">Q: "ลงทุนไปแล้ว จะได้อะไรกลับมา? (ROI)"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> " ROI ของระบบนี้ชัดเจนที่สุดครับ คือ <strong>'เงินที่ไม่รั่วไหล'</strong>... ปกติองค์กรสเกลนี้จะมี Leakage ประมาณ 0.1% - 0.5% (เช่น จ่ายซ้ำ, จ่ายแพงกว่าสัญญา) ถ้าเราอุดรูรั่วนี้ได้ แค่ไม่กี่เคส ก็คืนค่าระบบในปีแรกแล้วครับ ที่เหลือคือกำไร (Bottom Line) ที่เพิ่มขึ้นทันทีโดยไม่ต้องขายของเพิ่มครับ"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-cfo" class="role-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-blue-100">
+                <h2 class="text-2xl font-bold text-th8-blue mb-2">Focus: Compliance, Audit Trail, Cost Control</h2>
+                <p class="text-slate-600">คุยด้วยภาษาบัญชีและ Audit เน้นคำว่า "Governance" และ "Pre-Control"</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="script-card bg-white p-6 rounded-xl shadow-sm border-th8-blue">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-th8-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Opening Script (บทเปิด)
+                    </h3>
+                    <p class="text-slate-700 italic leading-relaxed">
+                        "สวัสดีครับ CFO... ผมทราบดีว่าความท้าทายที่สุดของงาน Finance ไม่ใช่แค่การปิดงบให้ตรง แต่คือการ <strong>'Control'</strong> หน้างานที่ซับซ้อนครับ<br><br>
+                        ทุกวันนี้เราทำ Post-Audit (ตรวจสอบย้อนหลัง) ซึ่งมักจะเจอเมื่อเงินออกไปแล้ว... แต่ TH8.AI จะช่วยเปลี่ยนให้ท่านมาทำ <strong>'Pre-Control'</strong> (ตรวจสอบก่อนจ่าย) ได้อย่างมีประสิทธิภาพครับ<br><br>
+                        จุดเด่นของเราคือ <strong>'Contextual Matching'</strong> ครับ... ระบบ SAP อาจจะ Block ถ้าตัวเลขไม่ตรงเป๊ะ แต่ TH8 สามารถอ่าน 'ข้อยกเว้นในสัญญา' (เช่น ปรับราคาได้ตามราคาน้ำมัน) และทำ Recommendation ให้ท่านกด Approve/Reject ได้อย่างมั่นใจ พร้อม Audit Trail ที่ตรวจสอบได้ทุกบรรทัดครับ"
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-4">Killer Q&A (คำถามวัดกึ๋น CFO)</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-blue mb-2">Q: "SAP ก็มี 3-Way Match อยู่แล้ว ระบบคุณต่างตรงไหน?"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "SAP เก่งเรื่อง <strong>Exact Match</strong> ครับ (เลข PO ตรง, ยอดตรง = ผ่าน) แต่ TH8 เก่งเรื่อง <strong>'Fuzzy & Context'</strong> ครับ... เช่น Vendor เจ้าเดิมส่งบิลมา 3 ใบ ยอดไม่เกิน PO แต่รวมกันแล้วเกินวงเงินอนุมัติ (Split PO) SAP มักจะจับไม่ได้เพราะดูทีละใบ แต่ TH8 เราดูเป็น Pattern และ Time-series ครับ... อีกอย่างคือเราอ่าน 'เอกสารแนบ' (PDF/Image) ได้ ซึ่ง SAP ทำไม่ได้ครับ"
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-blue mb-2">Q: "ถ้า AI แนะนำผิด (False Positive) จะทำยังไง? ใครรับผิดชอบ?"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "เราออกแบบระบบเป็น <strong>'Decision Support'</strong> ไม่ใช่ Autopilot ครับ... อำนาจการตัดสินใจยังอยู่ที่ CFO 100% ระบบทำหน้าที่แค่ 'Flag Risk' และ 'แนบหลักฐาน' มาให้ท่านดูง่ายๆ... ถ้า AI แนะนำผิด ท่านกด Reject ได้ และระบบของเรามี <strong>Feedback Loop</strong> ที่จะเรียนรู้จากท่าน เพื่อให้ครั้งต่อไปมันฉลาดขึ้นตาม Policy ของท่านครับ"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-coo" class="role-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-green-100">
+                <h2 class="text-2xl font-bold text-th8-green mb-2">Focus: Efficiency, Speed, Friction</h2>
+                <p class="text-slate-600">เน้นเรื่อง "ความเร็ว" และ "ลดงานซ้ำซ้อน" อย่าทำให้หน้างานยุ่งยากกว่าเดิม</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="script-card bg-white p-6 rounded-xl shadow-sm border-th8-green">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-th8-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Opening Script (บทเปิด)
+                    </h3>
+                    <p class="text-slate-700 italic leading-relaxed">
+                        "สวัสดีครับ... ผมเข้าใจว่าในฝั่ง Operation สิ่งที่น่าเบื่อที่สุดคือการรออนุมัติที่ล่าช้า และการต้องมานั่งตอบคำถามบัญชีว่า 'บิลนี้ค่าอะไร? ทำไมไม่ตรง?' ใช่ไหมครับ<br><br>
+                        TH8.AI จะเข้ามาช่วย <strong>'ลดแรงเสียดทาน (Friction)'</strong> ตรงนี้ครับ... ระบบของเราช่วยอ่านบิลหน้างานที่ยับๆ หรือลายมือหวัดๆ (Messy OCR) ให้อัตโนมัติ น้องหน้างานไม่ต้องมานั่งคีย์ข้อมูลเอง แค่ถ่ายรูปส่ง<br><br>
+                        และถ้าบิลนั้นถูกต้องตามสัญญา AI จะช่วยยืนยันกับบัญชีให้ทันที ทำให้การอนุมัติจ่ายเงินให้ Vendor ไวขึ้น Supplier ก็แฮปปี้ ของก็ไม่ขาดส่งครับ"
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-4">Killer Q&A (คำถามวัดใจ COO)</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-green mb-2">Q: "จะทำให้งานหน้างานช้าลงไหม? ต้องมาใช้ระบบใหม่อีกแล้ว"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "ไม่เปลี่ยน Process หน้างานเลยครับ... หน้างานทำงานเหมือนเดิม (ส่งเอกสาร/Upload ไฟล์) แต่สิ่งที่เปลี่ยนคือ <strong>'งานแก้'</strong> จะน้อยลงครับ... ปกติส่งไปบัญชีแล้วโดนตีกลับเพราะข้อมูลไม่ครบ แต่ระบบนี้จะช่วยเช็คเบื้องต้นให้ก่อน ทำให้งานผ่านง่ายขึ้นครับ"
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-green mb-2">Q: "Vendor ของเรามีหลายเจ้ามาก รูปแบบบิลไม่เหมือนกันเลย AI จะอ่านรู้เรื่องเหรอ?"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "นี่คือจุดแข็งที่สุดของเราครับ... เราใช้ <strong>Hybrid OCR + LLM</strong> ซึ่งเก่งภาษาไทยมาก มันอ่านบิลเงินสดร้านชำ, บิลกระดาษต่อเนื่อง (Dot Matrix), หรือบิลที่สแกนมาเอียงๆ ได้ดีกว่า OCR ทั่วไปในตลาดมากครับ... เราอยากท้าให้ท่านลองเอาบิลที่ 'อ่านยากที่สุด' ของท่านมาลอง Test ดูได้เลยครับ"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-tech" class="role-content">
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-purple-100">
+                <h2 class="text-2xl font-bold text-th8-purple mb-2">Focus: Security, Integration, Stability</h2>
+                <p class="text-slate-600">ต้องยืนยันเรื่อง "Safe Integration" และ "Data Privacy" ให้หนักแน่นที่สุด</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="script-card bg-white p-6 rounded-xl shadow-sm border-th8-purple">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-th8-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        Opening Script (บทเปิด)
+                    </h3>
+                    <p class="text-slate-700 italic leading-relaxed">
+                        "สวัสดีครับ... ผมมาในฐานะ Technical Partner ที่เข้าใจว่าท่านไม่อยากให้ใครมาแตะต้อง Core ERP หรือ Database หลักครับ เพราะ Stability คือหัวใจสำคัญ<br><br>
+                        Architecture ของ TH8.AI ออกแบบมาภายใต้แนวคิด <strong>'Zero-Risk Integration'</strong> ครับ:<br>
+                        1. <strong>Read-Only Access:</strong> เราไม่ต้องการสิทธิ์ Write ลง Database ของท่าน เราทำหน้าที่เป็น Passive Observer หรือใช้การ Ingest ผ่าน Staging File เท่านั้น<br>
+                        2. <strong>Whitebox AI:</strong> ทุก Decision ของ AI มี Log และ Reasoning Trace ที่ IT Audit ตรวจสอบได้ (Explainable AI) ไม่ใช่ Blackbox<br>
+                        3. <strong>Flexible Deployment:</strong> เราพร้อม Deploy แบบ On-Premise หรือ Private Cloud เพื่อให้ Data ไม่รั่วไหลออกนอก Environment ของท่านครับ"
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-4">Killer Q&A (คำถามวัดใจสาย Tech)</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-purple mb-2">Q: "การเชื่อมต่อกับ SAP/Oracle ยากแค่ไหน? ใช้เวลานานเท่าไหร่?"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "เรามี 2 Options ครับ:<br>
+                                1. <strong>Low-Touch (แนะนำช่วง Pilot):</strong> ไม่ต้องต่อ API เลยครับ ใช้การ Export CSV/Excel จาก SAP มาวางใน Secure Folder (SFTP) ระบบเราจะดูดไป process เอง Setup เสร็จใน 1-2 วัน<br>
+                                2. <strong>Full Integration:</strong> ใช้ RFC Connector หรือ OData (สำหรับ SAP) ซึ่งเรามี Standard Template อยู่แล้ว ใช้เวลาประมาณ 2-4 สัปดาห์ในการ Test ครับ"
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="font-bold text-th8-purple mb-2">Q: "Data Privacy เป็นยังไง? ข้อมูลการเงินบริษัทจะหลุดไป train AI คนอื่นไหม?"</p>
+                            <p class="text-slate-700 text-sm">
+                                <span class="font-bold text-slate-900">A:</span> "มั่นใจได้ครับ... เราใช้โมเดลแบบ <strong>'Isolate Instance'</strong> ข้อมูลของท่านจะถูกใช้เพื่อจูนโมเดลของท่าน *เท่านั้น* ไม่มีการนำไปรวมกับ Global Knowledge Base... และถ้าท่านซีเรียสเรื่อง PDPA หรือ Trade Secret เราสามารถรัน Local LLM ภายใน Server ท่านได้เลยครับ"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function switchRole(roleId) {
+            // Hide all content
+            document.querySelectorAll('.role-content').forEach(el => el.classList.remove('active'));
+            // Show selected content
+            document.getElementById('content-' + roleId).classList.add('active');
+            
+            // Reset buttons
+            document.querySelectorAll('.role-btn').forEach(el => {
+                el.classList.remove('active-role', 'bg-orange-50/50', 'bg-blue-50/50', 'bg-green-50/50', 'bg-purple-50/50');
+                el.classList.remove('text-th8-gold', 'border-th8-gold');
+                el.classList.remove('text-th8-blue', 'border-th8-blue');
+                el.classList.remove('text-th8-green', 'border-th8-green');
+                el.classList.remove('text-th8-purple', 'border-th8-purple');
+                el.classList.add('text-slate-500', 'border-transparent');
+            });
+
+            // Highlight active button with color specific to role
+            const btn = document.getElementById('btn-' + roleId);
+            btn.classList.remove('text-slate-500', 'border-transparent');
+            
+            if(roleId === 'owner') btn.classList.add('active-role', 'text-th8-gold', 'border-th8-gold', 'bg-orange-50/50');
+            if(roleId === 'cfo') btn.classList.add('active-role', 'text-th8-blue', 'border-th8-blue', 'bg-blue-50/50');
+            if(roleId === 'coo') btn.classList.add('active-role', 'text-th8-green', 'border-th8-green', 'bg-green-50/50');
+            if(roleId === 'tech') btn.classList.add('active-role', 'text-th8-purple', 'border-th8-purple', 'bg-purple-50/50');
+        }
+    </script>
+</body>
+</html>

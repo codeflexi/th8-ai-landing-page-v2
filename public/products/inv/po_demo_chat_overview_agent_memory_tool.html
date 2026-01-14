@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Advanced System Architecture & Agent Internals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px), linear-gradient(to bottom, #f1f5f9 1px, transparent 1px); }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid #e2e8f0; }
+        .code-block { background: #0f172a; color: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+    </style>
+</head>
+<body class="bg-white text-slate-900 antialiased selection:bg-red-100 selection:text-red-900">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="h-8 w-8 bg-black rounded flex items-center justify-center font-bold text-white mono text-xs">TH8</div>
+                <div>
+                    <span class="font-bold text-slate-900 tracking-tight">TH8.AI</span>
+                    <span class="ml-2 text-[10px] font-mono bg-red-50 text-red-600 px-2 py-0.5 rounded border border-red-100 font-semibold">ENGINEERING v3.0</span>
+                </div>
+            </div>
+            <nav class="hidden lg:flex gap-8 text-xs font-medium text-slate-600 uppercase tracking-wide">
+                <a href="#internals" class="hover:text-red-600 transition-colors">Agent Internals</a>
+                <a href="#memory" class="hover:text-red-600 transition-colors">Memory & Context</a>
+                <a href="#tools" class="hover:text-red-600 transition-colors">Tool Calling</a>
+                <a href="#logic" class="hover:text-red-600 transition-colors">Deterministic Logic</a>
+            </nav>
+            <div class="flex gap-3">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition-colors shadow-lg shadow-red-100">
+                    System Status: Healthy
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative py-20 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] font-mono mb-4 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                    Neuro-Symbolic Hybrid Architecture
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+                    Inside the <span class="text-red-600">Decision Engine</span>
+                </h1>
+                <p class="text-lg text-slate-600 mt-4 font-light max-w-3xl">
+                    A technical breakdown of how TH8's Agent orchestrates <strong>LLM Intelligence</strong> with <strong>Strict Business Logic</strong>. 
+                    We replace "black box" magic with transparent, auditable engineering patterns.
+                </p>
+            </div>
+
+            <div class="bg-white p-1 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-900 p-2 border-b border-slate-800 flex justify-between items-center px-4">
+                    <span class="text-[10px] font-mono text-slate-400">system_flow_diagram.svg</span>
+                    <div class="flex gap-1.5"><div class="w-2 h-2 rounded-full bg-red-500"></div><div class="w-2 h-2 rounded-full bg-amber-500"></div><div class="w-2 h-2 rounded-full bg-emerald-500"></div></div>
+                </div>
+                <div class="p-8 overflow-x-auto bg-slate-50">
+                    <div class="min-w-[900px] flex justify-between items-center gap-4 text-xs font-mono relative">
+                        <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -z-0 transform -translate-y-1/2"></div>
+
+                        <div class="bg-white p-4 rounded border border-slate-300 shadow-sm z-10 w-40 text-center relative group">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-200 px-2 rounded text-[10px] font-bold text-slate-600">INPUT</span>
+                            <div class="font-bold text-slate-900">Context Builder</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Short-term Memory + RAG Evidence</div>
+                        </div>
+
+                        <div class="bg-slate-900 p-4 rounded border border-slate-800 shadow-lg z-10 w-40 text-center relative group">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-600 px-2 rounded text-[10px] font-bold text-white">LLM (BRAIN)</span>
+                            <div class="font-bold text-white">Orchestrator</div>
+                            <div class="text-[10px] text-slate-400 mt-1">Intent Recognition & Tool Selection</div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded border border-red-200 shadow-sm z-10 w-40 text-center relative group">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-100 px-2 rounded text-[10px] font-bold text-red-600">TOOLS</span>
+                            <div class="font-bold text-slate-900">Deterministic Exec</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Rule Engine / Calc / Policy Check</div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded border border-slate-300 shadow-sm z-10 w-40 text-center relative group">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-200 px-2 rounded text-[10px] font-bold text-slate-600">OUTPUT</span>
+                            <div class="font-bold text-slate-900">Response Gen</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Structured JSON + Natural Language</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="internals" class="py-20 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">01</span>
+                    Context Engineering
+                </h2>
+                <p class="text-slate-600 mb-6 leading-relaxed text-sm">
+                    We don't just "send prompts." We engineer a <strong>Dynamic Context Window</strong>. 
+                    Before the LLM generates a single token, our middleware assembles a precise state snapshot containing only relevant facts to minimize hallucination.
+                </p>
+                <div class="space-y-4">
+                    <div class="p-4 bg-slate-50 rounded border-l-4 border-red-600">
+                        <h4 class="font-bold text-sm text-slate-900">System Prompt Injection</h4>
+                        <p class="text-xs text-slate-600 mt-1">Role definition, tone guidelines, and strictly forbidden actions (e.g., "Do not approve if over budget").</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded border-l-4 border-red-600">
+                        <h4 class="font-bold text-sm text-slate-900">RAG Fusion</h4>
+                        <p class="text-xs text-slate-600 mt-1">Injecting retrieved contract clauses (Vector DB) + specific PO data (Structured DB) into the prompt context.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-900 rounded-xl p-6 shadow-2xl overflow-hidden font-mono text-xs">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                    <span class="text-slate-400">context_builder.py</span>
+                </div>
+                <div class="text-slate-300">
+<pre>
+<span class="text-pink-400">def</span> <span class="text-blue-400">build_agent_context</span>(session_id, query):
+    <span class="text-slate-500"># 1. Retrieve Short-term Memory</span>
+    history = redis.get_conversation(session_id)
+    
+    <span class="text-slate-500"># 2. Retrieve Long-term Knowledge (RAG)</span>
+    docs = vector_db.search(query, top_k=3)
+    
+    <span class="text-slate-500"># 3. Construct System Message (The Guardrail)</span>
+    system_prompt = f"""
+    You are TH8 Procurement Agent.
+    <span class="text-green-400">Current Time:</span> {datetime.now()}
+    <span class="text-green-400">Active Policy:</span> {policy_version_1_0}
+    <span class="text-green-400">Retrieved Evidence:</span> {docs}
+    
+    <span class="text-red-400">CRITICAL RULES:</span>
+    - Do NOT perform math yourself. Use 'calculate_delta' tool.
+    - Do NOT approve deviations without 'check_policy' tool.
+    """
+    
+    <span class="text-pink-400">return</span> [system_prompt, *history, query]
+</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="memory" class="py-20 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
+            <div class="order-2 lg:order-1 relative">
+                <div class="absolute inset-0 bg-grid opacity-50"></div>
+                <div class="relative z-10 grid gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-900 uppercase">Short-Term (Redis)</span>
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        </div>
+                        <p class="text-[10px] text-slate-600 mono">
+                            Session: "user_123"<br>
+                            Last_Intent: "check_price"<br>
+                            Current_PO: "PO-2025-001"
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-slate-900 uppercase">Long-Term (Vector DB)</span>
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                        </div>
+                        <p class="text-[10px] text-slate-600 mono">
+                            Collection: "contracts_2025"<br>
+                            Embeddings: [0.12, -0.45, ...]<br>
+                            Metadata: {vendor: "Ovaltine"}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-1 lg:order-2">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded bg-red-100 text-red-600 flex items-center justify-center text-sm font-bold">02</span>
+                    Agent Memory Architecture
+                </h2>
+                <p class="text-slate-600 mb-6 leading-relaxed text-sm">
+                    TH8 Agents possess a dual-memory system mimicking human cognition. This ensures the agent remembers "what you just said" while knowing "what the company policy is."
+                </p>
+                <ul class="space-y-4 text-sm text-slate-700">
+                    <li class="flex gap-3">
+                        <span class="font-mono text-red-600 font-bold">Episodic Memory:</span>
+                        <span>(Redis) Keeps track of the multi-turn conversation state. e.g., "User wants to approve PO #002".</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="font-mono text-red-600 font-bold">Semantic Memory:</span>
+                        <span>(Qdrant/Milvus) Stores static knowledge like Contracts, Policy PDFs, and Vendor History encoded as vectors.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="font-mono text-red-600 font-bold">Entity Memory:</span>
+                        <span>(Structured DB) Specific facts extracted from the current transaction (PO Number, Amount, Vendor Name).</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" class="py-20 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-12 text-center">
+                <span class="text-red-600 font-bold tracking-wider text-xs uppercase">No Black Box Math</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Native Tool Calling & Rule Engine</h2>
+                <p class="text-slate-600 mt-4 max-w-2xl mx-auto text-sm">
+                    We forbid the LLM from doing arithmetic or making final policy decisions. Instead, the LLM acts as a "Router" that calls deterministic Python functions (Tools) to execute the logic.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-slate-900 rounded-xl p-6 shadow-xl font-mono text-xs border border-slate-800">
+                    <div class="text-slate-400 mb-2 border-b border-slate-700 pb-2">tool_definitions.json (Sent to LLM)</div>
+                    <div class="text-emerald-300">
+<pre>
+[
+  {
+    "name": <span class="text-yellow-300">"calculate_delta"</span>,
+    "description": "Calculate difference between PO price and Contract price",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "po_price": {"type": "number"},
+        "contract_price": {"type": "number"}
+      },
+      "required": ["po_price", "contract_price"]
+    }
+  },
+  {
+    "name": <span class="text-yellow-300">"check_policy_rules"</span>,
+    "description": "Run deterministic policy engine checks",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "po_id": {"type": "string"}
+      }
+    }
+  }
+]
+</pre>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-900 mb-4 text-sm">Hybrid Execution Flow</h3>
+                    <div class="space-y-6 relative pl-4 border-l-2 border-slate-100">
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-slate-400"></span>
+                            <p class="text-xs font-bold text-slate-700">1. LLM Intent</p>
+                            <p class="text-xs text-slate-500 mt-1">"User asks if PO-002 price is correct." -> LLM decides to call <code class="bg-slate-100 px-1 rounded">calculate_delta</code>.</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-red-600"></span>
+                            <p class="text-xs font-bold text-red-600">2. Tool Execution (Python)</p>
+                            <p class="text-xs text-slate-500 mt-1">System runs: <code class="bg-slate-100 px-1 rounded">12.80 - 12.50 = 0.30 (+2.4%)</code>. <br>The math is 100% accurate.</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-slate-900"></span>
+                            <p class="text-xs font-bold text-slate-900">3. Response Synthesis</p>
+                            <p class="text-xs text-slate-500 mt-1">Tool result is fed back to LLM. <br>LLM responds: "The price is 2.4% higher than contract."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="logic" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6">
+            <div class="col-span-1 md:col-span-1">
+                <h3 class="text-xl font-bold text-slate-900 mb-4">Why Deterministic?</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Financial governance cannot rely on probability. We use a <strong>Symbolic Layer</strong> for all calculations and threshold checks.
+                </p>
+                <div class="mt-6 p-4 bg-white border border-red-100 rounded-lg shadow-sm">
+                    <div class="text-xs font-bold text-red-600 uppercase mb-2">Benefit</div>
+                    <p class="text-sm font-semibold text-slate-800">"Zero Hallucination"</p>
+                    <p class="text-xs text-slate-500 mt-1">The LLM explains the result, but it does not *compute* the result.</p>
+                </div>
+            </div>
+            <div class="col-span-2 md:col-span-2 bg-white rounded-xl border border-slate-200 p-6 font-mono text-xs">
+                <div class="flex justify-between border-b border-slate-100 pb-2 mb-4">
+                    <span class="font-bold text-slate-700">policy_engine/rules.py</span>
+                </div>
+<pre class="text-slate-600">
+<span class="text-red-500">class</span> <span class="text-slate-900 font-bold">PriceDeviationRule</span>(BaseRule):
+    <span class="text-slate-500">"""
+    If PO Price > Contract Price by > 1%, trigger PENDING.
+    If PO Price > Contract Price by > 5%, trigger HIGH_RISK.
+    """</span>
+    <span class="text-red-500">def</span> <span class="text-blue-600">execute</span>(self, po, contract):
+        delta_pct = (po.unit_price - contract.unit_price) / contract.unit_price * 100
+        
+        <span class="text-red-500">if</span> delta_pct > 5.0:
+            <span class="text-red-500">return</span> RuleResult(
+                status=<span class="text-green-600">"HIGH_RISK"</span>, 
+                message=f<span class="text-green-600">"Exceeds threshold by {delta_pct}%"</span>
+            )
+        <span class="text-red-500">elif</span> delta_pct > 1.0:
+            <span class="text-red-500">return</span> RuleResult(status=<span class="text-green-600">"PENDING"</span>)
+            
+        <span class="text-red-500">return</span> RuleResult(status=<span class="text-green-600">"PASS"</span>)
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-slate-200 py-12 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="h-6 w-6 bg-black rounded flex items-center justify-center font-bold text-white text-[10px] mono">T8</div>
+                <span class="font-bold text-slate-700">TH8 Engineering</span>
+            </div>
+            <div class="flex gap-8 text-slate-500 text-xs">
+                <a href="#" class="hover:text-red-600">Architecture Specs</a>
+                <a href="#" class="hover:text-red-600">Model Card</a>
+                <a href="#" class="hover:text-red-600">Security</a>
+            </div>
+            <div class="text-slate-400 text-xs">
+                © 2026 TH8.AI | Enterprise Grade AI
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

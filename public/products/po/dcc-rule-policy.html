@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI: Procurement Rules & Policy Setup</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Custom Scrollbar for Code Block */
+        .code-scroll::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .code-scroll::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        .code-scroll::-webkit-scrollbar-thumb {
+            background: #475569; 
+            border-radius: 4px;
+        }
+        .code-scroll::-webkit-scrollbar-thumb:hover {
+            background: #64748b; 
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-sky-200 selection:text-slate-900">
+
+    <!-- HEADER -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-md">TH8</div>
+                    <div class="leading-tight">
+                        <h1 class="font-bold text-slate-900 text-sm uppercase tracking-wide">Procurement Rules & Policy</h1>
+                        <p class="text-[10px] text-slate-500 font-medium">Enterprise Configuration Guide</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                    <a href="#logic-design" class="hover:text-sky-600 transition">1. Logic Design</a>
+                    <a href="#implementation" class="hover:text-sky-600 transition">2. Implementation (YAML)</a>
+                    <a href="#maintenance" class="hover:text-sky-600 transition">3. Maintenance</a>
+                </div>
+                <button class="bg-sky-600 text-white px-4 py-2 rounded-md text-xs font-bold shadow hover:bg-sky-700 transition">
+                    Contact Sales
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <!-- INTRO -->
+        <section class="text-center max-w-3xl mx-auto">
+            <span class="inline-block py-1 px-3 rounded-full bg-sky-100 text-sky-700 text-xs font-bold tracking-wider mb-4 border border-sky-200">FOR ENTERPRISE > 500M REVENUE</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">จาก "นโยบายกระดาษ" สู่ "AI Rules Engine"</h2>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                กระบวนการเปลี่ยน Policy ที่ซับซ้อนให้กลายเป็นระบบอัตโนมัติที่ <span class="text-sky-600 font-bold">ยืดหยุ่น (Flexible)</span> และ <span class="text-sky-600 font-bold">ตรวจสอบได้ (Auditable)</span> โดยไม่ต้องแก้ Code โปรแกรมหลัก
+            </p>
+        </section>
+
+        <!-- PART 1: LOGIC DESIGN -->
+        <section id="logic-design" class="scroll-mt-24">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl">1</div>
+                <h3 class="text-2xl font-bold text-slate-800">Logic Design: 4 ขั้นตอนการออกแบบจุดตรวจ</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition duration-300">
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4 text-slate-600">
+                        <i data-lucide="database" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Step 1: Variables</h4>
+                    <p class="text-xs text-slate-500 mb-4">กำหนดตัวแปรที่ AI ต้อง "มองหา" ในเอกสาร</p>
+                    <ul class="text-sm space-y-2 text-slate-700">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> amount_total</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> vendor_tier</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> sla_remaining</li>
+                    </ul>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition duration-300">
+                    <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-4 text-amber-600">
+                        <i data-lucide="sliders" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Step 2: Thresholds</h4>
+                    <p class="text-xs text-slate-500 mb-4">กำหนด "เส้นตาย" หรือเพดานความเสี่ยง</p>
+                    <div class="space-y-3">
+                        <div class="bg-amber-50 p-2 rounded border border-amber-100">
+                            <div class="text-[10px] text-amber-800 font-bold uppercase">High Value</div>
+                            <div class="text-lg font-bold text-amber-600">> 3,000,000</div>
+                        </div>
+                        <div class="bg-red-50 p-2 rounded border border-red-100">
+                            <div class="text-[10px] text-red-800 font-bold uppercase">SLA Warning</div>
+                            <div class="text-lg font-bold text-red-600">< 6 Hours</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition duration-300">
+                    <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 text-purple-600">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Step 3: Actions</h4>
+                    <p class="text-xs text-slate-500 mb-4">เมื่อเจอเงื่อนไข จะให้ระบบทำอะไร?</p>
+                    <div class="flex flex-col gap-2">
+                        <span class="px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-md text-center">AUTO_APPROVE</span>
+                        <span class="px-3 py-1.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-md text-center">WARN (แจ้งเตือน)</span>
+                        <span class="px-3 py-1.5 bg-red-100 text-red-700 text-xs font-bold rounded-md text-center">ESCALATE (ส่งต่อ)</span>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card bg-white p-6 rounded-xl border border-slate-200 transition duration-300">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 text-blue-600">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Step 4: Role Mapping</h4>
+                    <p class="text-xs text-slate-500 mb-4">ใครคือผู้รับผิดชอบในแต่ละกรณี</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold">Off</div>
+                            <span class="text-sm">Officer</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-xs font-bold">Mgr</div>
+                            <span class="text-sm">Manager</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs font-bold">CFO</div>
+                            <span class="text-sm font-bold">CFO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 2: IMPLEMENTATION -->
+        <section id="implementation" class="scroll-mt-24">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl">2</div>
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">Implementation: Rules as Code (YAML)</h3>
+                    <p class="text-slate-500 mt-1">เราใช้ไฟล์ Config ที่อ่านง่าย (Human-readable) ในการควบคุม AI โดยไม่ต้องแก้โปรแกรมหลัก</p>
+                </div>
+            </div>
+
+            <!-- Code Window -->
+            <div class="bg-slate-900 rounded-xl shadow-2xl overflow-hidden border border-slate-700">
+                <!-- Toolbar -->
+                <div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="text-xs text-slate-400 font-code">procurement_policy_v3.yaml</div>
+                    <div class="text-xs text-slate-500">Read Only</div>
+                </div>
+
+                <!-- Code Content -->
+                <div class="p-6 overflow-x-auto code-scroll">
+<pre class="font-code text-sm leading-relaxed">
+<span class="text-slate-500"># TH8.AI Procurement Policy Configuration (v3)</span>
+<span class="text-slate-500"># Target: Enterprise Revenue > 500M</span>
+
+<span class="text-purple-400">meta:</span>
+  <span class="text-sky-300">version:</span> <span class="text-green-400">"3.1.0"</span>
+  <span class="text-sky-300">last_updated:</span> <span class="text-green-400">"2024-05-20"</span>
+
+<span class="text-slate-500"># 1. Global Definitions (ค่าคงที่ที่ใช้ทั้งระบบ)</span>
+<span class="text-purple-400">definitions:</span>
+  <span class="text-purple-400">thresholds:</span>
+    <span class="text-sky-300">high_value_limit:</span> <span class="text-amber-400">3000000</span>   <span class="text-slate-500"># <--- แก้ไขจุดนี้ถ้าต้องการเปลี่ยนยอด 3M</span>
+    <span class="text-sky-300">cfo_approval_limit:</span> <span class="text-amber-400">10000000</span>
+    <span class="text-sky-300">sla_critical_hours:</span> <span class="text-amber-400">6</span>         <span class="text-slate-500"># <--- แก้ไขเวลาเตือน SLA ที่นี่</span>
+
+<span class="text-slate-500"># 3. The Rules Engine (หัวใจสำคัญ)</span>
+<span class="text-purple-400">rules:</span>
+
+  <span class="text-slate-500"># --- Rule: High Value Escalation ---</span>
+  <span class="text-yellow-500">- rule_id:</span> <span class="text-green-400">"HIGH_AMOUNT_ESCALATION"</span>
+    <span class="text-sky-300">description:</span> <span class="text-green-400">"รายการมูลค่าสูงต้องให้ Manager อนุมัติ"</span>
+    <span class="text-sky-300">condition:</span> <span class="text-green-400">"amount_total > definitions.thresholds.high_value_limit"</span>
+    <span class="text-sky-300">action:</span>
+      <span class="text-sky-300">type:</span> <span class="text-green-400">"ESCALATE"</span>
+      <span class="text-sky-300">target_role:</span> <span class="text-green-400">"MANAGER"</span>
+      <span class="text-sky-300">required_evidence:</span> <span class="text-slate-300">[</span><span class="text-green-400">"contract_ref"</span>, <span class="text-green-400">"budget_code"</span><span class="text-slate-300">]</span>
+    <span class="text-sky-300">severity:</span> <span class="text-green-400">"HIGH"</span>
+
+  <span class="text-slate-500"># --- Rule: SLA Risk Warning ---</span>
+  <span class="text-yellow-500">- rule_id:</span> <span class="text-green-400">"SLA_RISK_WARNING"</span>
+    <span class="text-sky-300">description:</span> <span class="text-green-400">"เตือนเมื่อใกล้หมดเวลา SLA เพื่อป้องกัน Penalty"</span>
+    <span class="text-sky-300">condition:</span> <span class="text-green-400">"sla_hours_remaining <= definitions.thresholds.sla_critical_hours"</span>
+    <span class="text-sky-300">action:</span>
+      <span class="text-sky-300">type:</span> <span class="text-green-400">"WARN"</span>
+      <span class="text-sky-300">target_role:</span> <span class="text-green-400">"OFFICER"</span>
+      <span class="text-sky-300">notification_channel:</span> <span class="text-slate-300">[</span><span class="text-green-400">"EMAIL"</span>, <span class="text-green-400">"DASHBOARD_ALERT"</span><span class="text-slate-300">]</span>
+    <span class="text-sky-300">severity:</span> <span class="text-green-400">"MEDIUM"</span>
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: MAINTENANCE -->
+        <section id="maintenance" class="scroll-mt-24">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl">3</div>
+                <h3 class="text-2xl font-bold text-slate-800">Easy Maintenance: ปรับเปลี่ยนได้ทันที</h3>
+            </div>
+
+            <div class="bg-gradient-to-br from-sky-50 to-white border border-sky-100 rounded-2xl p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-4">ตัวอย่างสถานการณ์จริง (Scenario)</h4>
+                        <ul class="space-y-6">
+                            <li class="flex gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <i data-lucide="trending-up" class="w-5 h-5 text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">ปีหน้าบริษัทเติบโตขึ้น</p>
+                                    <p class="text-sm text-slate-600">ผู้บริหารต้องการปรับยอดอนุมัติของ CFO จาก 10 ล้าน เป็น <span class="text-sky-600 font-bold">20 ล้าน</span></p>
+                                </div>
+                            </li>
+                            <li class="flex gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">SLA เข้มงวดขึ้น</p>
+                                    <p class="text-sm text-slate-600">ต้องการให้ระบบแจ้งเตือนเร็วขึ้น จาก 6 ชม. เป็น <span class="text-sky-600 font-bold">4 ชม.</span></p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Visual Solution -->
+                    <div class="relative">
+                        <div class="absolute -top-4 -left-4 bg-sky-600 text-white text-xs px-3 py-1 rounded shadow-lg transform -rotate-2">Solution</div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-lg">
+                            <h5 class="text-sm font-bold text-slate-500 mb-2 uppercase">Action Required</h5>
+                            <p class="text-slate-800 mb-4 font-medium">เพียงแก้ตัวเลขในไฟล์ <span class="font-code text-sm bg-slate-100 px-1 rounded">yaml</span> แล้วกด Reload ระบบจะอัปเดต Logic ทันทีภายใน 1 นาที</p>
+                            
+                            <div class="flex items-center gap-2 p-3 bg-green-50 text-green-700 rounded-lg text-sm border border-green-100">
+                                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                <span>No Hard Coding (ไม่ต้องแก้โปรแกรม)</span>
+                            </div>
+                            <div class="flex items-center gap-2 p-3 bg-green-50 text-green-700 rounded-lg text-sm border border-green-100 mt-2">
+                                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                <span>No System Downtime (ระบบไม่ล่ม)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="border-t border-slate-200 pt-8 pb-12 text-center">
+            <p class="text-slate-500 text-sm">© 2024 TH8.AI - Procurement Intelligence System</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

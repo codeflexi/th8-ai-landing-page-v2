@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | Enterprise Architecture & Value Proposition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: "Prompt", sans-serif; }
+        .mono { font-family: "JetBrains Mono", monospace; }
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px), linear-gradient(to bottom, #f1f5f9 1px, transparent 1px); }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid #e2e8f0; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-white text-slate-900 antialiased selection:bg-red-100 selection:text-red-900">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="h-8 w-8 bg-black rounded flex items-center justify-center font-bold text-white mono text-xs">TH8</div>
+                <div>
+                    <span class="font-bold text-slate-900 tracking-tight">TH8.AI</span>
+                    <span class="ml-2 text-[10px] font-mono bg-red-50 text-red-600 px-2 py-0.5 rounded border border-red-100 font-semibold">ENT-ARCH v3.0</span>
+                </div>
+            </div>
+            <nav class="hidden lg:flex gap-6 text-xs font-medium text-slate-600 uppercase tracking-wide">
+                <a href="#value-bridge" class="hover:text-red-600 transition-colors">Business Value</a>
+                <a href="#internals" class="hover:text-red-600 transition-colors">The Engine</a>
+                <a href="#audit-timeline" class="hover:text-red-600 transition-colors">Audit Timeline</a>
+                <a href="#architecture" class="hover:text-red-600 transition-colors">Architecture</a>
+            </nav>
+            <div class="flex gap-3">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-xs font-bold transition-colors shadow-lg shadow-red-100">
+                    Request Demo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative py-24 bg-white overflow-hidden border-b border-slate-200">
+        <div class="absolute inset-0 bg-grid opacity-60"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-mono mb-6">
+                        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                        Hybrid Neuro-Symbolic AI
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-6">
+                        Deterministic Governance for <br>
+                        <span class="text-red-600">Enterprise Procurement</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl font-light">
+                        เราผสานความสามารถทางภาษาของ <strong>LLM</strong> เข้ากับความแม่นยำของ <strong>Rule Engine</strong> 
+                        เพื่อสร้างระบบจัดซื้อที่ "คิดได้" แต่ "ไม่มั่วตัวเลข" เปลี่ยน Technical Code ให้เป็น Business Control ที่ผู้บริหารวางใจ
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#value-bridge" class="px-6 py-3 bg-black hover:bg-slate-800 text-white rounded-lg text-sm font-semibold shadow-xl transition-all flex items-center gap-2">
+                            Explore Business Impact
+                        </a>
+                        <a href="#architecture" class="px-6 py-3 bg-white border border-slate-300 hover:bg-red-50 hover:text-red-700 hover:border-red-200 text-slate-700 rounded-lg text-sm font-semibold transition-all">
+                            View Architecture
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="relative rounded-xl bg-slate-900 shadow-2xl border border-slate-800 p-1 overflow-hidden">
+                    <div class="bg-slate-900/50 backdrop-blur p-4 border-b border-slate-700 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-400">core_business_logic.py</span>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+<pre class="font-mono text-xs text-slate-300 leading-relaxed">
+<span class="text-red-400">class</span> <span class="text-yellow-300">ProcurementGuardrail</span>(BaseModel):
+    <span class="text-slate-500">"""
+    Bridging Tech to Business Value:
+    1. Deterministic Rule = Zero Leakage
+    2. Immutable Log = Instant Audit
+    """</span>
+    <span class="text-red-400">def</span> <span class="text-blue-400">evaluate_risk</span>(self, po, contract):
+        <span class="text-slate-500"># Hard logic prevents AI hallucination</span>
+        delta = po.price - contract.price
+        <span class="text-red-400">if</span> delta > 0:
+            <span class="text-red-400">return</span> Decision(
+                status=<span class="text-green-400">"PENDING_CFO"</span>,
+                risk_value=f<span class="text-green-400">"Potential Loss: {delta} THB"</span>
+            )
+        <span class="text-red-400">return</span> Decision(<span class="text-green-400">"AUTO_PASS"</span>)
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="value-bridge" class="py-24 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-red-600 font-bold tracking-wider text-xs uppercase">Why Architecture Matters</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Connecting Tech Stack to Bottom Line</h2>
+                <p class="text-slate-600 mt-4 font-light">
+                    ทำไมเราถึงออกแบบระบบแบบนี้? เพราะทุก Technical Feature ส่งผลโดยตรงต่อ KPI ทางธุรกิจ
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-red-500 hover:shadow-xl transition-all group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-lg">⚙️</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">Technical Feature</p>
+                            <p class="font-bold text-slate-900">Deterministic Rule Engine</p>
+                        </div>
+                    </div>
+                    <div class="h-px bg-slate-100 mb-4"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-red-50 flex items-center justify-center text-lg">💰</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-red-600 uppercase">Business Value</p>
+                            <p class="font-bold text-slate-900">Prevent Financial Leakage</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-4 leading-relaxed">
+                        การใช้ Python Logic แทนการให้ AI คิดเลข ทำให้เราการันตีได้ 100% ว่าจะไม่มีการจ่ายเงินเกินสัญญาแม้แต่บาทเดียว (Zero Hallucination).
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-red-500 hover:shadow-xl transition-all group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-lg">📝</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">Technical Feature</p>
+                            <p class="font-bold text-slate-900">Immutable JSON Audit Log</p>
+                        </div>
+                    </div>
+                    <div class="h-px bg-slate-100 mb-4"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-red-50 flex items-center justify-center text-lg">🛡️</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-red-600 uppercase">Business Value</p>
+                            <p class="font-bold text-slate-900">Instant Compliance Audit</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-4 leading-relaxed">
+                        Log ที่ถูก Hash ไว้ทำให้แก้ไขย้อนหลังไม่ได้ ช่วยลดเวลาเตรียมเอกสารให้ Auditor จาก "เป็นสัปดาห์" เหลือ "คลิกเดียว"
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 hover:border-red-500 hover:shadow-xl transition-all group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-lg">⚡</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">Technical Feature</p>
+                            <p class="font-bold text-slate-900">Async Event-Driven Arch</p>
+                        </div>
+                    </div>
+                    <div class="h-px bg-slate-100 mb-4"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-red-50 flex items-center justify-center text-lg">🚀</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-red-600 uppercase">Business Value</p>
+                            <p class="font-bold text-slate-900">Operational Speed</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-4 leading-relaxed">
+                        ระบบไม่หน่วงแม้มีการ Upload สัญญาเป็นพันฉบับ ทำให้ PO ไหลลื่น ไม่เกิดคอขวด (Bottleneck) ในธุรกิจ
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="internals" class="py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded bg-black text-white flex items-center justify-center text-sm font-bold">01</span>
+                    The Neuro-Symbolic Engine
+                </h2>
+                <p class="text-slate-600 mb-6 leading-relaxed text-sm">
+                    เราแยกส่วน "สมองซีกซ้าย (Logic)" และ "สมองซีกขวา (Language)" ออกจากกันอย่างชัดเจน:
+                </p>
+                
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 flex items-center justify-center font-bold text-slate-700">LLM</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-sm">The Orchestrator (Language)</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                ทำหน้าที่ "เข้าใจเจตนา" ของผู้ใช้ และ "เลือกเครื่องมือ" (Tool Selection) เท่านั้น ห้ามคิดเลข ห้ามตัดสินใจ Policy
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-50 flex-shrink-0 flex items-center justify-center font-bold text-red-600">CODE</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-sm">The Executor (Logic)</h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                Python Functions ที่ทำงานตรงไปตรงมา (Deterministic) เช่น การคำนวณส่วนต่างราคา (Delta Calculation) หรือการเช็คสิทธิ์อนุมัติ
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-xl p-6 shadow-2xl overflow-hidden font-mono text-xs border border-slate-800">
+                <div class="text-slate-400 mb-3 border-b border-slate-700 pb-2 flex justify-between">
+                    <span>execution_flow.json</span>
+                    <span class="text-emerald-400">● Live Trace</span>
+                </div>
+<pre class="text-emerald-300 leading-relaxed">
+// 1. LLM Understands Intent
+"intent": "check_price_variance",
+"target": "PO-2025-002",
+
+// 2. LLM Calls Deterministic Tool (NO HALLUCINATION)
+"tool_call": {
+  "name": <span class="text-yellow-300">"calculate_delta"</span>,
+  "args": { "po_price": 12.80, "contract_price": 12.50 }
+},
+
+// 3. Python Returns Exact Math
+"tool_result": {
+  "delta_val": 0.30,
+  "delta_pct": 2.4,
+  "is_violation": true
+},
+
+// 4. Policy Engine Triggers Flag
+"outcome": {
+  "status": "PENDING_APPROVAL",
+  "reason": "Price exceeds contract by 2.4%"
+}
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="audit-timeline" class="py-24 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-red-600 font-bold tracking-wider text-xs uppercase">Total Visibility</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">The Audit Timeline</h2>
+                <p class="text-slate-600 mt-4 text-sm">
+                    ทุก Step ของระบบถูกบันทึกเป็น Event Timeline ที่ผู้บริหารและ Audit ตรวจสอบได้ทันที (Real-time Transparency)
+                    <br>ตัวอย่าง Scenario: <strong>Ovaltine PO-2025-002 (Price Violation)</strong>
+                </p>
+            </div>
+
+            <div class="relative">
+                <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-slate-200"></div>
+
+                <div class="relative pl-20 pb-10 group">
+                    <div class="absolute left-3 top-1 w-6 h-6 bg-slate-900 rounded-full border-4 border-white shadow-sm z-10 group-hover:scale-110 transition-transform"></div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-5 rounded-xl border border-slate-200 shadow-sm group-hover:border-red-300 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">10:00:05</span>
+                                <h4 class="font-bold text-slate-900">Ingestion & OCR</h4>
+                            </div>
+                            <p class="text-xs text-slate-600">ระบบรับไฟล์ PO และดึงข้อมูล Contract คู่เทียบ (C-OVT-RAW-2024)</p>
+                        </div>
+                        <div class="text-right hidden sm:block">
+                            <span class="text-[10px] font-mono text-slate-400">sys_ingest_worker</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-20 pb-10 group">
+                    <div class="absolute left-3 top-1 w-6 h-6 bg-red-600 rounded-full border-4 border-white shadow-sm z-10 group-hover:scale-110 transition-transform"></div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-red-50 p-5 rounded-xl border border-red-100 shadow-sm">
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="text-xs font-bold bg-white text-red-600 px-2 py-0.5 rounded border border-red-100">10:00:08</span>
+                                <h4 class="font-bold text-red-900">Policy Violation Detected</h4>
+                            </div>
+                            <p class="text-xs text-red-800 font-medium">Rule R-01 Triggered: Price Variance +2.4% (฿9,000)</p>
+                            <p class="text-[10px] text-red-600 mt-1">Action: Blocked & Routed to CFO Queue</p>
+                        </div>
+                        <div class="text-right hidden sm:block">
+                            <span class="text-[10px] font-mono text-red-400">policy_engine_core</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-20 pb-10 group">
+                    <div class="absolute left-3 top-1 w-6 h-6 bg-amber-500 rounded-full border-4 border-white shadow-sm z-10 group-hover:scale-110 transition-transform"></div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-5 rounded-xl border border-slate-200 shadow-sm group-hover:border-amber-300 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">10:45:00</span>
+                                <h4 class="font-bold text-slate-900">CFO Review</h4>
+                            </div>
+                            <p class="text-xs text-slate-600">CFO เปิดดูหลักฐานเทียบ (Side-by-side) และกด "Approve with Exception"</p>
+                            <div class="mt-2 bg-slate-50 p-2 rounded border border-slate-100 text-[10px] text-slate-500 italic">
+                                Note: "อนุมัติเพื่อให้ผลิตทัน แต่รอบหน้าต้องต่อรองใหม่"
+                            </div>
+                        </div>
+                        <div class="text-right hidden sm:block">
+                            <span class="text-[10px] font-mono text-slate-400">actor: cfo_user_01</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-20 group">
+                    <div class="absolute left-3 top-1 w-6 h-6 bg-emerald-500 rounded-full border-4 border-white shadow-sm z-10 group-hover:scale-110 transition-transform"></div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-5 rounded-xl border border-slate-200 shadow-sm group-hover:border-emerald-300 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">10:45:02</span>
+                                <h4 class="font-bold text-slate-900">Sync to ERP (Completed)</h4>
+                            </div>
+                            <p class="text-xs text-slate-600">สถานะ PO อัปเดตเป็น Approved ใน SAP พร้อมแนบ Audit Log ID</p>
+                        </div>
+                        <div class="text-right hidden sm:block">
+                            <span class="text-[10px] font-mono text-slate-400">integration_webhook</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl font-bold text-slate-900 mb-10 flex items-center gap-3">
+                <span class="w-8 h-8 rounded bg-black text-white flex items-center justify-center text-sm font-bold">02</span>
+                Enterprise Scalability
+            </h2>
+            
+            <div class="grid lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-8">
+                    <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 overflow-x-auto">
+                        <div class="min-w-[700px] flex flex-col gap-8">
+                            <div class="flex justify-center gap-8">
+                                <div class="w-32 py-3 bg-white border border-slate-300 rounded text-center text-xs font-bold shadow-sm">Web Dashboard</div>
+                                <div class="w-32 py-3 bg-white border border-slate-300 rounded text-center text-xs font-bold shadow-sm">Chat Client</div>
+                                <div class="w-32 py-3 bg-white border border-slate-300 rounded text-center text-xs font-bold shadow-sm">ERP (SAP)</div>
+                            </div>
+                            <div class="flex justify-center"><svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg></div>
+                            
+                            <div class="mx-auto w-full max-w-2xl py-4 bg-slate-900 text-white rounded-lg text-center text-sm font-bold shadow-md relative">
+                                API Gateway (FastAPI)
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] bg-red-600 px-2 py-1 rounded font-normal">Security Layer</span>
+                            </div>
+                            <div class="flex justify-center"><svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg></div>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="p-4 bg-white border border-slate-300 rounded-lg shadow-sm flex flex-col items-center gap-2">
+                                    <span class="text-[10px] font-bold text-red-600 uppercase">Ingestion</span>
+                                    <div class="text-xs text-center text-slate-600">OCR Worker Nodes<br>(Auto-scale)</div>
+                                </div>
+                                <div class="p-4 bg-white border-2 border-red-600 rounded-lg shadow-lg flex flex-col items-center gap-2 relative">
+                                    <span class="text-[10px] font-bold text-red-600 uppercase">Decision Core</span>
+                                    <div class="text-xs text-center text-slate-600 font-bold">Policy Engine + RAG</div>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-300 rounded-lg shadow-sm flex flex-col items-center gap-2">
+                                    <span class="text-[10px] font-bold text-red-600 uppercase">Audit Log</span>
+                                    <div class="text-xs text-center text-slate-600">Immutable Storage<br>(Async)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="p-5 bg-white rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-sm text-slate-900 mb-2">High Throughput</h4>
+                        <p class="text-xs text-slate-600">
+                            ใช้ระบบ <strong>Queue (Redis/Celery)</strong> ในการจัดการ PDF จำนวนมากพร้อมกัน ทำให้หน้าบ้านไม่ค้าง แม้มีการ Upload สัญญา 1,000 ฉบับ
+                        </p>
+                    </div>
+                    <div class="p-5 bg-white rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-sm text-slate-900 mb-2">Integration Patterns</h4>
+                        <ul class="text-xs text-slate-600 space-y-2">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> <strong>Sync:</strong> API Pre-check ก่อนกด Save PO</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> <strong>Async:</strong> Webhook callback เมื่อประมวลผลเสร็จ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="py-24 bg-slate-900 text-slate-300">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl font-bold text-white mb-10 flex items-center gap-3">
+                <span class="w-8 h-8 rounded bg-white text-black flex items-center justify-center text-sm font-bold">03</span>
+                Security & Compliance
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-white font-bold text-sm mb-2">On-Premise Ready</h3>
+                    <p class="text-xs text-slate-400">
+                        Container-based architecture ทำให้ติดตั้งได้ทั้งบน Private Cloud (AWS/Azure) หรือ On-premise Servers เพื่อความปลอดภัยของข้อมูลสูงสุด
+                    </p>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-white font-bold text-sm mb-2">PII Protection</h3>
+                    <p class="text-xs text-slate-400">
+                        มี Middleware สำหรับ Mask ข้อมูลส่วนบุคคล (Redaction) ก่อนส่งไปประมวลผลที่ LLM เพื่อให้ผ่าน PDPA/GDPR
+                    </p>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-white font-bold text-sm mb-2">Role-Based Access</h3>
+                    <p class="text-xs text-slate-400">
+                        แยกสิทธิ์ Requester, Approver, และ Auditor อย่างชัดเจน รองรับการเชื่อมต่อ OIDC/SAML (Single Sign-On)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-2xl font-bold text-slate-900 mb-10 text-center">Implementation Stages (Low Risk Strategy)</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden group hover:border-slate-400 transition-all">
+                    <div class="absolute top-0 right-0 bg-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600">Phase 0</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Data Prep</h4>
+                    <p class="text-xs text-slate-600">เตรียมไฟล์สัญญาและ Config Policy (Dev Env). ไม่กระทบระบบจริง</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden group hover:border-red-400 transition-all">
+                    <div class="absolute top-0 right-0 bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">Phase 1</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Engine Setup</h4>
+                    <p class="text-xs text-slate-600">Deploy Containers และเชื่อมต่อ Vector DB (UAT Env).</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden group hover:border-red-400 transition-all">
+                    <div class="absolute top-0 right-0 bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">Phase 2</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Pilot (Shadow)</h4>
+                    <p class="text-xs text-slate-600">รับข้อมูลจาก ERP แต่ยังไม่ Block จริง (Shadow Mode) เพื่อ Validate ผลลัพธ์</p>
+                </div>
+                <div class="bg-white p-5 rounded-lg border border-slate-200 relative overflow-hidden opacity-75">
+                    <div class="absolute top-0 right-0 bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500">Phase 3</div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-2">Go Live</h4>
+                    <p class="text-xs text-slate-600">เปิดระบบเต็มรูปแบบ พร้อม Auto-scaling และ Support</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-slate-200 py-12 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="h-6 w-6 bg-black rounded flex items-center justify-center font-bold text-white text-[10px] mono">T8</div>
+                <span class="font-bold text-slate-700">TH8 Engineering</span>
+            </div>
+            <div class="flex gap-8 text-slate-500 text-xs">
+                <a href="#" class="hover:text-red-600">Architecture Specs</a>
+                <a href="#" class="hover:text-red-600">Model Card</a>
+                <a href="#" class="hover:text-red-600">Security Whitepaper</a>
+                <a href="#" class="hover:text-red-600">SLA</a>
+            </div>
+            <div class="text-slate-400 text-xs">
+                © 2026 TH8.AI | Enterprise Grade AI Solutions
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

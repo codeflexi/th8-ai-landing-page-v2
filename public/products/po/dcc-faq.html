@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI: Enterprise Sales FAQ & Objection Handling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .font-body { font-family: 'Sarabun', sans-serif; }
+        
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        details[open] summary ~ * {
+            animation: sweep .3s ease-in-out;
+        }
+
+        @keyframes sweep {
+            0%    {opacity: 0; margin-top: -10px}
+            100%  {opacity: 1; margin-top: 0px}
+        }
+
+        .highlight-answer {
+            background-color: #f0f9ff; /* sky-50 */
+            border-left: 4px solid #0ea5e9; /* sky-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 pb-20">
+
+    <!-- HEADER -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center font-bold text-lg">FAQ</div>
+                <div>
+                    <h1 class="font-bold text-sm uppercase tracking-wider">Sales Objection Handling</h1>
+                    <p class="text-[10px] text-slate-400">Target: Enterprise > 500M THB</p>
+                </div>
+            </div>
+            <div class="text-xs font-medium bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
+                Internal Use Only
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-8 space-y-12">
+
+        <!-- GROUP 1: THE CFO / CEO (Business & ROI) -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+                    <i data-lucide="briefcase" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">1. CFO & CEO Questions</h2>
+                    <p class="text-slate-500 text-sm">Focus: Money, Risk, ROI, Redundancy</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Q1 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-emerald-600">Q:</span>
+                            เราลงทุน SAP/Oracle ไปเป็นร้อยล้านแล้ว ทำไมต้องซื้อระบบของคุณอีก?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "SAP คือสมุดบัญชี (Record) แต่ TH8 คือผู้ตรวจสอบ (Intelligence)"</p>
+                        <p>
+                            "ถูกต้องครับ SAP เป็นระบบที่ดีมากในการเก็บข้อมูล (System of Record) แต่ SAP <strong>'อ่านหนังสือไม่ออก'</strong> ครับ มันไม่สามารถอ่านไฟล์ PDF สัญญาคู่ค้า 50 หน้าแล้วมาเทียบกับ PO ที่กำลังเปิดได้ว่าราคาเกินเพดานไหม หรือเงื่อนไขเปลี่ยนไปหรือเปล่า <br><br>
+                            TH8 เข้ามาทำหน้าที่เป็น <strong>Intelligence Layer</strong> ที่ทับอยู่บน SAP เพื่อดักจับความผิดปกติที่ SAP มองไม่เห็น ช่วยให้การลงทุน SAP ของท่านคุ้มค่าขึ้นด้วยครับ"
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Q2 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-emerald-600">Q:</span>
+                            AI เชื่อถือได้แค่ไหน? ถ้า AI อนุมัติผิดแล้วบริษัทเสียหาย ใครรับผิดชอบ?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Deterministic Logic for Money, AI for Reading"</p>
+                        <p>
+                            "นี่คือจุดที่ TH8 ต่างจาก AI ทั่วไปครับ สำหรับเรื่องเงิน เราใช้ระบบ <strong>Hard Rules (YAML Logic)</strong> ที่แม่นยำ 100% เช่น ถ้าเกิน 3 ล้าน ต้องส่ง Manager เสมอ (ไม่มีข้อยกเว้น) <br><br>
+                            เราใช้ AI เฉพาะในส่วนของการ 'อ่านและสรุปข้อมูล' (RAG) เพื่อช่วยตัดสินใจเท่านั้น และสุดท้ายระบบเราออกแบบมาแบบ <strong>Human-in-the-loop</strong> คือคนต้องเป็นคนกดอนุมัติสุดท้ายเสมอ AI เป็นเพียงผู้ช่วยที่เก่งมากๆ เท่านั้นครับ"
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Q3 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-emerald-600">Q:</span>
+                            ROI (จุดคุ้มทุน) วัดยังไง? จะรู้ได้ไงว่าคุ้ม?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Prevention Value & Speed"</p>
+                        <p>
+                            "เราวัดจาก 2 ส่วนครับ: <br>
+                            1. <strong>Hard Savings:</strong> ถ้า AI ดักจับการซื้อของแพงเกินจริง หรือ Fraud ได้เพียง 1 เคส (เช่น เคสละ 5-10 ล้าน) ก็คืนทุนค่าระบบทั้งปีแล้วครับ <br>
+                            2. <strong>Soft Savings:</strong> ลดเวลาของผู้บริหารและฝ่ายจัดซื้อ 80% ลองจินตนาการว่าถ้า Manager เอาเวลาที่ต้องมานั่งเทียบเอกสารวันละ 2 ชม. ไปเจรจาต่อรอง Supplier แทน จะประหยัดเงินได้อีกเท่าไหร่ครับ"
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- GROUP 2: THE CIO / IT DIRECTOR (Tech & Security) -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center text-sky-600">
+                    <i data-lucide="server" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">2. CIO & IT Director Questions</h2>
+                    <p class="text-slate-500 text-sm">Focus: Security, Integration, Maintenance</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Q4 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-sky-600">Q:</span>
+                            ข้อมูลจัดซื้อเป็นความลับมาก (Data Privacy) คุณเอาข้อมูลเราไปเทรน AI ให้คนอื่นใช้ไหม?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Zero-Training Policy / Isolated Tenant"</p>
+                        <p>
+                            "รับประกัน 100% ครับ สถาปัตยกรรมของเราเป็นแบบ <strong>Single-Tenant Isolation</strong> ข้อมูลของท่านจะถูกเก็บแยกและเข้ารหัส (Encrypted at rest & in transit) <br><br>
+                            สำหรับ AI Model เราใช้ Enterprise License ที่มีข้อตกลงชัดเจนว่า <strong>'No Training on Customer Data'</strong> ข้อมูลของท่านจะไม่ถูกนำไปสอนโมเดลสาธารณะเด็ดขาด เรามีเอกสาร Compliance ยืนยันครับ"
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Q5 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-sky-600">Q:</span>
+                            เชื่อมต่อกับ ERP ยากไหม? ทีม IT ผมงานล้นมือแล้ว ไม่มีเวลามาทำให้
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Low-Touch Integration"</p>
+                        <p>
+                            "เราเข้าใจเรื่องนี้ดีครับ TH8 ออกแบบมาเป็น <strong>API-First Architecture</strong> เราต้องการแค่ Data Stream (JSON) ของ PR/PO เท่านั้น เรามี Connector สำเร็จรูปสำหรับ SAP/Oracle <br><br>
+                            ทีมของท่านแทบไม่ต้องเขียนโค้ดเพิ่ม แค่เปิด Firewall และอนุญาต API Access ทีม Implementation ของเราจะจัดการส่วนที่เหลือให้ครับ ใช้เวลา Setup ประมาณ 2-3 สัปดาห์ ไม่กระทบ Core System"
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Q6 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-sky-600">Q:</span>
+                            ถ้ามีการเปลี่ยน Policy บริษัท ต้องแก้โค้ดไหม? (Maintenance Burden)
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Configurable YAML (Rules as Code)"</p>
+                        <p>
+                            "ไม่ต้องแก้โค้ดครับ! นี่คือฟีเจอร์เด่นของเรา เราแยก Business Logic ออกมาเป็นไฟล์ <strong>YAML Configuration</strong> ที่อ่านรู้เรื่อง <br><br>
+                            ถ้าปีหน้าท่านอยากเปลี่ยนยอดอนุมัติจาก 3 ล้าน เป็น 5 ล้าน หรือเปลี่ยน Flow การอนุมัติ Admin ฝั่ง Business หรือ IT Support สามารถแก้ตัวเลขในไฟล์ Config แล้ว Reload ได้ทันที ไม่ต้อง Compile หรือ Deploy ระบบใหม่ครับ"
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- GROUP 3: THE PROCUREMENT MANAGER (User & Ops) -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">3. Procurement Manager Questions</h2>
+                    <p class="text-slate-500 text-sm">Focus: Usability, Workflow, Thai Lang</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Q7 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-amber-600">Q:</span>
+                            จะทำให้งานเพิ่มขึ้นไหม? ปกติก็ทำใน SAP อยู่แล้ว ต้องมาเปิดอีกโปรแกรมหรอ?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Silent Assistant / Alert Only"</p>
+                        <p>
+                            "ในเคสปกติ (Happy Path) ท่านทำงานใน SAP ตามเดิมเลยครับ ระบบ TH8 จะทำงานอยู่เบื้องหลังเงียบๆ <br><br>
+                            ท่านจะต้องใช้ TH8 ก็ต่อเมื่อ <strong>'มีปัญหา'</strong> หรือ <strong>'ต้องอนุมัติเคสพิเศษ'</strong> เท่านั้น ซึ่งระบบจะแจ้งเตือนผ่าน Email/Line พร้อมลิงก์ให้กดเข้ามาดูสรุป ดังนั้นงานท่านจะลดลงครับ เพราะไม่ต้องมานั่งตรวจสอบทุกเคสด้วยตัวเอง AI กรองให้แล้ว"
+                        </p>
+                    </div>
+                </details>
+
+                <!-- Q8 -->
+                <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer hover:bg-slate-50 transition">
+                        <span class="font-bold text-slate-800 flex gap-3">
+                            <span class="text-amber-600">Q:</span>
+                            รองรับเอกสารภาษาไทยไหม? สัญญาเรามีภาษาไทยเยอะมาก
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+                        </span>
+                    </summary>
+                    <div class="p-5 pt-0 text-slate-600 font-body text-sm leading-relaxed highlight-answer m-5 rounded">
+                        <p class="mb-3 font-bold text-slate-800">Key Answer: "Native Thai Support"</p>
+                        <p>
+                            "รองรับ 100% ครับ โมเดล AI ของเราถูกจูนมาสำหรับเอกสารราชการและสัญญาธุรกิจภาษาไทยโดยเฉพาะ เข้าใจศัพท์เทคนิคกฎหมาย (Legal Term) และบริบทของภาษาไทยได้ดีเยี่ยม ท่านสามารถพิมพ์ถาม AI เป็นภาษาไทยได้เลยครับ"
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- CHEAT SHEET FOOTER -->
+        <div class="mt-12 bg-slate-900 rounded-2xl p-8 text-center">
+            <h3 class="text-white text-xl font-bold mb-4">💡 The "Golden Sentence" to Close</h3>
+            <p class="text-slate-400 text-lg italic max-w-2xl mx-auto">
+                "ถ้าวันนี้ท่านสามารถจ้างผู้ช่วยระดับ Manager มานั่งตรวจสอบเอกสารสัญญาและ PR ทุกใบตลอด 24 ชม. โดยไม่มีวันลา ไม่เหนื่อย และจำกฎบริษัทได้ทุกข้อ... ท่านจะจ้างไหมครับ? นั่นคือสิ่งที่ TH8 ทำให้ท่านได้"
+            </p>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

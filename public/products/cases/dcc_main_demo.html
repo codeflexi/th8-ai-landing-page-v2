@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TH8.AI – Procurement Decision Center (Single Demo)</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      html, body { font-family: "Prompt", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      /* Smooth anchor scrolling */
+      html { scroll-behavior: smooth; }
+
+      /* Simple "component" classes */
+      .card { @apply bg-white border border-slate-200 rounded-2xl shadow-sm; }
+      .card-h { @apply px-5 pt-4 pb-3 border-b border-slate-100; }
+      .card-b { @apply p-5; }
+
+      .label { @apply text-xs uppercase tracking-wide text-slate-500; }
+      .value { @apply text-sm text-slate-900; }
+
+      .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium border; }
+      .btn-primary { @apply bg-slate-900 text-white border-slate-900 hover:bg-slate-800; }
+      .btn-secondary { @apply bg-white text-slate-900 border-slate-200 hover:bg-slate-50; }
+      .btn-ghost { @apply bg-transparent text-slate-700 border-transparent hover:bg-slate-100; }
+
+      .status { @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold border; }
+      .status-pending { @apply bg-amber-50 text-amber-700 border-amber-200; }
+      .status-approved { @apply bg-emerald-50 text-emerald-700 border-emerald-200; }
+      .status-rejected { @apply bg-rose-50 text-rose-700 border-rose-200; }
+      .status-neutral { @apply bg-slate-50 text-slate-700 border-slate-200; }
+
+      .badge { @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold border; }
+      .badge-system { @apply bg-slate-50 text-slate-700 border-slate-200; }
+      .badge-ai { @apply bg-indigo-50 text-indigo-700 border-indigo-200; }
+      .badge-human { @apply bg-emerald-50 text-emerald-700 border-emerald-200; }
+      .badge-risk { @apply bg-rose-50 text-rose-700 border-rose-200; }
+
+      .nav-item { @apply flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-700 hover:bg-slate-100; }
+      .nav-item.active { @apply bg-slate-900 text-white; }
+      .nav-dot { @apply h-2 w-2 rounded-full bg-slate-300; }
+      .nav-item.active .nav-dot { @apply bg-white; }
+
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+      /* Small helper for sticky section headers */
+      .section-title { @apply flex items-center justify-between; }
+      .section-sub { @apply text-sm text-slate-600; }
+    </style>
+
+    <script>
+      // Simple SPA-like section switching (no framework)
+      function showSection(id) {
+        const sections = document.querySelectorAll("[data-section]");
+        sections.forEach(s => s.classList.add("hidden"));
+        const target = document.getElementById(id);
+        if (target) target.classList.remove("hidden");
+
+        const items = document.querySelectorAll("[data-nav]");
+        items.forEach(i => i.classList.remove("active"));
+        const active = document.querySelector(`[data-nav='${id}']`);
+        if (active) active.classList.add("active");
+
+        // keep URL hash in sync (optional)
+        history.replaceState(null, "", `#${id}`);
+      }
+
+      function boot() {
+        const hash = (location.hash || "").replace("#", "");
+        const defaultId = "portfolio";
+        showSection(hash || defaultId);
+      }
+
+      window.addEventListener("DOMContentLoaded", boot);
+    </script>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900">
+    <!-- App Shell -->
+    <div class="min-h-screen flex">
+      <!-- Sidebar -->
+      <aside class="w-[320px] shrink-0 border-r border-slate-200 bg-white">
+        <div class="p-5 border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-2xl bg-slate-900 flex items-center justify-center text-white font-semibold">
+              TH8
+            </div>
+            <div>
+              <p class="text-sm font-semibold">Procurement Decision Center</p>
+              <p class="text-xs text-slate-500">Single Demo HTML (API-driven UI design)</p>
+            </div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <button class="btn btn-secondary" onclick="alert('Demo action: POST /api/demo/demo/load')">
+              Load Demo
+            </button>
+            <button class="btn btn-primary" onclick="alert('Demo action: POST /api/cases/ingest')">
+              Ingest Case
+            </button>
+          </div>
+        </div>
+
+        <nav class="p-4 space-y-1">
+          <button class="nav-item w-full active" data-nav="portfolio" onclick="showSection('portfolio')">
+            <span class="nav-dot"></span> Case Portfolio
+          </button>
+          <button class="nav-item w-full" data-nav="caseDetail" onclick="showSection('caseDetail')">
+            <span class="nav-dot"></span> Case Detail Workspace
+          </button>
+          <button class="nav-item w-full" data-nav="decisionRun" onclick="showSection('decisionRun')">
+            <span class="nav-dot"></span> Decision Run & Rules
+          </button>
+          <button class="nav-item w-full" data-nav="evidence" onclick="showSection('evidence')">
+            <span class="nav-dot"></span> Evidence & Policy Trace
+          </button>
+          <button class="nav-item w-full" data-nav="audit" onclick="showSection('audit')">
+            <span class="nav-dot"></span> Audit Timeline (Compliance)
+          </button>
+          <button class="nav-item w-full" data-nav="system" onclick="showSection('system')">
+            <span class="nav-dot"></span> System & Demo Control
+          </button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-200">
+          <div class="card">
+            <div class="card-b space-y-3">
+              <div>
+                <p class="label">Selected Case</p>
+                <p class="mono text-sm font-semibold">CASE-PO-OVT-2025-006</p>
+              </div>
+
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="status status-pending">External: OPEN</span>
+                <span class="status status-approved">Decision: RECOMMENDED</span>
+                <span class="status status-rejected">Risk: HIGH</span>
+              </div>
+
+              <div class="text-xs text-slate-600 leading-relaxed">
+                จุดขาย: ทุก action / rule / evidence trace กลับ audit event ได้ (immutable).
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="flex-1">
+        <!-- Top bar -->
+        <header class="sticky top-0 z-10 bg-slate-50/80 backdrop-blur border-b border-slate-200">
+          <div class="px-6 py-4 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-500">TH8.AI Enterprise Demo</p>
+              <h1 class="text-lg font-semibold">Decision + Evidence + Audit (Accountable Workflow)</h1>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button class="btn btn-ghost" onclick="alert('Demo action: GET /api/health/health')">
+                Health Check
+              </button>
+              <button class="btn btn-secondary" onclick="alert('Demo action: GET /api/cases')">
+                Refresh Cases
+              </button>
+              <button class="btn btn-primary" onclick="alert('Demo action: POST /api/decisions/cases/{case_id}/decisions/run')">
+                Run Decision
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content container -->
+        <div class="p-6 max-w-6xl">
+          <!-- =========================
+               SECTION: Portfolio
+               API: GET /api/cases
+          ========================== -->
+          <section id="portfolio" data-section class="space-y-6">
+            <div class="section-title">
+              <div>
+                <h2 class="text-xl font-semibold">Case Portfolio</h2>
+                <p class="section-sub">API: <span class="mono">GET /api/cases</span> • ใช้สำหรับ backlog + executive overview</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary" onclick="alert('Filter / Sort (demo)')">Filter</button>
+                <button class="btn btn-primary" onclick="alert('Demo action: POST /api/cases/ingest')">Ingest New Case</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+              <div class="col-span-8 card">
+                <div class="card-h flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-semibold">Open Cases</p>
+                    <p class="text-xs text-slate-500">Prioritize by amount + SLA risk + policy violations</p>
+                  </div>
+                  <div class="text-xs text-slate-500">Last sync: 2026-01-03 16:30</div>
+                </div>
+
+                <div class="card-b">
+                  <div class="flex items-center gap-2 mb-4">
+                    <input
+                      class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-white"
+                      placeholder="Search case_id / vendor / status…"
+                    />
+                    <button class="btn btn-secondary">Search</button>
+                  </div>
+
+                  <div class="overflow-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-sm">
+                      <thead class="bg-slate-50 text-slate-600">
+                        <tr>
+                          <th class="text-left p-3">Case ID</th>
+                          <th class="text-left p-3">Vendor</th>
+                          <th class="text-right p-3">Amount</th>
+                          <th class="text-left p-3">External</th>
+                          <th class="text-left p-3">Priority</th>
+                          <th class="text-left p-3">Created</th>
+                          <th class="p-3"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white">
+                        <tr class="border-t hover:bg-slate-50">
+                          <td class="p-3 mono font-semibold">CASE-PO-OVT-2025-006</td>
+                          <td class="p-3">Ovaltine</td>
+                          <td class="p-3 mono text-right">THB 3,200,000</td>
+                          <td class="p-3"><span class="status status-pending">OPEN</span></td>
+                          <td class="p-3"><span class="status status-rejected">HIGH</span></td>
+                          <td class="p-3 mono">2026-01-01</td>
+                          <td class="p-3 text-right">
+                            <button class="btn btn-primary" onclick="showSection('caseDetail')">Open</button>
+                          </td>
+                        </tr>
+
+                        <tr class="border-t hover:bg-slate-50">
+                          <td class="p-3 mono font-semibold">CASE-PO-OVT-2025-007</td>
+                          <td class="p-3">OfficeSup</td>
+                          <td class="p-3 mono text-right">THB 245,000</td>
+                          <td class="p-3"><span class="status status-pending">OPEN</span></td>
+                          <td class="p-3"><span class="status status-neutral">MED</span></td>
+                          <td class="p-3 mono">2026-01-02</td>
+                          <td class="p-3 text-right">
+                            <button class="btn btn-secondary" onclick="showSection('caseDetail')">Open</button>
+                          </td>
+                        </tr>
+
+                        <tr class="border-t hover:bg-slate-50">
+                          <td class="p-3 mono font-semibold">CASE-PO-OVT-2025-008</td>
+                          <td class="p-3">PackagingCo</td>
+                          <td class="p-3 mono text-right">THB 1,050,000</td>
+                          <td class="p-3"><span class="status status-approved">CLOSED</span></td>
+                          <td class="p-3"><span class="status status-neutral">LOW</span></td>
+                          <td class="p-3 mono">2025-12-28</td>
+                          <td class="p-3 text-right">
+                            <button class="btn btn-ghost" onclick="showSection('audit')">View Audit</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                    <div>Showing 3 of 3</div>
+                    <div class="flex items-center gap-2">
+                      <button class="btn btn-secondary">Prev</button>
+                      <button class="btn btn-secondary">Next</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-4 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Executive Snapshot</p>
+                    <p class="text-xs text-slate-500">What’s at risk right now</p>
+                  </div>
+                  <div class="card-b space-y-4">
+                    <div class="flex items-start justify-between">
+                      <div>
+                        <p class="label">Open Cases</p>
+                        <p class="text-2xl font-semibold">2</p>
+                      </div>
+                      <span class="badge badge-risk">Attention</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div class="rounded-xl border border-slate-200 p-3">
+                        <p class="label">Exposure</p>
+                        <p class="mono font-semibold">THB 3.4M</p>
+                      </div>
+                      <div class="rounded-xl border border-slate-200 p-3">
+                        <p class="label">High Risk</p>
+                        <p class="mono font-semibold">1</p>
+                      </div>
+                    </div>
+
+                    <div class="text-sm text-slate-700 leading-relaxed">
+                      ระบบนี้เน้น “Accountability”:
+                      <ul class="list-disc pl-5 mt-2 text-sm text-slate-700 space-y-1">
+                        <li>Decision แสดงเหตุผลแบบ rule-by-rule</li>
+                        <li>Evidence ชี้ clause + page (ไม่ตอบลอย)</li>
+                        <li>Audit เป็น source of truth (immutable event stream)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Demo Shortcuts</p>
+                    <p class="text-xs text-slate-500">Mapped to backend endpoints</p>
+                  </div>
+                  <div class="card-b space-y-2 text-sm">
+                    <div class="flex items-center justify-between">
+                      <span class="mono">POST /api/demo/demo/load</span>
+                      <button class="btn btn-secondary" onclick="alert('POST /api/demo/demo/load')">Run</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="mono">GET /api/cases</span>
+                      <button class="btn btn-secondary" onclick="alert('GET /api/cases')">Run</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="mono">GET /api/cases/{id}</span>
+                      <button class="btn btn-secondary" onclick="alert('GET /api/cases/CASE-PO-OVT-2025-006')">Run</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="mono">GET /api/audit/case/{id}</span>
+                      <button class="btn btn-secondary" onclick="alert('GET /api/audit/case/CASE-PO-OVT-2025-006')">Run</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =========================
+               SECTION: Case Detail
+               API: GET /api/cases/{case_id}
+          ========================== -->
+          <section id="caseDetail" data-section class="hidden space-y-6">
+            <div class="section-title">
+              <div>
+                <h2 class="text-xl font-semibold">Case Detail Workspace</h2>
+                <p class="section-sub">API: <span class="mono">GET /api/cases/{case_id}</span> • ผู้ตัดสินใจใช้หน้านี้เป็นหลัก</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary" onclick="showSection('portfolio')">Back</button>
+                <button class="btn btn-primary" onclick="showSection('decisionRun')">Go to Decision Run</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-b">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="label">Decision Case</p>
+                    <p class="mono text-lg font-semibold mt-1">CASE-PO-OVT-2025-006</p>
+                    <p class="text-sm text-slate-700 mt-2">
+                      Domain: <span class="mono font-semibold">procurement</span> • Vendor:
+                      <span class="font-semibold">Ovaltine</span>
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-2 flex-wrap justify-end">
+                    <span class="status status-approved">Decision: RECOMMENDED</span>
+                    <span class="status status-pending">External: OPEN</span>
+                    <span class="status status-rejected">Risk: HIGH</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+              <!-- Left -->
+              <aside class="col-span-4 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Case Snapshot</p>
+                    <p class="text-xs text-slate-500">Core fields for decisions</p>
+                  </div>
+                  <div class="card-b">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <p class="label">Amount</p>
+                        <p class="mono font-semibold">THB 3,200,000</p>
+                      </div>
+                      <div>
+                        <p class="label">Priority</p>
+                        <p class="font-semibold">HIGH</p>
+                      </div>
+                      <div>
+                        <p class="label">Created</p>
+                        <p class="mono">2026-01-01 16:25</p>
+                      </div>
+                      <div>
+                        <p class="label">Evaluated</p>
+                        <p class="mono">2026-01-01 17:16</p>
+                      </div>
+                    </div>
+
+                    <div class="mt-5 rounded-xl border border-slate-200 p-3">
+                      <p class="label">Pending Reason</p>
+                      <p class="text-sm text-slate-700 mt-1">
+                        Approval required (policy threshold)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Policy Binding</p>
+                    <p class="text-xs text-slate-500">Immutable • Not embedded in code</p>
+                  </div>
+                  <div class="card-b space-y-3">
+                    <div>
+                      <p class="label">Policy</p>
+                      <p class="mono font-semibold">PROCUREMENT-001</p>
+                    </div>
+                    <div>
+                      <p class="label">Version</p>
+                      <p class="mono font-semibold">v3</p>
+                    </div>
+                    <div class="text-xs text-slate-500 leading-relaxed">
+                      Frontend ไม่ส่ง policy ใน endpoint แบบ enterprise:
+                      <span class="mono">POST /api/decisions/cases/{case_id}/decisions/run</span>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+
+              <!-- Right -->
+              <main class="col-span-8 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Decision Summary</p>
+                    <p class="text-xs text-slate-500">Read-only explanation fields (Phase 4)</p>
+                  </div>
+                  <div class="card-b">
+                    <div class="grid grid-cols-2 gap-6">
+                      <div>
+                        <p class="label">Recommended Action</p>
+                        <p class="text-2xl font-semibold text-slate-900 mt-1">APPROVE</p>
+                        <p class="text-xs text-slate-500 mt-1">Required Role: Procurement_Manager</p>
+                      </div>
+                      <div>
+                        <p class="label">Decision Required</p>
+                        <p class="text-sm font-semibold mt-1">Yes</p>
+
+                        <div class="mt-3 rounded-xl border border-slate-200 p-3">
+                          <p class="label">Risk Level</p>
+                          <p class="text-sm font-semibold text-rose-700 mt-1">HIGH</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mt-6">
+                      <p class="label mb-2">Triggered Rules</p>
+                      <div class="flex flex-wrap gap-2">
+                        <span class="status status-neutral mono">HIGH_AMOUNT_ESCALATION</span>
+                        <span class="status status-neutral mono">SLA_RISK</span>
+                        <span class="status status-neutral mono">VENDOR_RISK (optional)</span>
+                      </div>
+                      <p class="text-xs text-slate-500 mt-2">
+                        (Demo) ใน event จริงอาจเป็น hit=false ได้ แต่ยังคง “trace” ว่า rule ถูก evaluate.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h flex items-center justify-between">
+                    <div>
+                      <p class="text-sm font-semibold">Decision Action</p>
+                      <p class="text-xs text-slate-500">Buttons disabled until approve/reject endpoints exist</p>
+                    </div>
+                    <span class="badge badge-human">Human-in-the-loop</span>
+                  </div>
+                  <div class="card-b">
+                    <textarea
+                      class="w-full rounded-xl border border-slate-200 p-3 text-sm"
+                      rows="4"
+                      placeholder="Decision reason will be recorded in audit log (future endpoint)"
+                    ></textarea>
+
+                    <div class="flex justify-end gap-3 mt-4">
+                      <button class="btn btn-secondary" disabled>Reject</button>
+                      <button class="btn btn-primary" disabled>Approve</button>
+                    </div>
+
+                    <div class="mt-3 text-xs text-slate-500">
+                      แนวทางขาย: ระบบไม่ “ยึดอำนาจ” แต่ทำให้ decision มีหลักฐาน + auditability.
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </section>
+
+          <!-- =========================
+               SECTION: Decision Run & Rules
+               API: events RULE_EVALUATED / DECISION_RECOMMENDED
+               Trigger: POST /api/decisions/cases/{case_id}/decisions/run
+          ========================== -->
+          <section id="decisionRun" data-section class="hidden space-y-6">
+            <div class="section-title">
+              <div>
+                <h2 class="text-xl font-semibold">Decision Run & Rule Explanation</h2>
+                <p class="section-sub">
+                  Trigger: <span class="mono">POST /api/decisions/cases/{case_id}/decisions/run</span> •
+                  Read: <span class="mono">GET /api/audit/case/{case_id}</span>
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary" onclick="showSection('caseDetail')">Back to Case</button>
+                <button class="btn btn-primary" onclick="alert('Demo action: POST /api/decisions/cases/CASE-PO-OVT-2025-006/decisions/run')">
+                  Run Decision (Demo)
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+              <div class="col-span-8 space-y-6">
+                <div class="card">
+                  <div class="card-h flex items-center justify-between">
+                    <div>
+                      <p class="text-sm font-semibold">Decision Run</p>
+                      <p class="text-xs text-slate-500">Grouped by run_id (first-class)</p>
+                    </div>
+                    <span class="mono text-xs text-slate-500">run_id: 9867c2d5-ae19-431b-be90-e3abd85857fa</span>
+                  </div>
+
+                  <div class="card-b space-y-4">
+                    <div class="flex items-center justify-between gap-4 flex-wrap">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-ai">SYSTEM</span>
+                        <span class="status status-approved">DECISION_RECOMMENDED: APPROVE</span>
+                      </div>
+                      <div class="text-xs text-slate-500">
+                        policy: <span class="mono">PROCUREMENT-001</span> • version: <span class="mono">v3</span>
+                      </div>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                      <div class="bg-slate-50 px-4 py-3 flex items-center justify-between">
+                        <p class="text-sm font-semibold">Rule Evaluation (Event Stream)</p>
+                        <p class="text-xs text-slate-500">event_type: RULE_EVALUATED</p>
+                      </div>
+
+                      <div class="p-4 space-y-3 bg-white">
+                        <div class="border border-slate-200 rounded-xl p-4">
+                          <div class="flex items-start justify-between gap-4">
+                            <div>
+                              <p class="mono text-sm font-semibold">HIGH_AMOUNT_ESCALATION</p>
+                              <p class="text-xs text-slate-500 mt-1">High value procurement must be escalated</p>
+                            </div>
+                            <span class="status status-approved">hit: false</span>
+                          </div>
+
+                          <div class="mt-3 grid grid-cols-2 gap-3 text-sm">
+                            <div class="rounded-xl border border-slate-200 p-3">
+                              <p class="label">Inputs</p>
+                              <p class="mono text-xs mt-1">amount: null</p>
+                              <p class="mono text-xs">hours_to_sla: null</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-200 p-3">
+                              <p class="label">Policy</p>
+                              <p class="mono text-xs mt-1">policy_id: PROCUREMENT-001</p>
+                              <p class="mono text-xs">version: v3</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="border border-slate-200 rounded-xl p-4">
+                          <div class="flex items-start justify-between gap-4">
+                            <div>
+                              <p class="mono text-sm font-semibold">SLA_RISK</p>
+                              <p class="text-xs text-slate-500 mt-1">Procurement close to SLA deadline</p>
+                            </div>
+                            <span class="status status-approved">hit: false</span>
+                          </div>
+
+                          <div class="mt-3 grid grid-cols-2 gap-3 text-sm">
+                            <div class="rounded-xl border border-slate-200 p-3">
+                              <p class="label">Inputs</p>
+                              <p class="mono text-xs mt-1">amount: null</p>
+                              <p class="mono text-xs">hours_to_sla: null</p>
+                            </div>
+                            <div class="rounded-xl border border-slate-200 p-3">
+                              <p class="label">Matched</p>
+                              <p class="text-xs text-slate-500 mt-1">[]</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                          <div class="flex items-start justify-between gap-4">
+                            <div>
+                              <p class="mono text-sm font-semibold">DECISION_RECOMMENDED</p>
+                              <p class="text-xs text-slate-500 mt-1">Recommendation payload</p>
+                            </div>
+                            <span class="status status-approved">APPROVE</span>
+                          </div>
+
+                          <div class="mt-3 rounded-xl border border-slate-200 bg-white p-3 text-sm">
+                            <p class="label">Recommendation</p>
+                            <p class="text-sm mt-1">
+                              required_role: <span class="mono font-semibold">Procurement_Manager</span>
+                            </p>
+                            <p class="text-sm">
+                              reason_codes: <span class="mono">[]</span>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="text-xs text-slate-500 leading-relaxed">
+                          จุดขายเชิง governance: ถึง hit=false ก็ยังเกิด “evaluation record” ทำให้ audit ยืนยันได้ว่า rule ถูกตรวจจริง ไม่ใช่ AI ตอบเอง.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-4 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Enterprise Explanation</p>
+                    <p class="text-xs text-slate-500">What auditors care about</p>
+                  </div>
+                  <div class="card-b space-y-3 text-sm text-slate-700 leading-relaxed">
+                    <p>
+                      ระบบนี้ออกแบบให้ “ตรวจสอบได้” มากกว่า “ดูฉลาด”:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>มี run_id → แยกการประมวลผลแต่ละครั้ง</li>
+                      <li>RULE_EVALUATED เป็น event ต่อ rule</li>
+                      <li>DECISION_RECOMMENDED แยกจากการ approve จริง</li>
+                      <li>หลักฐาน (evidence) ไม่ใช่คำตอบลอย</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Next Step (UI)</p>
+                    <p class="text-xs text-slate-500">Evidence + Audit</p>
+                  </div>
+                  <div class="card-b grid grid-cols-1 gap-2">
+                    <button class="btn btn-secondary" onclick="showSection('evidence')">Open Evidence</button>
+                    <button class="btn btn-primary" onclick="showSection('audit')">Open Audit Timeline</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =========================
+               SECTION: Evidence
+               API: events EVIDENCE_ATTACHED
+               Actions: POST /api/evidence/suggest, POST /api/evidence/attach
+          ========================== -->
+          <section id="evidence" data-section class="hidden space-y-6">
+            <div class="section-title">
+              <div>
+                <h2 class="text-xl font-semibold">Evidence & Policy Trace</h2>
+                <p class="section-sub">
+                  Suggest: <span class="mono">POST /api/evidence/suggest</span> • Attach: <span class="mono">POST /api/evidence/attach</span> • Read: audit stream <span class="mono">EVIDENCE_ATTACHED</span>
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary" onclick="showSection('decisionRun')">Back</button>
+                <button class="btn btn-primary" onclick="alert('Demo action: POST /api/evidence/suggest')">Suggest Evidence</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+              <div class="col-span-7 space-y-6">
+                <div class="card">
+                  <div class="card-h flex items-center justify-between">
+                    <div>
+                      <p class="text-sm font-semibold">Attached Evidence</p>
+                      <p class="text-xs text-slate-500">Derived from audit events (EVIDENCE_ATTACHED)</p>
+                    </div>
+                    <span class="status status-neutral">source: vector_search</span>
+                  </div>
+
+                  <div class="card-b space-y-3">
+                    <div class="border border-slate-200 rounded-2xl p-4">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <p class="font-semibold">Procurement Policy 2024</p>
+                          <p class="text-xs text-slate-500 mt-1">
+                            doc_id: <span class="mono">PROC-2024-STD</span> • clause_id: <span class="mono">CL-4.2</span>
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            section: 4.Approval / 4.2 High Value Procurement
+                          </p>
+                          <p class="text-xs text-slate-500 mt-1">
+                            pages: <span class="mono">12–13</span> • score: <span class="mono">0.72</span>
+                          </p>
+                        </div>
+                        <div class="text-right">
+                          <a class="text-xs text-blue-600 underline" href="javascript:void(0)" onclick="alert('Open PDF URI: s3://policies/procurement_2024.pdf')">
+                            Open PDF
+                          </a>
+                          <p class="text-xs text-slate-400 mt-2 mono">s3://policies/procurement_2024.pdf</p>
+                        </div>
+                      </div>
+
+                      <div class="mt-4 rounded-xl bg-slate-50 border border-slate-200 p-3 text-sm text-slate-700">
+                        <p class="label">Why this evidence matters</p>
+                        <p class="mt-1">
+                          Evidence ทำหน้าที่ “ชี้หลักฐาน” ไม่ใช่ “ตอบแทนคน”
+                          → ช่วยให้ Procurement Manager ตัดสินใจโดยเห็น clause ที่เกี่ยวข้องทันที.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="text-xs text-slate-500">
+                      ในระบบจริง: evidence สามารถมีหลายชิ้น และ UI ควรแยกตาม policy section / risk dimension.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Attach Evidence (Demo Form)</p>
+                    <p class="text-xs text-slate-500">Writes audit event: EVIDENCE_ATTACHED</p>
+                  </div>
+                  <div class="card-b space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <p class="label">case_id</p>
+                        <input class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm mono" value="CASE-PO-OVT-2025-006" />
+                      </div>
+                      <div>
+                        <p class="label">policy_id</p>
+                        <input class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm mono" value="PROCUREMENT-001" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <p class="label">source</p>
+                      <input class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" value="vector_search" />
+                    </div>
+
+                    <div class="flex justify-end">
+                      <button class="btn btn-primary" onclick="alert('Demo action: POST /api/evidence/attach')">
+                        Attach Evidence
+                      </button>
+                    </div>
+
+                    <p class="text-xs text-slate-500">
+                      Endpoint: <span class="mono">POST /api/evidence/attach</span> → returns <span class="mono">EvidenceAttachResponse</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-5 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Evidence Search (Suggest)</p>
+                    <p class="text-xs text-slate-500">Return list for human selection</p>
+                  </div>
+                  <div class="card-b space-y-3">
+                    <div>
+                      <p class="label">Query</p>
+                      <input class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" value="High value procurement approval threshold" />
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <p class="label">policy_id (optional)</p>
+                        <input class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm mono" value="PROCUREMENT-001" />
+                      </div>
+                      <div>
+                        <p class="label">limit</p>
+                        <input class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm mono" value="5" />
+                      </div>
+                    </div>
+
+                    <button class="btn btn-secondary w-full" onclick="alert('Demo action: POST /api/evidence/suggest')">
+                      Suggest Evidence
+                    </button>
+
+                    <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                      <div class="bg-slate-50 px-4 py-3">
+                        <p class="text-sm font-semibold">Suggested Results (Example)</p>
+                      </div>
+                      <div class="p-4 space-y-3 bg-white">
+                        <div class="border border-slate-200 rounded-xl p-3">
+                          <p class="font-semibold text-sm">Procurement Policy 2024</p>
+                          <p class="text-xs text-slate-500 mt-1 mono">PROC-2024-STD • p12–13 • CL-4.2</p>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="status status-approved">score: 0.72</span>
+                            <button class="btn btn-primary" onclick="alert('Select this evidence (demo)')">Select</button>
+                          </div>
+                        </div>
+
+                        <div class="border border-slate-200 rounded-xl p-3">
+                          <p class="font-semibold text-sm">Approval Matrix Appendix</p>
+                          <p class="text-xs text-slate-500 mt-1 mono">PROC-2024-APPX • p3–4 • CL-A.1</p>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="status status-neutral">score: 0.61</span>
+                            <button class="btn btn-secondary" onclick="alert('Select this evidence (demo)')">Select</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p class="text-xs text-slate-500">
+                      UX Principle: AI ค้นหาได้ แต่คน “เลือก” ก่อน attach เพื่อความรับผิดชอบ.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Why “RAG-as-Evidence” sells</p>
+                    <p class="text-xs text-slate-500">For Legal / Audit / IT</p>
+                  </div>
+                  <div class="card-b text-sm text-slate-700 leading-relaxed space-y-2">
+                    <p>
+                      RAG ไม่ได้ถูกใช้เพื่อ “ตอบแทนคน” แต่ใช้เพื่อ “ชี้หลักฐาน”:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>ลดเวลาเปิดเอกสารและหาข้อกำหนด</li>
+                      <li>ลดความเสี่ยงจากการตีความผิด</li>
+                      <li>หลักฐานผูกกับ audit event และ run_id</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =========================
+               SECTION: Audit Timeline
+               API: GET /api/audit/case/{case_id}
+               (optionally /api/cases/{case_id}/audit?group=run)
+          ========================== -->
+          <section id="audit" data-section class="hidden space-y-6">
+            <div class="section-title">
+              <div>
+                <h2 class="text-xl font-semibold">Audit Timeline (Enterprise Compliance View)</h2>
+                <p class="section-sub">
+                  API: <span class="mono">GET /api/audit/case/{case_id}</span> • Option: <span class="mono">GET /api/cases/{case_id}/audit?group=run</span>
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary" onclick="showSection('portfolio')">Back to Portfolio</button>
+                <button class="btn btn-primary" onclick="alert('Demo action: GET /api/audit/case/CASE-PO-OVT-2025-006')">Refresh Timeline</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+              <div class="col-span-8 space-y-6">
+                <div class="card">
+                  <div class="card-h flex items-center justify-between">
+                    <div>
+                      <p class="text-sm font-semibold">Immutable Audit Event Stream</p>
+                      <p class="text-xs text-slate-500">Source of truth: audit events (case_id scoped)</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="status status-neutral">group: run</span>
+                      <span class="mono text-xs text-slate-500">case_id: CASE-PO-OVT-2025-006</span>
+                    </div>
+                  </div>
+
+                  <div class="card-b">
+                    <!-- Run group -->
+                    <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                      <div class="bg-slate-50 px-4 py-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <span class="badge badge-ai">Run</span>
+                          <p class="text-sm font-semibold mono">9867c2d5-ae19-431b-be90-e3abd85857fa</p>
+                        </div>
+                        <p class="text-xs text-slate-500">2026-01-01 17:16–17:17</p>
+                      </div>
+
+                      <div class="p-4 bg-white space-y-3">
+                        <!-- timeline item -->
+                        <div class="flex items-start gap-3 p-3 rounded-2xl border border-slate-200">
+                          <div class="mt-0.5">
+                            <span class="badge badge-system">SYSTEM</span>
+                          </div>
+                          <div class="flex-1">
+                            <div class="flex items-start justify-between gap-4">
+                              <div>
+                                <p class="text-sm font-semibold">CASE_LOADED</p>
+                                <p class="text-xs text-slate-500">actor: system • 2026-01-01 16:25:51</p>
+                              </div>
+                              <span class="status status-neutral">severity: INFO</span>
+                            </div>
+                            <p class="text-sm text-slate-700 mt-2">
+                              Case opened for review (domain: procurement, status: OPEN)
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 rounded-2xl border border-slate-200">
+                          <div class="mt-0.5">
+                            <span class="badge badge-ai">AI</span>
+                          </div>
+                          <div class="flex-1">
+                            <div class="flex items-start justify-between gap-4">
+                              <div>
+                                <p class="text-sm font-semibold">RULE_EVALUATED</p>
+                                <p class="text-xs text-slate-500">
+                                  actor: SYSTEM • 2026-01-01 17:16:48 • rule_id: <span class="mono">HIGH_AMOUNT_ESCALATION</span>
+                                </p>
+                              </div>
+                              <span class="status status-approved">severity: OK</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600">
+                              hit=false • inputs: amount=null, hours_to_sla=null
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 rounded-2xl border border-slate-200">
+                          <div class="mt-0.5">
+                            <span class="badge badge-ai">AI</span>
+                          </div>
+                          <div class="flex-1">
+                            <div class="flex items-start justify-between gap-4">
+                              <div>
+                                <p class="text-sm font-semibold">RULE_EVALUATED</p>
+                                <p class="text-xs text-slate-500">
+                                  actor: SYSTEM • 2026-01-01 17:16:48 • rule_id: <span class="mono">SLA_RISK</span>
+                                </p>
+                              </div>
+                              <span class="status status-approved">severity: OK</span>
+                            </div>
+                            <div class="mt-2 text-xs text-slate-600">
+                              hit=false • inputs: amount=null, hours_to_sla=null
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 rounded-2xl border border-slate-200 bg-slate-50">
+                          <div class="mt-0.5">
+                            <span class="badge badge-ai">AI</span>
+                          </div>
+                          <div class="flex-1">
+                            <div class="flex items-start justify-between gap-4">
+                              <div>
+                                <p class="text-sm font-semibold">DECISION_RECOMMENDED</p>
+                                <p class="text-xs text-slate-500">
+                                  actor: SYSTEM • 2026-01-01 17:16:49 • required_role: Procurement_Manager
+                                </p>
+                              </div>
+                              <span class="status status-pending">severity: ACTION_REQUIRED</span>
+                            </div>
+                            <p class="text-sm text-slate-700 mt-2">
+                              recommendation: <span class="mono font-semibold">APPROVE</span> • reason_codes: []
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 rounded-2xl border border-slate-200">
+                          <div class="mt-0.5">
+                            <span class="badge badge-ai">AI</span>
+                          </div>
+                          <div class="flex-1">
+                            <div class="flex items-start justify-between gap-4">
+                              <div>
+                                <p class="text-sm font-semibold">EVIDENCE_ATTACHED</p>
+                                <p class="text-xs text-slate-500">
+                                  actor: SYSTEM • 2026-01-03 09:21:51 • source: vector_search
+                                </p>
+                              </div>
+                              <span class="status status-neutral">severity: TRACE</span>
+                            </div>
+
+                            <div class="mt-3 rounded-xl border border-slate-200 bg-white p-3">
+                              <p class="text-sm font-semibold">Procurement Policy 2024</p>
+                              <p class="text-xs text-slate-500 mt-1">
+                                doc_id: <span class="mono">PROC-2024-STD</span> • clause: <span class="mono">CL-4.2</span> • pages: <span class="mono">12–13</span>
+                              </p>
+                              <a class="text-xs text-blue-600 underline mt-2 inline-block" href="javascript:void(0)" onclick="alert('Open PDF URI: s3://policies/procurement_2024.pdf')">Open PDF</a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="text-xs text-slate-500 pt-2">
+                          (Demo) การ approve/reject จริงควรถูกบันทึกเป็น event เพิ่มในอนาคต (เช่น DECISION_APPROVED / DECISION_REJECTED)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-4 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Audit Controls</p>
+                    <p class="text-xs text-slate-500">What compliance expects</p>
+                  </div>
+                  <div class="card-b space-y-3 text-sm">
+                    <div class="rounded-xl border border-slate-200 p-3">
+                      <p class="label">Grouping</p>
+                      <div class="mt-2 flex items-center gap-2">
+                        <button class="btn btn-secondary" onclick="alert('GET /api/audit/case/{id} (flat)')">Flat</button>
+                        <button class="btn btn-primary" onclick="alert('GET /api/cases/{id}/audit?group=run')">By Run</button>
+                      </div>
+                      <p class="text-xs text-slate-500 mt-2">
+                        Group by run_id ช่วยแยก “การประเมินแต่ละครั้ง” และป้องกันความสับสน.
+                      </p>
+                    </div>
+
+                    <div class="rounded-xl border border-slate-200 p-3">
+                      <p class="label">Severity Convention (UI)</p>
+                      <div class="mt-2 flex flex-wrap gap-2">
+                        <span class="status status-neutral">INFO</span>
+                        <span class="status status-approved">OK</span>
+                        <span class="status status-pending">ACTION_REQUIRED</span>
+                        <span class="status status-rejected">RISK</span>
+                      </div>
+                      <p class="text-xs text-slate-500 mt-2">
+                        (Demo) severity สามารถ derive จาก event_type/fields เช่น DECISION_RECOMMENDED = ACTION_REQUIRED
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Executive Narrative</p>
+                    <p class="text-xs text-slate-500">พูดกับ CFO/COO/IT ให้เข้าใจใน 30 วิ</p>
+                  </div>
+                  <div class="card-b text-sm text-slate-700 leading-relaxed space-y-2">
+                    <p class="font-semibold">“ทุกการตัดสินใจ trace กลับ audit event ได้”</p>
+                    <p>
+                      ระบบนี้ไม่ใช่ chatbot แต่เป็น decision workflow ที่มี accountability:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>มี record ว่า rule ใดถูก evaluate</li>
+                      <li>มี evidence ชี้ clause/page ของเอกสาร</li>
+                      <li>มี run_id แยกการประเมินแต่ละครั้ง</li>
+                      <li>audit เป็น immutable stream → พร้อมตรวจ</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- =========================
+               SECTION: System & Demo Control
+               API: /api/health/health, /api/demo/demo/load, root
+          ========================== -->
+          <section id="system" data-section class="hidden space-y-6">
+            <div class="section-title">
+              <div>
+                <h2 class="text-xl font-semibold">System & Demo Control</h2>
+                <p class="section-sub">Operational panel สำหรับทีม demo / IT reviewer</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="btn btn-secondary" onclick="showSection('portfolio')">Back to Portfolio</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+              <div class="col-span-6 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Health</p>
+                    <p class="text-xs text-slate-500">API: <span class="mono">GET /api/health/health</span></p>
+                  </div>
+                  <div class="card-b space-y-3">
+                    <div class="flex items-center justify-between">
+                      <p class="text-sm">Service Status</p>
+                      <span class="status status-approved">OK</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div class="rounded-xl border border-slate-200 p-3">
+                        <p class="label">Latency</p>
+                        <p class="mono font-semibold">~35ms</p>
+                      </div>
+                      <div class="rounded-xl border border-slate-200 p-3">
+                        <p class="label">Version</p>
+                        <p class="mono font-semibold">0.1.0</p>
+                      </div>
+                    </div>
+                    <button class="btn btn-primary w-full" onclick="alert('GET /api/health/health')">Run Health Check</button>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Demo Bootstrap</p>
+                    <p class="text-xs text-slate-500">API: <span class="mono">POST /api/demo/demo/load</span></p>
+                  </div>
+                  <div class="card-b space-y-3">
+                    <p class="text-sm text-slate-700">
+                      ใช้โหลดชุดข้อมูล demo (SAP-like) + policy baseline ก่อนโชว์ flow.
+                    </p>
+                    <button class="btn btn-primary w-full" onclick="alert('POST /api/demo/demo/load')">Load Demo Dataset</button>
+                    <p class="text-xs text-slate-500">
+                      Tip: ทำให้ผู้ชมเห็น case list พร้อม audit stream ทันที ลดเวลาตั้งต้น.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-span-6 space-y-6">
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Endpoint Map (for IT)</p>
+                    <p class="text-xs text-slate-500">สิ่งที่ UI ใช้จริงจาก OpenAPI ที่ให้มา</p>
+                  </div>
+                  <div class="card-b">
+                    <div class="space-y-2 text-sm">
+                      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-3">
+                        <span class="mono">GET /api/cases</span>
+                        <span class="status status-neutral">Portfolio</span>
+                      </div>
+                      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-3">
+                        <span class="mono">GET /api/cases/{case_id}</span>
+                        <span class="status status-neutral">Case Detail</span>
+                      </div>
+                      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-3">
+                        <span class="mono">POST /api/decisions/cases/{case_id}/decisions/run</span>
+                        <span class="status status-pending">Decision Run</span>
+                      </div>
+                      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-3">
+                        <span class="mono">GET /api/audit/case/{case_id}</span>
+                        <span class="status status-neutral">Audit Timeline</span>
+                      </div>
+                      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-3">
+                        <span class="mono">POST /api/evidence/suggest</span>
+                        <span class="status status-neutral">Evidence Search</span>
+                      </div>
+                      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-3">
+                        <span class="mono">POST /api/evidence/attach</span>
+                        <span class="status status-neutral">Attach Evidence</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-h">
+                    <p class="text-sm font-semibold">Sales-Ready Positioning</p>
+                    <p class="text-xs text-slate-500">ใช้เป็นสคริปต์ปิดการขาย (สั้นและชัด)</p>
+                  </div>
+                  <div class="card-b text-sm text-slate-700 leading-relaxed space-y-2">
+                    <p class="font-semibold">This is not an AI chatbot.</p>
+                    <p>
+                      This is a decision system with accountability:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>Decision ถูกอธิบายแบบ rule-by-rule</li>
+                      <li>Evidence ชี้ clause/page ของ policy</li>
+                      <li>Audit เป็น immutable event stream</li>
+                      <li>ทุก action trace ได้ → พร้อมตรวจสอบ</li>
+                    </ul>
+                    <div class="pt-2">
+                      <button class="btn btn-primary w-full" onclick="showSection('audit')">
+                        Show Audit Proof (Demo)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <footer class="mt-10 py-6 text-xs text-slate-500">
+            <div class="flex items-center justify-between">
+              <div>
+                TH8.AI Demo UI • Single HTML • TailwindCSS
+              </div>
+              <div class="mono">
+                OpenAPI: 3.1 • Backend version: 0.1.0
+              </div>
+            </div>
+          </footer>
+        </div>
+      </main>
+    </div>
+
+    <!-- Tailwind apply polyfill note:
+         The @apply in <style> works only if processed by Tailwind build.
+         For CDN-only demo, we provide a fallback by inlining utility classes:
+         If you open this file and see unstyled components, replace .card/.btn/etc.
+         with utility classes directly OR run through Tailwind build pipeline.
+     -->
+    <script>
+      // CDN-only fallback: if @apply isn't processed, add minimal inline styling.
+      // This keeps the demo usable in plain browser without Tailwind build tooling.
+      (function ensureCdnUsable() {
+        const test = document.createElement("div");
+        test.className = "card";
+        document.body.appendChild(test);
+        const cs = getComputedStyle(test);
+        const looksUnstyled = cs.backgroundColor === "rgba(0, 0, 0, 0)" || cs.backgroundColor === "transparent";
+        document.body.removeChild(test);
+
+        if (!looksUnstyled) return;
+
+        // If unstyled, inject utility-class replacements for key components.
+        // This does NOT cover everything, but makes the demo presentable.
+        const css = document.createElement("style");
+        css.textContent = `
+          .card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 1px 2px rgba(15,23,42,.06)}
+          .card-h{padding:16px 20px 12px;border-bottom:1px solid #f1f5f9}
+          .card-b{padding:20px}
+          .label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#64748b}
+          .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:8px 16px;font-size:14px;font-weight:600;border:1px solid transparent}
+          .btn-primary{background:#0f172a;color:#fff;border-color:#0f172a}
+          .btn-primary:hover{background:#1e293b}
+          .btn-secondary{background:#fff;color:#0f172a;border-color:#e2e8f0}
+          .btn-secondary:hover{background:#f8fafc}
+          .btn-ghost{background:transparent;color:#334155}
+          .btn-ghost:hover{background:#f1f5f9}
+          .status{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;border:1px solid}
+          .status-pending{background:#fffbeb;color:#b45309;border-color:#fde68a}
+          .status-approved{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+          .status-rejected{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+          .status-neutral{background:#f8fafc;color:#334155;border-color:#e2e8f0}
+          .badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;border:1px solid}
+          .badge-system{background:#f8fafc;color:#334155;border-color:#e2e8f0}
+          .badge-ai{background:#eef2ff;color:#4338ca;border-color:#c7d2fe}
+          .badge-human{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+          .badge-risk{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+          .nav-item{display:flex;align-items:center;gap:10px;border-radius:12px;padding:10px 12px;font-size:14px;color:#334155}
+          .nav-item:hover{background:#f1f5f9}
+          .nav-item.active{background:#0f172a;color:#fff}
+          .nav-dot{height:8px;width:8px;border-radius:999px;background:#cbd5e1}
+          .nav-item.active .nav-dot{background:#fff}
+        `;
+        document.head.appendChild(css);
+      })();
+    </script>
+  </body>
+</html>

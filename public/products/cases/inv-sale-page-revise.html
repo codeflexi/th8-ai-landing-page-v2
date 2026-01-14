@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI | The Learning Enterprise Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        num: ['Sarabun', 'sans-serif'],
+                    },
+                    colors: {
+                        th8: {
+                            red: '#D9232E',
+                            red_dark: '#991B1B',
+                            dark: '#0F172A',
+                            slate: '#1E293B',
+                            accent: '#3B82F6'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 2s linear infinite',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { top: '0%', opacity: '0.5' },
+                            '50%': { top: '100%', opacity: '1' },
+                            '100%': { top: '0%', opacity: '0.5' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+        }
+        .pattern-grid {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .tab-btn.active {
+            background-color: #0F172A;
+            color: white;
+            border-color: #0F172A;
+        }
+        
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10B981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10B981;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-th8-red selection:text-white">
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="h-10 w-10 rounded bg-th8-red text-white grid place-items-center font-bold text-lg shadow-lg">TH8</div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg leading-none text-slate-900">TH8.AI</span>
+                    <span class="text-[10px] text-slate-500 font-medium tracking-wide">Enterprise Intelligence</span>
+                </div>
+            </div>
+            <div class="hidden xl:flex items-center gap-8 text-sm font-medium text-slate-600">
+                <a href="#messy-ocr" class="hover:text-th8-red transition">Thai OCR+</a>
+                <a href="#split-po" class="hover:text-th8-red transition">Split PO Detection</a>
+                <a href="#feedback-loop" class="hover:text-th8-red transition">AI Learning</a>
+                <a href="#integration" class="hover:text-th8-red transition">Easy Integration</a>
+            </div>
+            <a href="#demo-console" class="px-6 py-2.5 bg-th8-dark hover:bg-slate-800 text-white text-sm font-semibold rounded-lg transition shadow-xl flex items-center gap-2 group">
+                <span>Try Live Console</span>
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 overflow-hidden bg-white">
+        <div class="absolute inset-0 pattern-grid opacity-[0.3] -z-10"></div>
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider mb-8 shadow-sm">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-th8-red opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-th8-red"></span>
+                </span>
+                New Feature: Active Learning & Feedback Loop
+            </div>
+
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6 leading-tight">
+                The Financial Agent<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-th8-red to-rose-700">That Learns From You.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
+                หยุดการรั่วไหลทางการเงินด้วย <strong>AI ที่อ่านเอกสารไทยรู้เรื่องจริง</strong> (แม้จะยับ) 
+                จับผิด <strong>Split PO</strong> ที่คนมองไม่เห็น และ <strong>"ฉลาดขึ้น"</strong> ทุกครั้งที่คุณกดตัดสินใจ
+            </p>
+
+            <div class="flex justify-center gap-4">
+                <a href="#demo-console" class="px-8 py-4 bg-th8-dark text-white font-bold rounded-xl hover:bg-slate-800 transition shadow-xl shadow-slate-900/20">
+                    Open Intelligence Console
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="messy-ocr" class="py-20 bg-slate-50 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-th8-red font-bold text-xs uppercase tracking-wider">Gap Closed: Robust OCR</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-4">บิลยับ? ลายมือหวัด? <br>ไม่ใช่ปัญหาอีกต่อไป</h2>
+                <p class="text-slate-600 text-lg mb-6">
+                    เราผสาน <strong>Hybrid OCR</strong> เข้ากับ <strong>LLM Context Correction</strong> เพื่อแก้คำผิดอัตโนมัติ
+                    เช่น เปลี่ยน "บธิษัท" เป็น "บริษัท" หรือแกะลายมือตัวเลขบนบิลคาร์บอนที่จางหาย
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3 text-slate-700">
+                        <span class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">✓</span>
+                        อ่านเอกสาร Dot Matrix (กระดาษต่อเนื่อง) ภาษาไทยได้แม่นยำ
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-700">
+                        <span class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">✓</span>
+                        LLM ช่วยเดาคำที่หายไปจากบริบท (Contextual Infilling)
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="bg-white p-2 rounded-2xl shadow-xl border border-slate-200 relative group">
+                <div class="absolute -top-4 -right-4 bg-th8-red text-white text-xs font-bold px-4 py-2 rounded-lg shadow-lg z-20">
+                    Live Correction
+                </div>
+                <div class="relative h-64 overflow-hidden rounded-xl bg-slate-100">
+                    <div class="absolute inset-0 flex items-center justify-center bg-[url('https://www.shutterstock.com/image-photo/crumpled-paper-texture-white-background-600nw-1049767781.jpg')] bg-cover opacity-80 z-10" id="raw-layer">
+                        <div class="transform -rotate-2 text-slate-500 font-mono text-xs p-4 blur-[1px]">
+                            <p>บธิษัท สมชาย ก่อสร้าง จำกัต</p>
+                            <p>เลทที่: INV-202X-??1</p>
+                            <p class="mt-2">ค่าบริการ..... 5,0O0 บ.</p>
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 bg-white z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center flex-col">
+                        <div class="text-green-600 font-bold mb-2 text-xs uppercase tracking-widest">AI Cleaned & Corrected</div>
+                        <div class="font-sans text-slate-800 text-sm border p-4 rounded shadow-sm bg-slate-50">
+                            <p><span class="text-green-600 font-bold">บริษัท</span> สมชาย <span class="text-green-600 font-bold">ก่อสร้าง</span> <span class="text-green-600 font-bold">จำกัด</span></p>
+                            <p>เลขที่: <span class="text-blue-600 font-bold">INV-2026-001</span></p>
+                            <p class="mt-2">Total: <span class="text-blue-600 font-bold font-num">5,000.00 THB</span></p>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-2 left-0 right-0 text-center text-[10px] text-slate-400 z-30 group-hover:hidden">Hover to see AI Correction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo-console" class="py-20 bg-slate-900 min-h-screen text-slate-300">
+        <div class="max-w-[1400px] mx-auto px-4 md:px-6">
+            <div class="text-center mb-10">
+                <span class="text-blue-400 font-bold text-xs uppercase tracking-wider">Interactive Prototype</span>
+                <h2 class="text-3xl font-bold text-white mt-2">TH8 Intelligence Console</h2>
+                <p class="text-slate-400 mt-2">Full Cycle: Ingest → Detect (Split PO) → Learn</p>
+            </div>
+
+            <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col h-[900px]">
+                
+                <div class="bg-slate-900 border-b border-slate-700 p-4 flex justify-between items-center">
+                    <div class="flex gap-2" id="tab-controls">
+                        <button onclick="switchView('dashboard')" class="tab-btn active px-4 py-2 rounded-lg text-xs font-bold border border-slate-600 hover:bg-slate-700 transition">Dashboard & Split PO</button>
+                        <button onclick="switchView('ocr')" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold border border-slate-600 hover:bg-slate-700 transition">Thai OCR+ Engine</button>
+                        <button onclick="switchView('learning')" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold border border-slate-600 hover:bg-slate-700 transition text-green-400 border-green-900/50">Feedback & Learning Loop</button>
+                        <button onclick="switchView('integration')" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold border border-slate-600 hover:bg-slate-700 transition text-blue-400 border-blue-900/50">Integration Mapper</button>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-slate-400">System Live</span>
+                    </div>
+                </div>
+
+                <div id="view-dashboard" class="view-panel flex-1 p-6 overflow-y-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600">
+                            <p class="text-xs text-slate-400 uppercase font-bold">Risk Detected (Today)</p>
+                            <p class="text-3xl font-bold text-white mt-2 font-num">฿ 450,000</p>
+                        </div>
+                        <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600 relative overflow-hidden">
+                            <div class="absolute right-0 top-0 p-2 bg-red-900/50 text-red-400 text-[10px] font-bold rounded-bl">ALERT</div>
+                            <p class="text-xs text-slate-400 uppercase font-bold">Split PO Suspects</p>
+                            <p class="text-3xl font-bold text-red-400 mt-2 font-num">3 Vendors</p>
+                            <p class="text-xs text-slate-500 mt-1">Multiple invoices < 100k limit</p>
+                        </div>
+                        <div class="bg-slate-700/50 p-6 rounded-xl border border-slate-600">
+                            <p class="text-xs text-slate-400 uppercase font-bold">AI Accuracy (Last 7 Days)</p>
+                            <p class="text-3xl font-bold text-green-400 mt-2 font-num">94.2%</p>
+                            <p class="text-xs text-slate-500 mt-1">Improved by Feedback Loop</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-700/30 rounded-xl border border-slate-600 p-6">
+                        <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            Deep Scan: Split PO Detection
+                        </h3>
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm font-bold text-slate-300">Vendor: "Siam Material Supply Co."</span>
+                                <span class="text-xs text-red-400 font-bold">Total 7-Days: ฿285,000 (Limit 100k)</span>
+                            </div>
+                            <div class="relative h-32 bg-slate-900 rounded border border-slate-700 mt-4 flex items-end px-4 pt-8 pb-4 gap-2">
+                                <div class="absolute top-1/2 left-0 w-full border-t border-dashed border-slate-500 z-10"></div>
+                                <div class="absolute top-[45%] right-2 text-[10px] text-slate-500 bg-slate-900 px-1">Limit 100k</div>
+                                
+                                <div class="w-1/6 bg-blue-500/30 h-[20%] rounded-t hover:bg-blue-500 transition relative group">
+                                    <div class="absolute -top-6 left-0 text-[10px] text-slate-400 hidden group-hover:block">Jan 2: 20k</div>
+                                </div>
+                                <div class="w-1/6 bg-blue-500/30 h-[30%] rounded-t hover:bg-blue-500 transition relative group">
+                                    <div class="absolute -top-6 left-0 text-[10px] text-slate-400 hidden group-hover:block">Jan 3: 30k</div>
+                                </div>
+                                <div class="w-1/6 bg-red-500 h-[95%] rounded-t animate-pulse relative group border-2 border-white/20">
+                                    <div class="absolute -top-8 -left-4 bg-red-600 text-white text-[10px] px-2 py-1 rounded shadow hidden group-hover:block z-20 whitespace-nowrap">Jan 5: 95,000 (Close to limit)</div>
+                                </div>
+                                <div class="w-1/6 bg-red-500 h-[90%] rounded-t animate-pulse relative group border-2 border-white/20">
+                                    <div class="absolute -top-8 -left-4 bg-red-600 text-white text-[10px] px-2 py-1 rounded shadow hidden group-hover:block z-20 whitespace-nowrap">Jan 6: 90,000 (Split?)</div>
+                                </div>
+                                <div class="w-1/6 bg-red-500 h-[95%] rounded-t animate-pulse relative group border-2 border-white/20">
+                                    <div class="absolute -top-8 -left-4 bg-red-600 text-white text-[10px] px-2 py-1 rounded shadow hidden group-hover:block z-20 whitespace-nowrap">Jan 7: 95,000 (Split?)</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 p-3 bg-red-900/20 border border-red-900/50 rounded text-xs text-red-200 flex gap-2">
+                                <span class="font-bold">Analysis:</span>
+                                Vendor issued 3 invoices of ~90k-95k within 48 hours. Pattern indicates intentional splitting to bypass the 100k Manager Approval Limit. 
+                                <button class="ml-auto underline font-bold hover:text-white">Block Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-ocr" class="view-panel hidden flex-1 p-6 grid grid-cols-2 gap-6">
+                    <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-4 flex flex-col">
+                        <div class="flex justify-between mb-4">
+                            <h3 class="text-white font-bold">Input Document</h3>
+                            <select class="bg-slate-800 text-xs border border-slate-600 rounded text-slate-300 p-1">
+                                <option>Scanned Invoice (Messy)</option>
+                                <option>Mobile Photo (Skewed)</option>
+                            </select>
+                        </div>
+                        <div class="flex-1 bg-slate-900 relative rounded overflow-hidden group">
+                            <img src="https://www.shutterstock.com/image-photo/crumpled-paper-texture-white-background-600nw-1049767781.jpg" class="w-full h-full object-cover opacity-50 blur-[0.5px]">
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="text-slate-500 font-mono text-sm transform -rotate-1">
+                                    <p>บิษัท เอส.เค. การช่าง</p>
+                                    <p>วันที่ ๑๕ มค ๒๕๖๙</p>
+                                    <p>------------------</p>
+                                    <p>ค่าซ่อมบำรุง ... ๔,๕๐๐</p>
+                                </div>
+                            </div>
+                            <div class="absolute top-0 left-0 w-full h-1 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,1)] animate-scan"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-700/30 border border-slate-600 rounded-xl p-4 flex flex-col">
+                        <div class="flex justify-between mb-4">
+                            <h3 class="text-white font-bold">AI Extraction Result</h3>
+                            <span class="text-xs text-green-400 font-bold bg-green-900/30 px-2 py-1 rounded">Confidence: 98%</span>
+                        </div>
+                        <div class="flex-1 space-y-3 font-mono text-sm overflow-y-auto">
+                            <div class="p-3 bg-slate-800 rounded border border-slate-700">
+                                <p class="text-xs text-slate-500 mb-1">Vendor Name (Corrected)</p>
+                                <p class="text-white flex items-center gap-2">
+                                    บริษัท เอส.เค. การช่าง จำกัด
+                                    <span class="text-[10px] text-blue-400 bg-blue-900/30 px-1 rounded">LLM Fixed "บิษัท"</span>
+                                </p>
+                            </div>
+                            <div class="p-3 bg-slate-800 rounded border border-slate-700">
+                                <p class="text-xs text-slate-500 mb-1">Date (Normalized)</p>
+                                <p class="text-white flex items-center gap-2">
+                                    2026-01-15
+                                    <span class="text-[10px] text-blue-400 bg-blue-900/30 px-1 rounded">Thai Num -> Arabic</span>
+                                </p>
+                            </div>
+                            <div class="p-3 bg-slate-800 rounded border border-slate-700">
+                                <p class="text-xs text-slate-500 mb-1">Total Amount</p>
+                                <p class="text-green-400 font-bold text-lg">4,500.00 THB</p>
+                            </div>
+                            <div class="mt-4 p-2 bg-slate-900 rounded text-xs text-slate-400">
+                                <span class="text-blue-400">> JSON Output:</span><br>
+                                { "vendor_id": "V-SK09", "tax_id": "01055...", "amount": 4500.00 }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-learning" class="view-panel hidden flex-1 p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+                        <div class="space-y-4">
+                            <h3 class="text-white font-bold text-lg">Recent Human Interventions</h3>
+                            <p class="text-slate-400 text-sm">When you reject AI's suggestion, the system creates a "Learning Case".</p>
+                            
+                            <div class="bg-slate-700/50 p-4 rounded-xl border border-red-500/30 hover:border-red-500 transition cursor-pointer group" onclick="showProposal()">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400">Case #9921 • Yesterday</span>
+                                        <h4 class="text-white font-bold mt-1">Taxi Expense: 650 THB</h4>
+                                    </div>
+                                    <span class="text-xs bg-red-900/50 text-red-400 px-2 py-1 rounded font-bold">AI Wrong</span>
+                                </div>
+                                <div class="mt-3 flex gap-4 text-sm">
+                                    <div class="w-1/2">
+                                        <p class="text-[10px] text-slate-500">AI Prediction</p>
+                                        <p class="text-red-400 font-bold">REJECT (Over 500 limit)</p>
+                                    </div>
+                                    <div class="w-1/2 border-l border-slate-600 pl-4">
+                                        <p class="text-[10px] text-slate-500">Human Action</p>
+                                        <p class="text-green-400 font-bold">APPROVE</p>
+                                        <p class="text-xs text-slate-300 italic">"Late night shift (2 AM)"</p>
+                                    </div>
+                                </div>
+                                <div class="mt-3 text-xs text-blue-400 group-hover:underline">View Policy Proposal →</div>
+                            </div>
+                        </div>
+
+                        <div id="policy-proposal" class="bg-slate-800 rounded-xl border border-green-500/30 p-6 opacity-50 pointer-events-none transition-all duration-300">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-10 h-10 rounded-full bg-green-900/50 text-green-400 flex items-center justify-center font-bold text-lg">AI</div>
+                                <div>
+                                    <h4 class="text-white font-bold">New Policy Suggestion</h4>
+                                    <p class="text-xs text-slate-400">Confidence Score: 92% (Based on 5 similar approvals)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm text-slate-300 mb-6 border border-slate-700">
+                                <span class="text-purple-400">IF</span> expense_type == <span class="text-orange-400">"TAXI"</span><br>
+                                <span class="text-purple-400">AND</span> time > <span class="text-orange-400">"22:00"</span><br>
+                                <span class="text-purple-400">THEN</span> limit = <span class="text-green-400">800 THB</span> <span class="text-slate-500"># Increased from 500</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <button class="w-full py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg transition" onclick="alert('Policy Updated! AI will now approve late night taxis.')">
+                                    Accept & Update Rule
+                                </button>
+                                <button class="w-full py-3 bg-transparent border border-slate-600 text-slate-400 hover:text-white rounded-lg transition">
+                                    Ignore
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-integration" class="view-panel hidden flex-1 p-6 flex flex-col items-center justify-center">
+                    <div class="w-full max-w-2xl text-center mb-8">
+                        <h3 class="text-2xl font-bold text-white">The "Universal Mapper"</h3>
+                        <p class="text-slate-400 mt-2">No code required. Just upload your Excel/CSV and teach AI once.</p>
+                    </div>
+
+                    <div class="w-full max-w-4xl bg-slate-800 rounded-xl border border-slate-600 p-8 shadow-2xl relative">
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                             <svg class="w-full h-full"><line x1="20%" y1="40%" x2="80%" y2="40%" stroke="#3B82F6" stroke-width="2" stroke-dasharray="5,5"/></svg>
+                        </div>
+
+                        <div class="flex justify-between items-center gap-10">
+                            <div class="flex-1 bg-slate-900 p-4 rounded-lg border border-slate-700">
+                                <div class="text-xs font-bold text-slate-500 uppercase mb-3 text-center">Your File (upload.xlsx)</div>
+                                <div class="space-y-2">
+                                    <div class="p-2 bg-slate-800 rounded text-sm text-slate-300 border border-slate-600 cursor-grab active:cursor-grabbing">Col A: Tax_ID_Num</div>
+                                    <div class="p-2 bg-slate-800 rounded text-sm text-slate-300 border border-slate-600 cursor-grab active:cursor-grabbing">Col B: Vendor_Name</div>
+                                    <div class="p-2 bg-slate-800 rounded text-sm text-slate-300 border border-slate-600 cursor-grab active:cursor-grabbing">Col C: Inv_Total</div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-900/50">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <span class="text-xs text-blue-400 font-bold">Auto-Mapping...</span>
+                            </div>
+
+                            <div class="flex-1 bg-slate-900 p-4 rounded-lg border border-slate-700">
+                                <div class="text-xs font-bold text-slate-500 uppercase mb-3 text-center">TH8 Standard Schema</div>
+                                <div class="space-y-2">
+                                    <div class="p-2 bg-blue-900/20 border border-blue-500/50 rounded text-sm text-blue-300">Target: vendor_tax_id</div>
+                                    <div class="p-2 bg-blue-900/20 border border-blue-500/50 rounded text-sm text-blue-300">Target: vendor_name</div>
+                                    <div class="p-2 bg-blue-900/20 border border-blue-500/50 rounded text-sm text-blue-300">Target: total_amount</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 text-center">
+                            <button class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition shadow-lg">
+                                Confirm Mapping & Start Audit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h3 class="text-white font-bold text-xl mb-4">TH8.AI</h3>
+            <p class="mb-8">Empowering Thai Enterprises with Responsible Intelligence.</p>
+            <div class="flex justify-center gap-6 text-sm">
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Security Whitepaper</a>
+                <a href="#" class="hover:text-white">Contact Sales</a>
+            </div>
+            <p class="mt-8 text-xs text-slate-600">© 2026 TH8.AI - All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple View Switcher Logic
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            // Show selected view
+            document.getElementById('view-' + viewName).classList.remove('hidden');
+            
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button (simple implementation based on text content or index would require more ID matching, 
+            // but for prototype, we can just rely on the onclick binding visual update logic if we added IDs to buttons.
+            // Let's do a quick fix to highlight correctly)
+            const btnMap = {
+                'dashboard': 0, 'ocr': 1, 'learning': 2, 'integration': 3
+            };
+            const btns = document.querySelectorAll('.tab-btn');
+            if(btns[btnMap[viewName]]) btns[btnMap[viewName]].classList.add('active');
+        }
+
+        function showProposal() {
+            const panel = document.getElementById('policy-proposal');
+            panel.classList.remove('opacity-50', 'pointer-events-none');
+            panel.classList.add('opacity-100', 'shadow-2xl', 'scale-105');
+        }
+    </script>
+</body>
+</html>

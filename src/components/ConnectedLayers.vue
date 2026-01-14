@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-// เริ่มต้นที่ Layer 4 (บนสุด) ตามไฟล์ต้นฉบับ
+// เริ่มต้นที่ Layer 4 (บนสุด)
 const activeLayer = ref(4);
 
 const layers = {
@@ -21,7 +21,8 @@ const layers = {
              { role: 'Retail/FMCG', name: 'Promotion Effectiveness & Uplift Agent' }
         ],
         link: "Operational metrics (Sales, OEE, SLA) ↔ Financial outcomes (Net Margin, Cashflow, ROI).",
-        value: "Shift from lagging financial reports to real-time margin visibility and proactive risk mitigation."
+       // ปรับเป็น: ภาษาเชิงกลยุทธ์ เน้นการเปลี่ยนจาก "ตั้งรับ" เป็น "รุก"
+        value: "ยกระดับการบริหารจากการดูรายงานย้อนหลัง (Lagging Indicators) สู่การมองเห็นผลกำไร-ขาดทุนแบบ Real-time ให้คุณตัดสินใจปรับกลยุทธ์และบริหารความเสี่ยงได้ทันทีที่หน้างานมีการเปลี่ยนแปลง"
     },
     1: {
         id: 1,
@@ -39,7 +40,7 @@ const layers = {
              { role: 'Cross-Industry', name: 'Sales & Valume Planning & Forecasting Agent' }
         ],
         link: "Commercial Forecasts ↔ Production Constraints ↔ Inventory Policy ↔ Distribution Capacity ↔ Financial Targets.",
-        value: "Align sales ambitions with operational reality, reducing conflicts and optimizing working capital."
+        value: "เชื่อมโยงเป้าหมายยอดขายเข้ากับขีดความสามารถจริงในการปฏิบัติงาน (Operational Reality) เพื่อลดช่องว่างระหว่างแผนก และบริหารจัดการเงินทุนหมุนเวียน (Working Capital) ให้เกิดประสิทธิภาพสูงสุด"
     },
     2: {
         id: 2,
@@ -54,10 +55,15 @@ const layers = {
              { role: 'Order Mgmt', name: 'Order Validation & Exception Agent' },
              { role: 'Logistics', name: 'Shipment Delay & Route Optimization Agent' },
              { role: 'Manufacturing', name: 'Machine Downtime & OEE Agent' },
-             { role: 'Procurement', name: 'Auto-PO & Supplier Risk Agent' }
+            // --- จุดที่มีการเพิ่ม Link ---
+             { 
+                role: 'Procurement', 
+                name: 'Procurement & Payment Decision Center Agent', 
+                link: 'products/DCC_Landing_Page.html' // Link ไปที่ public/procure_pay/index.html
+             }
         ],
         link: "Real-time events (IoT, ERP triggers) ↔ Automated workflows (adjustments, alerts) ↔ Layer 3 & 1 updates.",
-        value: "Move from firefighting to managing by exception, increasing speed and reducing manual errors."
+        value: "เปลี่ยนรูปแบบการทำงานจาก 'Reactive' เป็น 'Proactive' ด้วยระบบอัตโนมัติที่จัดการปัญหารูทีนได้เอง ช่วยลดภาระงานซ้ำซ้อนและปิดช่องว่างความผิดพลาดจาก Human Error ได้อย่างสมบูรณ์"
     },
     3: {
         id: 3,
@@ -75,11 +81,16 @@ const layers = {
              { role: 'Sales', name: 'Proactive Order Status Notification Agent' }
         ],
         link: "Customer inquiries/Contracts ↔ Real-time operational status (Layer 2) ↔ Financial implications (Layer 4).",
-        value: "Build trust through transparency, reduce disputes, and minimize SLA-related penalties."
+       value: "สร้างความได้เปรียบในการแข่งขันด้วยความโปร่งใสของข้อมูล (Transparency) ที่ตรวจสอบได้ ช่วยลดข้อพิพาททางธุรกิจและลดต้นทุนแฝงจากการผิดนัดส่งมอบ (SLA Breach) อย่างเป็นรูปธรรม"
     }
 };
 
 const currentData = computed(() => layers[activeLayer.value]);
+
+// ฟังก์ชันเมื่อกดเลือก Layer (รองรับทั้ง Click และ Hover)
+const selectLayer = (layerId) => {
+    activeLayer.value = layerId;
+};
 </script>
 
 <template>
@@ -97,7 +108,7 @@ const currentData = computed(() => layers[activeLayer.value]);
         </p>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-8 lg:h-[650px]">
+      <div class="flex flex-col lg:flex-row gap-8">
         
         <div class="w-full lg:w-2/5 flex flex-col justify-center relative px-4 lg:px-0">
             <div class="absolute left-8 top-8 bottom-8 w-0.5 bg-gradient-to-b from-gray-800 via-gray-700 to-gray-800 hidden lg:block">
@@ -109,7 +120,8 @@ const currentData = computed(() => layers[activeLayer.value]);
                 <div 
                     v-for="(layerId) in [4, 1, 2, 3]" 
                     :key="layerId"
-                    @mouseenter="activeLayer = layerId"
+                    @click="selectLayer(layerId)"
+                    @mouseenter="selectLayer(layerId)"
                     class="group cursor-pointer transition-all duration-300 lg:ml-8"
                 >
                     <div :class="[
@@ -131,14 +143,15 @@ const currentData = computed(() => layers[activeLayer.value]);
                                 </h3>
                             </div>
                         </div>
-                        <i :class="['fas fa-chevron-right transition-all', activeLayer === layerId ? `${layers[layerId].color} opacity-100 translate-x-0` : 'text-gray-600 opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0']"></i>
+                        <i :class="['fas fa-chevron-right transition-all transform lg:transform-none', 
+                            activeLayer === layerId ? `${layers[layerId].color} opacity-100 translate-x-0 rotate-90 lg:rotate-0` : 'text-gray-600 opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0']"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="w-full lg:w-3/5 h-full">
-            <div class="h-full bg-th8-surface/50 backdrop-blur-md border border-gray-700/50 rounded-3xl p-8 relative overflow-hidden transition-all duration-500 group">
+        <div class="w-full lg:w-3/5">
+            <div class="bg-th8-surface/50 backdrop-blur-md border border-gray-700/50 rounded-3xl p-8 relative overflow-hidden transition-all duration-500 group">
                 
                 <div :class="['absolute -top-20 -right-20 w-96 h-96 blur-[150px] opacity-25 rounded-full transition-colors duration-700 pointer-events-none', 
                     currentData.id === 4 ? 'bg-th8-gold' : 
@@ -147,7 +160,7 @@ const currentData = computed(() => layers[activeLayer.value]);
                 ]"></div>
 
                 <transition name="fade-slide" mode="out-in">
-                    <div :key="activeLayer" class="relative z-10 h-full flex flex-col">
+                    <div :key="activeLayer" class="relative z-10 flex flex-col h-full">
                         
                         <div class="flex items-start gap-5 mb-8 pb-8 border-b border-gray-700/50">
                             <div :class="['p-4 rounded-2xl bg-gray-800/50 border border-gray-700/50 shadow-inner', currentData.color]">
@@ -160,38 +173,50 @@ const currentData = computed(() => layers[activeLayer.value]);
                             </div>
                         </div>
 
-                        <div class="flex-grow space-y-8">
-                            <div>
-                                <h4 class="flex items-center text-sm font-bold text-gray-400 uppercase mb-4 tracking-wider">
-                                    <i class="fas fa-robot mr-2 opacity-70"></i> Specialized Agents Team
-                                </h4>
-                                <div class="grid sm:grid-cols-2 gap-3">
-                                    <div v-for="(agent, idx) in currentData.agents" :key="idx" 
-                                         class="flex items-start gap-3 p-3 rounded-xl bg-gray-900/40 border border-gray-700/50 hover:border-gray-600/80 transition-colors group/agent">
-                                        <span class="flex-shrink-0 px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-gray-800 text-gray-400 border border-gray-700 group-hover/agent:text-gray-200 transition-colors">
-                                            {{ agent.role }}
-                                        </span>
-                                        <span class="text-sm text-gray-200 font-medium leading-tight">{{ agent.name }}</span>
-                                    </div>
-                                </div>
-                            </div>
+                       <div class="flex-grow space-y-8">
+    <div>
+        <h4 class="flex items-center text-sm font-bold text-gray-400 uppercase mb-4 tracking-wider">
+            <i class="fas fa-robot mr-2 opacity-70"></i> Specialized Agents Team
+        </h4>
+        <div class="grid sm:grid-cols-2 gap-3">
+            <div v-for="(agent, idx) in currentData.agents" :key="idx" 
+                 class="relative flex items-start gap-3 p-3 rounded-xl bg-gray-900/40 border border-gray-700/50 hover:border-gray-600/80 transition-colors group/agent z-10">
+                
+                <span class="flex-shrink-0 px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-gray-800 text-gray-400 border border-gray-700 group-hover/agent:text-gray-200 transition-colors">
+                    {{ agent.role }}
+                </span>
+                
+                <a v-if="agent.link" 
+                   :href="agent.link" 
+                   target="_blank"
+                   class="relative z-20 text-sm text-blue-300 hover:text-white decoration-blue-500/50 hover:decoration-white transition-all font-medium leading-tight flex items-center gap-1 cursor-pointer">
+                    {{ agent.name }} <i class="fas fa-external-link-alt text-[10px] opacity-70"></i>
+                </a>
+                
+                <span v-else class="text-sm text-gray-200 font-medium leading-tight">
+                    {{ agent.name }}
+                </span>
 
-                            <div>
-                                 <h4 class="flex items-center text-sm font-bold text-gray-400 uppercase mb-3 tracking-wider">
-                                    <i class="fas fa-link mr-2 opacity-70"></i> Connected Flow
-                                </h4>
-                                <p class="text-sm text-gray-300 bg-gray-900/30 p-3 rounded-lg border border-gray-700/30 font-mono">
-                                    <i class="fas fa-exchange-alt mr-2 opacity-50"></i> {{ currentData.link }}
-                                </p>
-                            </div>
+            </div>
+        </div>
+    </div>
 
-                            <div :class="['mt-auto p-5 rounded-2xl border bg-gradient-to-br', `${currentData.borderColor} from-gray-900/80 to-gray-800/50`]">
-                                <h4 :class="['text-xs font-bold uppercase mb-2 tracking-wider flex items-center', currentData.color]">
-                                    <i class="fas fa-gem mr-2"></i> Executive Value
-                                </h4>
-                                <p class="text-lg text-white font-medium leading-relaxed">{{ currentData.value }}</p>
-                            </div>
-                        </div>
+    <div>
+            <h4 class="flex items-center text-sm font-bold text-gray-400 uppercase mb-3 tracking-wider">
+            <i class="fas fa-link mr-2 opacity-70"></i> Connected Flow
+        </h4>
+        <p class="text-sm text-gray-300 bg-gray-900/30 p-3 rounded-lg border border-gray-700/30 font-mono">
+            <i class="fas fa-exchange-alt mr-2 opacity-50"></i> {{ currentData.link }}
+        </p>
+    </div>
+
+    <div :class="['p-6 rounded-2xl border bg-gradient-to-br', `${currentData.borderColor} from-gray-900/80 to-gray-800/50`]">
+        <h4 :class="['text-xs font-bold uppercase mb-2 tracking-wider flex items-center', currentData.color]">
+            <i class="fas fa-gem mr-2"></i> Executive Value
+        </h4>
+        <p class="text-lg text-white font-medium leading-relaxed break-words">{{ currentData.value }}</p>
+    </div>
+</div>
                     </div>
                 </transition>
             </div>
@@ -207,8 +232,5 @@ const currentData = computed(() => layers[activeLayer.value]);
 .fade-slide-enter-from { opacity: 0; transform: translateX(20px); }
 .fade-slide-leave-to { opacity: 0; transform: translateX(-20px); }
 
-/* เพิ่มความสูงให้ container เพื่อรองรับเนื้อหาที่มากขึ้นในหน้าจอขนาดใหญ่ */
-@media (min-width: 1024px) {
-    .lg\:h-\[650px\] { height: 650px; }
-}
+/* แก้ไข: ลบ media query ที่บังคับความสูง 650px ออก เพื่อให้ height เป็น auto ตามเนื้อหา */
 </style>

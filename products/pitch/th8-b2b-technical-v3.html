@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 - Technical Architecture Deep Dive</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark-reasonable.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+    <style>
+        /* TECH THEME */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0b0f19; 
+            color: #e2e8f0; 
+            overflow: hidden; 
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* SLIDE SYSTEM */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            padding: 3rem 5rem;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+
+        /* TECH COMPONENTS */
+        .tech-panel {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+        
+        .diagram-box {
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 4px;
+            text-align: center;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            position: relative;
+        }
+
+        .line-h { height: 2px; background: #475569; }
+        .line-v { width: 2px; background: #475569; }
+
+        /* CODE BLOCK */
+        .code-window {
+            background: #1e1e1e;
+            border-radius: 6px;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+        .code-header {
+            background: #252526;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            color: #ccc;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        /* NAV */
+        .nav-controls {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 50;
+            display: flex; gap: 1rem; background: #1e293b;
+            padding: 0.5rem 1.5rem; border-radius: 4px; border: 1px solid #475569;
+        }
+        
+        /* GRID BG */
+        .bg-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-0 h-1 bg-blue-500 transition-all duration-300 z-50" id="progressBar" style="width: 0%"></div>
+
+    <div class="nav-controls">
+        <button onclick="changeSlide(-1)" class="text-slate-400 hover:text-white"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="slideCounter" class="mono text-sm pt-0.5 text-slate-300 w-16 text-center">1 / 12</span>
+        <button onclick="changeSlide(1)" class="text-slate-400 hover:text-white"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="slide active items-center text-center" id="slide-1">
+        <div class="mb-6">
+            <span class="mono text-blue-400 text-xs border border-blue-500/30 bg-blue-900/20 px-3 py-1 rounded">
+                SYSTEM ARCHITECTURE v3.0
+            </span>
+        </div>
+        <h1 class="text-6xl md:text-8xl font-bold mb-4 tracking-tighter text-white">
+            TH8 <span class="text-slate-600">//</span> CORE
+        </h1>
+        <h2 class="text-2xl text-slate-400 font-normal mb-12">
+            Technical Architecture & Security Specification
+        </h2>
+        
+        <div class="grid grid-cols-4 gap-8 max-w-4xl mx-auto text-sm mono text-slate-500">
+            <div><i class="fa-solid fa-layer-group text-blue-500 mb-2"></i><br>Microservices</div>
+            <div><i class="fa-solid fa-lock text-emerald-500 mb-2"></i><br>Zero Trust</div>
+            <div><i class="fa-solid fa-bolt text-yellow-500 mb-2"></i><br>Low Latency</div>
+            <div><i class="fa-brands fa-docker text-cyan-500 mb-2"></i><br>Cloud Native</div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-2">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">01.</span> High-Level Architecture</h2>
+        
+        <div class="w-full max-w-6xl h-[600px] border border-slate-700 bg-[#0f1115] relative p-8 rounded-lg flex gap-12">
+            
+            <div class="w-1/4 flex flex-col justify-center gap-6 border-r border-dashed border-slate-700 pr-8">
+                <div class="text-xs mono text-slate-500 mb-2 uppercase">Client Zone (VPC)</div>
+                <div class="diagram-box border-l-4 border-l-blue-500 text-left">
+                    <div class="font-bold text-white">SAP / Oracle</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Core ERP</div>
+                </div>
+                <div class="diagram-box border-l-4 border-l-blue-500 text-left">
+                    <div class="font-bold text-white">E-Procurement</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Workflow Engine</div>
+                </div>
+                <div class="text-center text-xs text-slate-600 mt-4">
+                    <i class="fa-solid fa-lock"></i> TLS 1.3 / mTLS
+                </div>
+            </div>
+
+            <div class="flex-1 flex flex-col relative">
+                <div class="absolute -top-4 left-0 text-xs mono text-blue-400 uppercase">TH8 Cluster (K8s)</div>
+                
+                <div class="h-20 border border-slate-600 rounded bg-slate-800/50 flex items-center justify-center mb-8 relative">
+                    <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <div class="text-center">
+                        <div class="font-bold text-sm">API Gateway (Kong / NGINX)</div>
+                        <div class="text-[10px] mono text-slate-400">Rate Limit • Auth • WAF</div>
+                    </div>
+                </div>
+
+                <div class="flex-1 border border-slate-600 border-dashed rounded p-6 grid grid-cols-2 gap-4 bg-slate-900/30">
+                    <div class="diagram-box bg-slate-800">
+                        <div class="text-xs text-blue-300 mb-1">Ingestion Svc</div>
+                        <i class="fa-brands fa-python text-xl"></i>
+                    </div>
+                    <div class="diagram-box bg-slate-800 border-emerald-500/50">
+                        <div class="text-xs text-emerald-300 mb-1">Policy Engine</div>
+                        <i class="fa-solid fa-microchip text-xl"></i>
+                    </div>
+                    <div class="diagram-box bg-slate-800">
+                        <div class="text-xs text-purple-300 mb-1">AI/Graph Svc</div>
+                        <i class="fa-solid fa-brain text-xl"></i>
+                    </div>
+                    <div class="diagram-box bg-slate-800">
+                        <div class="text-xs text-amber-300 mb-1">Audit Log Svc</div>
+                        <i class="fa-solid fa-file-shield text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex gap-4">
+                    <div class="flex-1 diagram-box border-blue-900/50">
+                        <div class="text-xs text-slate-400">Transactional</div>
+                        <div class="font-bold">PostgreSQL</div>
+                    </div>
+                    <div class="flex-1 diagram-box border-red-900/50">
+                        <div class="text-xs text-slate-400">Cache / Queue</div>
+                        <div class="font-bold">Redis / Kafka</div>
+                    </div>
+                    <div class="flex-1 diagram-box border-purple-900/50">
+                        <div class="text-xs text-slate-400">Vector Search</div>
+                        <div class="font-bold">pgvector</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-3">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">02.</span> Technology Stack</h2>
+        
+        <div class="grid grid-cols-4 gap-6 w-full max-w-7xl">
+            <div class="tech-panel p-6">
+                <div class="mono text-xs text-emerald-400 mb-4 border-b border-slate-700 pb-2">BACKEND & API</div>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center gap-3">
+                        <i class="fa-brands fa-python text-2xl text-yellow-300"></i>
+                        <div>
+                            <strong class="block text-white">Python (FastAPI)</strong>
+                            <span class="text-xs text-slate-500">Async I/O High Performance</span>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-cube text-2xl text-blue-400"></i>
+                        <div>
+                            <strong class="block text-white">Pydantic</strong>
+                            <span class="text-xs text-slate-500">Data Validation & Schema</span>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-diagram-project text-2xl text-slate-300"></i>
+                        <div>
+                            <strong class="block text-white">gRPC</strong>
+                            <span class="text-xs text-slate-500">Internal Microservices Comm.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tech-panel p-6">
+                <div class="mono text-xs text-blue-400 mb-4 border-b border-slate-700 pb-2">FRONTEND</div>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center gap-3">
+                        <i class="fa-brands fa-vuejs text-2xl text-emerald-500"></i>
+                        <div>
+                            <strong class="block text-white">Vue 3</strong>
+                            <span class="text-xs text-slate-500">Composition API + TypeScript</span>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-wind text-2xl text-cyan-400"></i>
+                        <div>
+                            <strong class="block text-white">Tailwind CSS</strong>
+                            <span class="text-xs text-slate-500">Utility-First Design System</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tech-panel p-6">
+                <div class="mono text-xs text-purple-400 mb-4 border-b border-slate-700 pb-2">DATA & AI</div>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-database text-2xl text-blue-300"></i>
+                        <div>
+                            <strong class="block text-white">PostgreSQL</strong>
+                            <span class="text-xs text-slate-500">Primary Relational DB</span>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-vector-square text-2xl text-purple-500"></i>
+                        <div>
+                            <strong class="block text-white">LangChain</strong>
+                            <span class="text-xs text-slate-500">LLM Orchestration Framework</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tech-panel p-6">
+                <div class="mono text-xs text-orange-400 mb-4 border-b border-slate-700 pb-2">INFRA & OPS</div>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center gap-3">
+                        <i class="fa-brands fa-docker text-2xl text-blue-500"></i>
+                        <div>
+                            <strong class="block text-white">Docker & K8s</strong>
+                            <span class="text-xs text-slate-500">Container Orchestration</span>
+                        </div>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-solid fa-chart-line text-2xl text-orange-500"></i>
+                        <div>
+                            <strong class="block text-white">Grafana / Prom</strong>
+                            <span class="text-xs text-slate-500">Observability Stack</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-4">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">03.</span> Security Topology (Zero Trust)</h2>
+        
+        <div class="w-full max-w-5xl h-[500px] border border-slate-700 bg-[#0f1115] p-8 relative rounded-lg">
+            
+            <div class="absolute top-8 left-8 right-8 h-24 border-2 border-dashed border-red-500/30 rounded bg-red-900/5 p-2">
+                <div class="text-[10px] text-red-500 font-bold uppercase mb-1">Untrusted Zone (Internet)</div>
+                <div class="flex justify-center gap-12">
+                    <div class="diagram-box bg-slate-800 text-slate-300 w-32"><i class="fa-solid fa-user mr-2"></i> Client User</div>
+                    <div class="diagram-box bg-slate-800 text-slate-300 w-32"><i class="fa-solid fa-globe mr-2"></i> External API</div>
+                </div>
+            </div>
+
+            <div class="absolute top-32 left-1/2 -translate-x-1/2 h-12 w-px bg-slate-500"></div>
+            <div class="absolute top-36 left-1/2 -translate-x-1/2 bg-slate-900 px-2 text-[10px] border border-slate-600 rounded">HTTPS (TLS 1.3)</div>
+
+            <div class="absolute top-44 left-8 right-8 h-24 border-2 border-dashed border-amber-500/30 rounded bg-amber-900/5 p-2">
+                <div class="text-[10px] text-amber-500 font-bold uppercase mb-1">DMZ (Public Subnet)</div>
+                <div class="flex justify-center gap-8">
+                    <div class="diagram-box bg-slate-800 text-white w-40 border-amber-500/50">
+                        <i class="fa-solid fa-shield-virus mr-2"></i> WAF / DDoS
+                    </div>
+                    <div class="diagram-box bg-slate-800 text-white w-40 border-blue-500/50">
+                        <i class="fa-solid fa-door-open mr-2"></i> API Gateway
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute top-[270px] left-1/2 -translate-x-1/2 h-12 w-px bg-slate-500"></div>
+
+            <div class="absolute bottom-8 left-8 right-8 top-[300px] border-2 border-dashed border-emerald-500/30 rounded bg-emerald-900/5 p-2">
+                <div class="text-[10px] text-emerald-500 font-bold uppercase mb-1">Trusted Zone (Private Subnet)</div>
+                <div class="flex justify-center gap-8 h-full items-center">
+                    <div class="diagram-box bg-slate-800 text-white w-32 h-20 flex flex-col justify-center">
+                        <div>App Services</div>
+                        <div class="text-[10px] text-slate-500 mt-1">mTLS Enabled</div>
+                    </div>
+                    <div class="w-8 h-px bg-slate-500"></div>
+                    <div class="diagram-box bg-slate-800 text-white w-32 h-20 flex flex-col justify-center">
+                        <div>Databases</div>
+                        <div class="text-[10px] text-slate-500 mt-1">Encrypted at Rest</div>
+                    </div>
+                    <div class="w-8 h-px bg-slate-500"></div>
+                    <div class="diagram-box bg-slate-800 text-white w-32 h-20 flex flex-col justify-center">
+                        <div>KMS / Vault</div>
+                        <div class="text-[10px] text-slate-500 mt-1">Secrets Mgmt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-5">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">04.</span> Integration Patterns</h2>
+        
+        <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+            <div class="tech-panel p-6">
+                <h3 class="text-xl font-bold mb-4 text-emerald-400">A. Asynchronous API (Preferred)</h3>
+                <p class="text-sm text-slate-400 mb-6 h-12">
+                    Non-blocking architecture. ERP pushes data to webhook/queue. TH8 processes and callbacks.
+                </p>
+                <div class="w-full bg-[#0f1115] p-4 rounded border border-slate-700 text-xs mono">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-blue-400">ERP</span>
+                        <span class="text-slate-500">-------- POST /po (Payload) --------></span>
+                        <span class="text-emerald-400">TH8 Queue</span>
+                    </div>
+                    <div class="flex justify-center my-2 text-slate-600">| (200 OK - Ack)</div>
+                    <div class="flex justify-center mb-2 text-slate-500">[ Processing ]</div>
+                    <div class="flex justify-between">
+                        <span class="text-blue-400">ERP</span>
+                        <span class="text-slate-500"><------- POST /callback (Result) --------</span>
+                        <span class="text-emerald-400">TH8 Worker</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-panel p-6">
+                <h3 class="text-xl font-bold mb-4 text-amber-400">B. Change Data Capture (CDC)</h3>
+                <p class="text-sm text-slate-400 mb-6 h-12">
+                    Connect directly to DB Transaction Logs (Debezium/Kafka). Zero impact on ERP API limits.
+                </p>
+                <div class="w-full bg-[#0f1115] p-4 rounded border border-slate-700 text-xs mono">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div> DB Log (WAL)
+                    </div>
+                    <div class="pl-4 border-l border-slate-600 space-y-2 text-slate-300">
+                        <div>1. Insert PO #1021 ...</div>
+                        <div>2. <span class="text-amber-500">Debezium</span> captures event</div>
+                        <div>3. Stream to <span class="text-red-400">Kafka Topic</span></div>
+                        <div>4. TH8 Consumer reads topic</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-6">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">05.</span> Policy Engine Internals</h2>
+        <p class="text-slate-400 mb-8 text-center max-w-3xl">
+            Decoupled Logic: Rules are stored as YAML/JSON, versioned in Git, and compiled to efficient AST at runtime.
+        </p>
+
+        <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+            <div class="code-window shadow-2xl">
+                <div class="code-header">
+                    <div class="flex gap-1.5"><div class="dot bg-red-500"></div><div class="dot bg-yellow-500"></div><div class="dot bg-green-500"></div></div>
+                    <span class="ml-2 opacity-50">rules/procurement.yaml</span>
+                </div>
+                <div class="p-4 text-xs">
+<pre><code class="language-yaml"># Rule: Flag High Variance
+- id: PRICE_VARIANCE_CHECK
+  priority: 10
+  condition:
+    and:
+      - field: item.price
+        operator: gt
+        reference: contract.price * 1.05
+      - field: vendor.status
+        operator: eq
+        value: "ACTIVE"
+  action:
+    type: BLOCK
+    reason: "Price exceeds contract > 5%"</code></pre>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center space-y-4">
+                <div class="diagram-box text-left flex items-center gap-4 bg-slate-800">
+                    <div class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded font-bold">1</div>
+                    <div>
+                        <strong>Parse & Validate</strong>
+                        <div class="text-[10px] text-slate-400">Schema validation (Pydantic)</div>
+                    </div>
+                </div>
+                <div class="w-px h-6 bg-slate-600 mx-auto"></div>
+                <div class="diagram-box text-left flex items-center gap-4 bg-slate-800">
+                    <div class="bg-purple-600 text-white w-8 h-8 flex items-center justify-center rounded font-bold">2</div>
+                    <div>
+                        <strong>Compile to AST</strong>
+                        <div class="text-[10px] text-slate-400">Abstract Syntax Tree for O(1) speed</div>
+                    </div>
+                </div>
+                <div class="w-px h-6 bg-slate-600 mx-auto"></div>
+                <div class="diagram-box text-left flex items-center gap-4 bg-slate-800">
+                    <div class="bg-emerald-600 text-white w-8 h-8 flex items-center justify-center rounded font-bold">3</div>
+                    <div>
+                        <strong>Execute Context</strong>
+                        <div class="text-[10px] text-slate-400">Inject Transaction Data</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-7">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">06.</span> AI & RAG Pipeline</h2>
+        
+        <div class="w-full max-w-6xl h-[400px] border border-slate-700 bg-[#0f1115] rounded-lg p-8 relative flex items-center">
+            
+            <div class="w-1/5 text-center">
+                <div class="diagram-box border-slate-600">
+                    <i class="fa-solid fa-file-pdf text-red-400 text-2xl mb-2"></i>
+                    <div>Contracts / Docs</div>
+                </div>
+            </div>
+
+            <div class="w-16 h-px bg-slate-600 relative"><div class="absolute right-0 -top-1.5 text-slate-600">▶</div></div>
+
+            <div class="w-1/5 text-center space-y-2">
+                <div class="diagram-box bg-slate-800 border-blue-500/50">
+                    <div class="text-[10px] text-blue-400 mb-1">OCR & Chunking</div>
+                    <i class="fa-solid fa-scissors text-slate-400"></i>
+                </div>
+                <div class="h-4 w-px bg-slate-600 mx-auto"></div>
+                <div class="diagram-box bg-slate-800 border-purple-500/50">
+                    <div class="text-[10px] text-purple-400 mb-1">Embedding (OpenAI)</div>
+                    <i class="fa-solid fa-layer-group text-slate-400"></i>
+                </div>
+            </div>
+
+            <div class="w-16 h-px bg-slate-600 relative"><div class="absolute right-0 -top-1.5 text-slate-600">▶</div></div>
+
+            <div class="w-1/5 text-center">
+                <div class="diagram-box border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                    <i class="fa-solid fa-database text-emerald-400 text-2xl mb-2"></i>
+                    <div>Vector DB (pgvector)</div>
+                </div>
+            </div>
+
+            <div class="w-16 h-px bg-slate-600 relative"><div class="absolute right-0 -top-1.5 text-slate-600">▶</div></div>
+
+            <div class="w-1/5 text-center">
+                <div class="diagram-box border-amber-500 bg-amber-900/10">
+                    <i class="fa-solid fa-robot text-amber-400 text-2xl mb-2"></i>
+                    <div>LLM Context Window</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Prompt + Retrieved Chunks</div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="mt-6 flex gap-4 text-xs text-slate-400">
+            <span class="px-2 py-1 bg-slate-800 rounded border border-slate-700">PII Masking applied before Embedding</span>
+            <span class="px-2 py-1 bg-slate-800 rounded border border-slate-700">Strict RBAC on Document Access</span>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-8">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">07.</span> DevSecOps Pipeline</h2>
+        
+        <div class="w-full max-w-7xl flex justify-between items-center relative">
+            <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-800 -z-10"></div>
+
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded-lg w-48 text-center z-10">
+                <div class="text-xs text-slate-500 uppercase mb-2">Commit</div>
+                <i class="fa-brands fa-git-alt text-3xl text-orange-500 mb-2"></i>
+                <div class="font-bold text-sm">Source Code</div>
+                <div class="text-[10px] text-slate-500">Pre-commit hooks</div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded-lg w-48 text-center z-10">
+                <div class="text-xs text-slate-500 uppercase mb-2">Build & Test</div>
+                <i class="fa-solid fa-vial text-3xl text-blue-500 mb-2"></i>
+                <div class="font-bold text-sm">CI Runner</div>
+                <div class="text-[10px] text-slate-500">Unit/Integration Tests</div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded-lg w-48 text-center z-10 border-red-500/50">
+                <div class="text-xs text-red-400 uppercase mb-2">Security Scan</div>
+                <i class="fa-solid fa-bug-slash text-3xl text-red-500 mb-2"></i>
+                <div class="font-bold text-sm">SAST / DAST</div>
+                <div class="text-[10px] text-slate-500">SonarQube / Trivy</div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded-lg w-48 text-center z-10">
+                <div class="text-xs text-slate-500 uppercase mb-2">Artifact</div>
+                <i class="fa-brands fa-docker text-3xl text-cyan-500 mb-2"></i>
+                <div class="font-bold text-sm">Container Registry</div>
+                <div class="text-[10px] text-slate-500">Signed Images</div>
+            </div>
+
+            <div class="bg-slate-900 border border-emerald-500 p-4 rounded-lg w-48 text-center z-10 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                <div class="text-xs text-emerald-400 uppercase mb-2">Deploy</div>
+                <i class="fa-solid fa-rocket text-3xl text-emerald-500 mb-2"></i>
+                <div class="font-bold text-sm">Kubernetes</div>
+                <div class="text-[10px] text-slate-500">ArgoCD (GitOps)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-9">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">08.</span> Observability & Tracing</h2>
+        
+        <div class="w-full max-w-6xl grid grid-cols-2 gap-8">
+            <div class="tech-panel p-6">
+                <h3 class="text-lg font-bold mb-4 border-b border-slate-700 pb-2">Monitoring Stack</h3>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex justify-between">
+                        <span><i class="fa-solid fa-chart-area mr-2 text-orange-400"></i> Metrics</span>
+                        <span class="mono text-slate-500">Prometheus</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span><i class="fa-solid fa-list mr-2 text-yellow-400"></i> Logging</span>
+                        <span class="mono text-slate-500">ELK / Loki</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span><i class="fa-solid fa-route mr-2 text-blue-400"></i> Tracing</span>
+                        <span class="mono text-slate-500">OpenTelemetry / Jaeger</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span><i class="fa-solid fa-desktop mr-2 text-emerald-400"></i> Visualization</span>
+                        <span class="mono text-slate-500">Grafana</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-[#1e1e1e] border border-slate-700 rounded-lg p-4 flex flex-col gap-3">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-2">
+                    <span>Grafana Dashboard - API Latency</span>
+                    <span>Last 1h</span>
+                </div>
+                <div class="h-24 w-full bg-slate-800 rounded relative overflow-hidden">
+                    <svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none">
+                        <path d="M0,80 L20,70 L40,75 L60,50 L80,60 L100,40 L120,45 L140,20 L160,30 L180,10 L200,25 L300,50" fill="none" stroke="#10b981" stroke-width="2" />
+                    </svg>
+                </div>
+                <div class="h-24 w-full bg-slate-800 rounded relative overflow-hidden">
+                    <svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none">
+                        <path d="M0,90 L30,85 L60,80 L90,82 L120,40 L150,45 L180,20 L210,30 L300,60" fill="none" stroke="#f59e0b" stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-10">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">09.</span> Deployment Options</h2>
+        
+        <div class="grid grid-cols-3 gap-8 w-full max-w-7xl">
+            <div class="tech-panel p-8 text-center hover:border-blue-500 transition cursor-pointer">
+                <i class="fa-solid fa-cloud text-5xl text-blue-500 mb-6"></i>
+                <h3 class="text-xl font-bold text-white mb-2">TH8 Cloud (SaaS)</h3>
+                <p class="text-sm text-slate-400 mb-4">Multi-tenant, Managed Service</p>
+                <ul class="text-left text-xs text-slate-500 space-y-2">
+                    <li><i class="fa-solid fa-check mr-2"></i> Instant Setup</li>
+                    <li><i class="fa-solid fa-check mr-2"></i> Auto Updates</li>
+                    <li><i class="fa-solid fa-check mr-2"></i> AWS/Azure Hosted</li>
+                </ul>
+            </div>
+
+            <div class="tech-panel p-8 text-center border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.2)] transform scale-105">
+                <i class="fa-solid fa-network-wired text-5xl text-emerald-500 mb-6"></i>
+                <h3 class="text-xl font-bold text-white mb-2">Private Cloud</h3>
+                <p class="text-sm text-slate-400 mb-4">Dedicated VPC / Single Tenant</p>
+                <ul class="text-left text-xs text-slate-300 space-y-2">
+                    <li><i class="fa-solid fa-check mr-2 text-emerald-500"></i> Complete Isolation</li>
+                    <li><i class="fa-solid fa-check mr-2 text-emerald-500"></i> Custom VPN / Direct Connect</li>
+                    <li><i class="fa-solid fa-check mr-2 text-emerald-500"></i> Data Residency Control</li>
+                </ul>
+            </div>
+
+            <div class="tech-panel p-8 text-center hover:border-purple-500 transition cursor-pointer">
+                <i class="fa-solid fa-server text-5xl text-purple-500 mb-6"></i>
+                <h3 class="text-xl font-bold text-white mb-2">On-Premise</h3>
+                <p class="text-sm text-slate-400 mb-4">Air-gapped / Client Data Center</p>
+                <ul class="text-left text-xs text-slate-500 space-y-2">
+                    <li><i class="fa-solid fa-check mr-2"></i> Docker / Kubernetes Support</li>
+                    <li><i class="fa-solid fa-check mr-2"></i> Full Data Sovereignty</li>
+                    <li><i class="fa-solid fa-check mr-2"></i> Remote Maintenance Ops</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-11">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">10.</span> Performance Specs</h2>
+        <div class="w-full max-w-5xl bg-slate-900 border border-slate-700 rounded-lg p-10 flex justify-between items-center">
+            <div class="text-center">
+                <div class="text-xs text-slate-500 uppercase font-bold mb-2">Throughput</div>
+                <div class="text-5xl font-mono font-bold text-white">10k+</div>
+                <div class="text-sm text-slate-400 mt-2">TPS (Transactions/Sec)</div>
+            </div>
+            <div class="h-20 w-px bg-slate-700"></div>
+            <div class="text-center">
+                <div class="text-xs text-slate-500 uppercase font-bold mb-2">Latency (P99)</div>
+                <div class="text-5xl font-mono font-bold text-emerald-400">&lt;200ms</div>
+                <div class="text-sm text-slate-400 mt-2">API Response Time</div>
+            </div>
+            <div class="h-20 w-px bg-slate-700"></div>
+            <div class="text-center">
+                <div class="text-xs text-slate-500 uppercase font-bold mb-2">Uptime SLA</div>
+                <div class="text-5xl font-mono font-bold text-blue-400">99.95%</div>
+                <div class="text-sm text-slate-400 mt-2">High Availability</div>
+            </div>
+        </div>
+        <p class="mt-8 text-slate-500 text-sm max-w-2xl text-center">
+            *Tested on AWS c5.large instances with 3-node Kubernetes cluster and Redis caching enabled.
+        </p>
+    </div>
+
+    <div class="slide items-center text-center" id="slide-12">
+        <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-600">
+            <i class="fa-solid fa-code-commit text-4xl text-white"></i>
+        </div>
+        <h1 class="text-5xl font-bold mb-6 text-white">Ready for POC?</h1>
+        <p class="text-xl text-slate-400 mb-12">
+            Setup in 3 Days. Zero impact on Production.
+        </p>
+        
+        <div class="flex gap-6 justify-center">
+            <button class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded shadow-lg transition">
+                <i class="fa-brands fa-github mr-2"></i> Request Architecture Doc
+            </button>
+            <button class="bg-transparent border border-slate-500 hover:border-white text-slate-300 hover:text-white font-bold py-3 px-8 rounded transition">
+                Schedule Tech Call
+            </button>
+        </div>
+        
+        <p class="mt-16 text-xs text-slate-600 mono">
+            TH8 ENGINEERING | v3.0-stable
+        </p>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        
+        function updateSlide() {
+            slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+            progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+            slideCounter.innerText = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(dir) {
+            const next = currentSlide + dir;
+            if (next >= 0 && next < slides.length) { currentSlide = next; updateSlide(); }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight') changeSlide(1);
+            if(e.key === 'ArrowLeft') changeSlide(-1);
+        });
+        updateSlide();
+        
+        // Init Highlight.js
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

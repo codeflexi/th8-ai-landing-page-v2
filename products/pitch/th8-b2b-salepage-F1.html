@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8.AI - หยุดกำไรรั่วไหลด้วย Decision Control Center</title>
+    <meta name="description" content="ระบบ AI ตรวจสอบการจัดซื้อและป้องกันการทุจริตแบบ Real-time เชื่อมต่อ SAP/Oracle ได้ทันที">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animations */
+        .fade-up { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-[#0f172a]/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-white">T8</div>
+                <span class="text-xl font-bold tracking-tight">TH8<span class="text-red-500">.AI</span></span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm text-slate-300">
+                <a href="#problem" class="hover:text-white transition">Pain Points</a>
+                <a href="#solution" class="hover:text-white transition">Solution</a>
+                <a href="#features" class="hover:text-white transition">Features</a>
+                <a href="#roi" class="hover:text-white transition">ROI</a>
+            </div>
+            <a href="th8-pitch-slide-F1.html" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-full text-sm font-bold transition shadow-lg shadow-red-900/20">
+                Sale Pitch
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[100px] -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-500/30 bg-red-900/10 text-red-400 text-xs font-bold uppercase tracking-widest mb-8 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span> Enterprise Decision Intelligence
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+                หยุดกำไรรั่วไหล <span class="text-red-500">1.8%</span><br>
+                ด้วย AI ที่มองเห็นทุกความเสี่ยง
+            </h1>
+            
+            <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                TH8 Decision Control Center: ระบบปฏิบัติการอัจฉริยะที่วางทับ ERP เดิม (Overlay) <br class="hidden md:block">
+                เพื่อตรวจสอบทุกการจัดซื้อแบบ <strong>100% Pre-Audit</strong> ก่อนเงินจะออกจากบริษัท
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="th8-b2b-technical-F1.html" class="bg-white text-slate-900 px-8 py-4 rounded-full text-lg font-bold hover:bg-slate-200 transition shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    Technical Architecture Overview
+                </a>
+                <a href="th8-demo-slide-F1.html" class="bg-slate-800 text-white border border-slate-700 px-8 py-4 rounded-full text-lg font-bold hover:bg-slate-700 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play-circle"></i> ดูการทำงาน
+                </a>
+            </div>
+
+            <p class="mt-8 text-sm text-slate-500">
+                <i class="fa-solid fa-shield-halved mr-2 text-emerald-500"></i> Compatible with SAP, Oracle, Microsoft Dynamics
+            </p>
+        </div>
+    </section>
+
+    <section id="problem" class="py-20 bg-slate-900 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">ERP ของคุณอาจเป็น "ถังน้ำที่รั่ว"</h2>
+                <p class="text-slate-400">องค์กรส่วนใหญ่เสียกำไรไปกับ Operational Inefficiency โดยไม่รู้ตัว</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-8 rounded-2xl border-t-4 border-red-500 hover:-translate-y-2 transition duration-300">
+                    <div class="text-4xl mb-4 text-red-500"><i class="fa-solid fa-scissors"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Split PO Evasion</h3>
+                    <p class="text-slate-400 text-sm">การซอยใบสั่งซื้อย่อยๆ เพื่อหลบเลี่ยงอำนาจอนุมัติของผู้บริหาร ทำให้เกิดการรั่วไหลที่ตรวจสอบยาก</p>
+                </div>
+                <div class="glass p-8 rounded-2xl border-t-4 border-amber-500 hover:-translate-y-2 transition duration-300">
+                    <div class="text-4xl mb-4 text-amber-500"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Price Variance</h3>
+                    <p class="text-slate-400 text-sm">การซื้อของแพงกว่าราคาในสัญญา หรือราคาตลาด โดยไม่มีเหตุผลรองรับ สร้างความเสียหายสะสมมหาศาล</p>
+                </div>
+                <div class="glass p-8 rounded-2xl border-t-4 border-purple-500 hover:-translate-y-2 transition duration-300">
+                    <div class="text-4xl mb-4 text-purple-500"><i class="fa-solid fa-users-slash"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Ghost Vendors</h3>
+                    <p class="text-slate-400 text-sm">การฮั้วประมูลระหว่างคู่เทียบ หรือการมีผลประโยชน์ทับซ้อนระหว่างพนักงานและ Supplier</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution" class="py-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="inline-block px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-xs font-bold mb-4">THE SOLUTION</div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        เปลี่ยนจาก "จับผิด" <br>เป็น <span class="text-emerald-400">"ป้องกัน"</span>
+                    </h2>
+                    <p class="text-slate-400 text-lg mb-8">
+                        TH8 ทำงานเป็น Layer อัจฉริยะ (Overlay) ที่กรองทุก Transaction จาก ERP ของคุณ เพื่อค้นหาความเสี่ยงและแจ้งเตือน **ก่อน** ที่เงินจะถูกจ่ายออกไป
+                    </p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-emerald-400 text-xl shrink-0"><i class="fa-solid fa-check-double"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">100% Pre-Audit Coverage</h4>
+                                <p class="text-slate-500 text-sm">เลิกสุ่มตรวจ (Sampling) ระบบของเราตรวจสอบทุกเอกสาร 24/7</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-red-400 text-xl shrink-0"><i class="fa-solid fa-project-diagram"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">AI Graph Forensics</h4>
+                                <p class="text-slate-500 text-sm">ตรวจจับความสัมพันธ์ที่ซ่อนอยู่ เช่น เบอร์โทร/ที่อยู่ของ Vendor ที่ตรงกัน</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-blue-400 text-xl shrink-0"><i class="fa-solid fa-code"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg">Policy as Code</h4>
+                                <p class="text-slate-500 text-sm">ปรับเปลี่ยนกฎระเบียบได้ใน 5 นาที (Dynamic) ไม่ต้องรอแก้โปรแกรม</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-red-600 to-blue-600 rounded-2xl blur-2xl opacity-20"></div>
+                    <div class="glass rounded-xl border border-slate-700 overflow-hidden relative shadow-2xl">
+                        <div class="bg-slate-900/80 p-4 flex items-center gap-2 border-b border-slate-700">
+                            <div class="flex gap-1.5">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                            </div>
+                            <div class="ml-4 text-xs text-slate-400 font-mono">TH8 Intelligence View</div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="text-2xl font-bold">PO-2026-991</div>
+                                <div class="px-3 py-1 bg-red-900/50 text-red-400 rounded text-xs font-bold border border-red-800">CRITICAL RISK</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                                    <div class="text-xs text-slate-500 uppercase">Vendor</div>
+                                    <div class="font-bold">Ghost Supply Inc.</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                                    <div class="text-xs text-slate-500 uppercase">Amount</div>
+                                    <div class="font-bold">450,000 THB</div>
+                                </div>
+                            </div>
+                            <div class="bg-red-900/10 border border-red-500/30 p-4 rounded text-sm text-red-200">
+                                <i class="fa-solid fa-triangle-exclamation mr-2"></i> <strong>AI Alert:</strong> พบความสัมพันธ์ของบัญชีธนาคารตรงกับ Vendor B (Collusion Risk)
+                            </div>
+                            <div class="h-32 bg-slate-800 rounded border border-slate-700 flex items-center justify-center text-slate-600">
+                                [ Graph Visualization Area ]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roi" class="py-20 bg-slate-900">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold">Calculate Your ROI</h2>
+                <p class="text-slate-400 mt-2">ประเมินผลกำไรที่จะได้คืนมา (Recovery Potential)</p>
+            </div>
+
+            <div class="glass p-10 rounded-2xl border-t-4 border-emerald-500">
+                <div class="mb-10">
+                    <label class="flex justify-between text-slate-300 font-bold mb-4 text-lg">
+                        <span>Annual External Spend (ยอดจัดซื้อต่อปี)</span>
+                        <span id="spendDisplay" class="text-emerald-400 font-mono">1,000 MB</span>
+                    </label>
+                    <input type="range" min="100" max="10000" step="100" value="1000" id="spendSlider" 
+                           class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                    <div class="flex justify-between text-xs text-slate-500 mt-2">
+                        <span>100 MB</span>
+                        <span>10,000 MB</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-slate-700">
+                    <div class="py-4 md:py-0">
+                        <div class="text-xs text-slate-500 uppercase mb-2">Estimated Leakage (1.8%)</div>
+                        <div id="leakDisplay" class="text-3xl font-bold text-red-400 font-mono">18.0 MB</div>
+                        <div class="text-xs text-slate-600 mt-2">เงินที่รั่วไหล/ปี</div>
+                    </div>
+                    <div class="py-4 md:py-0">
+                        <div class="text-xs text-slate-500 uppercase mb-2">Recovery Potential (50%)</div>
+                        <div id="recoverDisplay" class="text-4xl font-bold text-white font-mono">9.0 MB</div>
+                        <div class="text-xs text-emerald-500 mt-2 font-bold">NET PROFIT IMPACT</div>
+                    </div>
+                    <div class="py-4 md:py-0">
+                        <div class="text-xs text-slate-500 uppercase mb-2">ROI Year 1</div>
+                        <div class="text-3xl font-bold text-emerald-400 font-mono">> 400%</div>
+                        <div class="text-xs text-slate-600 mt-2">คืนทุนใน 3 เดือน</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">ทำไมต้อง TH8?</h2>
+            
+            <div class="overflow-x-auto glass rounded-2xl border border-slate-700">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800 text-slate-300 border-b border-slate-600">
+                            <th class="py-6 px-8 w-1/3">Capabilities</th>
+                            <th class="py-6 px-8 w-1/3 text-slate-500">Traditional ERP / Audit</th>
+                            <th class="py-6 px-8 w-1/3 text-white font-bold bg-red-900/20 border-t-4 border-red-600">TH8 Decision Center</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-slate-700/50">
+                        <tr>
+                            <td class="py-5 px-8 font-bold text-white">Detection Timing</td>
+                            <td class="py-5 px-8 text-slate-500">Post-Audit (สิ้นเดือน/สิ้นปี)</td>
+                            <td class="py-5 px-8 text-emerald-400 font-bold bg-slate-800/30">Pre-Audit (ก่อนจ่ายเงิน)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-8 font-bold text-white">Data Scope</td>
+                            <td class="py-5 px-8 text-slate-500">ข้อมูลภายในองค์กรเท่านั้น</td>
+                            <td class="py-5 px-8 text-white bg-slate-800/30">ภายใน + <span class="text-blue-400">External Intelligence</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-8 font-bold text-white">Fraud Detection</td>
+                            <td class="py-5 px-8 text-slate-500">กฏพื้นฐาน (Rule-based)</td>
+                            <td class="py-5 px-8 text-white bg-slate-800/30"><span class="text-purple-400">AI Graph Forensics</span> (ซับซ้อน)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-8 font-bold text-white">User Experience</td>
+                            <td class="py-5 px-8 text-slate-500">หน้าจอซับซ้อน เข้าถึงยาก</td>
+                            <td class="py-5 px-8 text-white bg-slate-800/30">AI Copilot & Mobile App</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-8 font-bold text-white">Flexibility</td>
+                            <td class="py-5 px-8 text-slate-500">แก้ไขยาก (Hard-coded)</td>
+                            <td class="py-5 px-8 text-white bg-slate-800/30">Policy as Code (แก้ไขใน 5 นาที)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">Proven Impact</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass p-8 rounded-xl hover:bg-slate-800 transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-xl">R</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Top 3 Retail Chain</h4>
+                            <div class="text-xs text-slate-500">Thailand</div>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-2">฿ 12.5M</div>
+                    <div class="text-sm text-slate-400 uppercase tracking-widest">Recovered in 3 Months</div>
+                    <p class="mt-4 text-slate-400 text-sm">"TH8 ช่วยเราจับรายการ Duplicate Payment ที่เกิดจากความสับสนเรื่อง Invoice ได้อย่างแม่นยำ"</p>
+                </div>
+                <div class="glass p-8 rounded-xl hover:bg-slate-800 transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-xl">M</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Leading Food Manufacturer</h4>
+                            <div class="text-xs text-slate-500">Export Leader</div>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-2">-8.5%</div>
+                    <div class="text-sm text-slate-400 uppercase tracking-widest">Reduction in COGS</div>
+                    <p class="mt-4 text-slate-400 text-sm">"เราลด Price Variance ของวัตถุดิบได้จริง และทีมจัดซื้อมีข้อมูลไปต่อรองกับ Supplier ได้ดีขึ้นมาก"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-red-900/20 to-transparent pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <h2 class="text-5xl font-bold mb-8">
+                เริ่มปกป้องกำไรของคุณ<span class="text-red-600">วันนี้</span>
+            </h2>
+            <p class="text-xl text-slate-400 mb-12">
+                พิสูจน์ผลลัพธ์ด้วยข้อมูลจริงของท่านเอง (POC) ภายใน 7 วัน <br>
+                ไม่มีค่าใช้จ่ายเริ่มต้น ไม่มีความเสี่ยง
+            </p>
+            
+            <form class="max-w-md mx-auto space-y-4">
+                <input type="email" placeholder="Enter your work email" class="w-full px-6 py-4 bg-slate-800 border border-slate-600 rounded-full text-white focus:outline-none focus:border-red-500 text-center">
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-full text-lg shadow-[0_0_30px_rgba(220,38,38,0.5)] transition transform hover:scale-105">
+                    Schedule Free X-Ray Audit
+                </button>
+            </form>
+
+            <div class="flex flex-wrap justify-center gap-8 mt-12 text-sm text-slate-500">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Easy Setup (API)</div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Secure (Read-Only)</div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Cancel Anytime</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 py-8 text-center text-slate-600 text-sm border-t border-slate-800">
+        <p>&copy; 2026 TH8.AI | Enterprise Decision Control System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            section.classList.add('fade-up');
+            observer.observe(section);
+        });
+
+        // ROI Calculator Logic
+        const slider = document.getElementById('spendSlider');
+        const spendDisplay = document.getElementById('spendDisplay');
+        const leakDisplay = document.getElementById('leakDisplay');
+        const recoverDisplay = document.getElementById('recoverDisplay');
+
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            spendDisplay.innerText = val.toLocaleString() + ' MB';
+            leakDisplay.innerText = (val * 0.018).toFixed(1) + ' MB';
+            recoverDisplay.innerText = (val * 0.018 * 0.5).toFixed(1) + ' MB';
+        });
+    </script>
+</body>
+</html>

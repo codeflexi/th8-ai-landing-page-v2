@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 - Technical Architecture (Confidence Edition)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+
+    <style>
+        /* THEME: Deep Enterprise Blue */
+        body { 
+            font-family: 'Prompt', sans-serif; 
+            background-color: #0b0f19; 
+            color: #f1f5f9; 
+            overflow: hidden; 
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* SLIDE SYSTEM */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            padding: 1.5rem 3rem; /* Adjusted padding */
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+
+        /* COMPONENTS */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .insight-box {
+            background: rgba(15, 23, 42, 0.9);
+            border-left: 4px solid #3b82f6; /* Blue accent */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .node-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        .node-box:hover { border-color: #3b82f6; transform: translateY(-2px); }
+
+        .code-window {
+            background: #1e1e1e;
+            border-radius: 0.5rem;
+            border: 1px solid #333;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* ANIMATION */
+        @keyframes flow-line { to { stroke-dashoffset: -20; } }
+        .flow-anim { stroke-dasharray: 5; animation: flow-line 1s linear infinite; }
+        
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .pulse-ring { animation: pulse-ring 2s infinite; }
+
+        /* NAV */
+        .nav-controls {
+            position: fixed; bottom: 1.5rem; right: 2rem; z-index: 50;
+            display: flex; gap: 1rem; background: rgba(15, 23, 42, 0.95);
+            padding: 0.5rem 1.5rem; border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="fixed top-0 left-0 h-1 bg-blue-600 transition-all duration-500 z-50" id="progressBar" style="width: 0%"></div>
+
+    <div class="nav-controls">
+        <button onclick="changeSlide(-1)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="slideCounter" class="font-mono text-sm pt-0.5 text-slate-300 w-16 text-center">1 / 20</span>
+        <button onclick="changeSlide(1)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="slide active items-center text-center" id="slide-1">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-blue-500/30 bg-blue-900/20 text-blue-400 text-sm font-bold tracking-widest uppercase mb-10">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 pulse-ring"></span> Technical Architecture Specification
+        </div>
+        <h1 class="text-7xl md:text-9xl font-bold leading-tight mb-6 tracking-tight text-white">TH8 <span class="text-slate-600">//</span> CORE</h1>
+        <h2 class="text-3xl md:text-4xl text-slate-300 font-light mb-8 font-mono">Security • Scalability • Compliance</h2>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed border-l-4 border-blue-500 pl-6 text-left">
+            สถาปัตยกรรม <strong>Microservices</strong> บนพื้นฐาน <strong>Zero Trust Security</strong><br>
+            รองรับการเชื่อมต่อ SAP/Oracle แบบ High Throughput & Low Latency
+        </p>
+        <div class="mt-12 insight-box max-w-xl mx-auto border-none bg-slate-800/50 text-center">
+            <i class="fa-solid fa-info-circle text-blue-400 mr-2"></i> 
+            ออกแบบมาเพื่อรองรับ Enterprise Load ระดับ 10,000+ รายการต่อวินาที
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-2">
+        <h2 class="text-3xl font-bold mb-8"><span class="text-blue-500 mono">01.</span> The Tech Stack</h2>
+        <div class="grid grid-cols-4 gap-6 w-full max-w-7xl">
+            <div class="glass-panel p-6 hover:border-blue-500 transition">
+                <div class="text-blue-400 text-xs font-bold uppercase mb-4 tracking-wider border-b border-slate-700 pb-2">CORE BACKEND</div>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-center gap-3"><i class="fa-brands fa-python text-2xl text-yellow-300"></i><div><strong class="block text-white">Python (FastAPI)</strong>Async I/O High Performance</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-cube text-2xl text-blue-300"></i><div><strong class="block text-white">Pydantic</strong>Strict Data Validation</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-network-wired text-2xl text-slate-400"></i><div><strong class="block text-white">gRPC</strong>Inter-service Communication</div></li>
+                </ul>
+            </div>
+            <div class="glass-panel p-6 hover:border-emerald-500 transition">
+                <div class="text-emerald-400 text-xs font-bold uppercase mb-4 tracking-wider border-b border-slate-700 pb-2">DATA LAYER</div>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-database text-2xl text-blue-400"></i><div><strong class="block text-white">PostgreSQL</strong>Primary Transactional DB</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-memory text-2xl text-red-400"></i><div><strong class="block text-white">Redis Cluster</strong>Caching & Pub/Sub</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-vector-square text-2xl text-purple-400"></i><div><strong class="block text-white">pgvector</strong>Vector Store for AI</div></li>
+                </ul>
+            </div>
+            <div class="glass-panel p-6 hover:border-purple-500 transition">
+                <div class="text-purple-400 text-xs font-bold uppercase mb-4 tracking-wider border-b border-slate-700 pb-2">INFRASTRUCTURE</div>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-center gap-3"><i class="fa-brands fa-docker text-2xl text-blue-500"></i><div><strong class="block text-white">Docker & K8s</strong>Container Orchestration</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-cloud text-2xl text-orange-400"></i><div><strong class="block text-white">Terraform</strong>IaC (Infrastructure as Code)</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-chart-line text-2xl text-green-400"></i><div><strong class="block text-white">Prometheus</strong>Metrics & Monitoring</div></li>
+                </ul>
+            </div>
+            <div class="glass-panel p-6 hover:border-amber-500 transition">
+                <div class="text-amber-400 text-xs font-bold uppercase mb-4 tracking-wider border-b border-slate-700 pb-2">CLIENT SIDE</div>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-center gap-3"><i class="fa-brands fa-vuejs text-2xl text-emerald-500"></i><div><strong class="block text-white">Vue 3</strong>Composition API + TS</div></li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-mobile-screen text-2xl text-slate-200"></i><div><strong class="block text-white">PWA / Native</strong>Cross-platform Support</div></li>
+                </ul>
+            </div>
+        </div>
+        <div class="insight-box w-full max-w-7xl">
+            <strong>Architecture Decision:</strong> เราเลือกใช้ <strong>FastAPI</strong> และ <strong>Rust-based tooling</strong> เพื่อให้ได้ Latency ต่ำที่สุดในการประมวลผล Rule จำนวนมาก และใช้ <strong>PostgreSQL</strong> เพื่อความเสถียรของข้อมูลการเงิน
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-3">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">02.</span> High-Level Architecture</h2>
+        <div class="w-full max-w-6xl h-[500px] bg-[#0f1115] border border-slate-700 rounded-2xl p-8 relative flex shadow-2xl">
+            <div class="w-1/3 border-r border-dashed border-slate-600 pr-8 flex flex-col justify-center relative">
+                <span class="absolute top-0 left-0 text-xs text-slate-500 font-bold uppercase tracking-wider bg-[#0f1115] px-2">Client Environment (VPC)</span>
+                <div class="p-6 bg-slate-800/50 rounded-lg border border-slate-700 mb-4">
+                    <div class="font-bold text-white mb-2"><i class="fa-solid fa-server mr-2 text-blue-500"></i> ERP Core</div>
+                    <div class="grid grid-cols-2 gap-2"><div class="node-box text-xs">SAP S/4</div><div class="node-box text-xs">Oracle</div></div>
+                </div>
+                <div class="p-6 bg-slate-800/50 rounded-lg border border-slate-700">
+                    <div class="font-bold text-white mb-2"><i class="fa-solid fa-file-invoice mr-2 text-emerald-500"></i> E-Procurement</div>
+                    <div class="node-box text-xs">Workflow Engine</div>
+                </div>
+            </div>
+            <div class="w-1/6 flex flex-col justify-center items-center relative z-10">
+                <div class="bg-slate-900 border border-slate-500 p-3 rounded-lg text-center shadow-lg w-32">
+                    <i class="fa-solid fa-shield-halved text-2xl text-blue-400 mb-1"></i>
+                    <div class="text-xs font-bold text-white">Secure Gateway</div>
+                    <div class="text-[9px] text-slate-400">mTLS / IP Whitelist</div>
+                </div>
+            </div>
+            <div class="flex-1 border-l border-dashed border-slate-600 pl-8 flex flex-col justify-center relative bg-slate-900/20">
+                <span class="absolute top-0 right-0 text-xs text-blue-400 font-bold uppercase tracking-wider bg-[#0f1115] px-2">TH8 Cloud (Kubernetes)</span>
+                <div class="grid grid-cols-2 gap-6 h-full items-center">
+                    <div class="space-y-4">
+                        <div class="node-box border-l-4 border-blue-500 text-left"><div class="font-bold">Ingestion Service</div><div class="text-xs text-slate-500">Kafka Consumers</div></div>
+                        <div class="node-box border-l-4 border-emerald-500 text-left transform scale-105 shadow-lg shadow-emerald-900/20"><div class="font-bold text-white">Policy Engine</div><div class="text-xs text-emerald-400">Rule Evaluation (O(1))</div></div>
+                        <div class="node-box border-l-4 border-purple-500 text-left"><div class="font-bold">AI Forensics</div><div class="text-xs text-slate-500">Graph / Vector Analysis</div></div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="node-box border-slate-600"><i class="fa-solid fa-database mr-2 text-blue-400"></i> PostgreSQL</div>
+                        <div class="node-box border-slate-600"><i class="fa-solid fa-bolt mr-2 text-red-400"></i> Redis Cache</div>
+                        <div class="node-box border-slate-600"><i class="fa-solid fa-project-diagram mr-2 text-purple-400"></i> Neo4j (Graph)</div>
+                    </div>
+                </div>
+            </div>
+            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-30">
+                <path d="M 280 250 L 430 250" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" class="flow-anim" />
+                <path d="M 570 250 L 700 250" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" class="flow-anim" />
+            </svg>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Flow Description:</strong> ข้อมูลจาก ERP (ซ้าย) จะถูกส่งผ่าน Secure Gateway (กลาง) แบบ Encrypted เข้าสู่ TH8 Cluster (ขวา) ซึ่งจะแยก Process เป็น Asynchronous ผ่าน Kafka เพื่อไม่ให้กระทบ Performance ของ ERP หลัก
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-4">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">03.</span> Integration Patterns</h2>
+        <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+            <div class="glass-panel p-8">
+                <div class="flex items-center gap-3 mb-4"><span class="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center font-bold">A</span><h3 class="text-xl font-bold text-white">Async API (Webhook)</h3></div>
+                <p class="text-sm text-slate-400 mb-6">Best for real-time blocking. ERP calls TH8 API before finalizing PO.</p>
+                <div class="bg-[#0f1115] p-4 rounded border border-slate-700 font-mono text-xs text-slate-300">ERP -> POST /v1/evaluate (Payload)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| (200 OK - Processing)<br>TH8 -> POST /webhook/result (Allow/Block)<br>ERP -> Process Action</div>
+                <div class="mt-4 text-xs text-blue-400 font-bold">Use Case: Pre-Audit Blocking</div>
+            </div>
+            <div class="glass-panel p-8">
+                <div class="flex items-center gap-3 mb-4"><span class="bg-amber-600 text-white w-8 h-8 rounded flex items-center justify-center font-bold">B</span><h3 class="text-xl font-bold text-white">Change Data Capture (CDC)</h3></div>
+                <p class="text-sm text-slate-400 mb-6">Zero impact on ERP performance. Listen to DB logs directly.</p>
+                <div class="bg-[#0f1115] p-4 rounded border border-slate-700 font-mono text-xs text-slate-300">DB Transaction Log (WAL)<br>&nbsp;&nbsp;-> Debezium Connector<br>&nbsp;&nbsp;-> Kafka Topic (th8-ingest)<br>&nbsp;&nbsp;-> TH8 Processor</div>
+                <div class="mt-4 text-xs text-amber-400 font-bold">Use Case: Near Real-time Monitoring</div>
+            </div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Strategy:</strong> เราแนะนำ Pattern A (API) สำหรับจุดที่ต้องการ Block ทันที และ Pattern B (CDC) สำหรับการดึง Data จำนวนมากเพื่อทำ Analytics โดยไม่กวนระบบหลัก
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-5">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">04.</span> Security Topology (Zero Trust)</h2>
+        <div class="w-full max-w-5xl h-[450px] border border-slate-700 bg-[#0f1115] p-8 relative rounded-lg">
+            <div class="absolute top-8 left-8 right-8 h-20 border-2 border-dashed border-red-500/30 rounded bg-red-900/5 p-2 flex items-center justify-center">
+                <span class="absolute top-2 left-2 text-[10px] text-red-500 font-bold uppercase">Untrusted (Internet)</span>
+                <div class="flex gap-12"><div class="node-box w-32">Client User</div><div class="node-box w-32">Public API</div></div>
+            </div>
+            <div class="absolute top-36 left-8 right-8 h-20 border-2 border-dashed border-amber-500/30 rounded bg-amber-900/5 p-2 flex items-center justify-center">
+                <span class="absolute top-2 left-2 text-[10px] text-amber-500 font-bold uppercase">DMZ (Public Subnet)</span>
+                <div class="flex gap-12"><div class="node-box w-40 border-amber-500/50"><i class="fa-solid fa-shield-virus mr-2"></i> WAF / DDoS</div><div class="node-box w-40 border-blue-500/50"><i class="fa-solid fa-door-open mr-2"></i> API Gateway</div></div>
+            </div>
+            <div class="absolute bottom-8 left-8 right-8 top-[260px] border-2 border-dashed border-emerald-500/30 rounded bg-emerald-900/5 p-2 flex items-center justify-center">
+                <span class="absolute top-2 left-2 text-[10px] text-emerald-500 font-bold uppercase">Trusted Zone (Private Subnet)</span>
+                <div class="flex gap-8 items-center"><div class="node-box w-32 h-20 flex flex-col justify-center">App Services<span class="text-[9px] text-slate-500 mt-1">mTLS Only</span></div><div class="w-8 h-px bg-slate-500"></div><div class="node-box w-32 h-20 flex flex-col justify-center">Databases<span class="text-[9px] text-slate-500 mt-1">Encrypted @ Rest</span></div><div class="w-8 h-px bg-slate-500"></div><div class="node-box w-32 h-20 flex flex-col justify-center">KMS / Vault<span class="text-[9px] text-slate-500 mt-1">Secrets Mgmt</span></div></div>
+            </div>
+            <div class="absolute top-24 left-1/2 w-px h-12 bg-slate-500"></div><div class="absolute top-[200px] left-1/2 w-px h-16 bg-slate-500"></div>
+        </div>
+        <div class="insight-box w-full max-w-5xl">
+            <strong>Zero Trust Model:</strong> การเข้าถึงทั้งหมดต้องผ่าน API Gateway ใน DMZ เท่านั้น ส่วน Database และ App Logic จะอยู่ใน Private Subnet ที่ไม่มี Public IP และสื่อสารกันด้วย mTLS
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-6">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">05.</span> Policy Engine Internals</h2>
+        <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
+            <div class="space-y-6">
+                <div class="glass-panel p-6"><h3 class="font-bold text-white mb-2">Decoupled Logic</h3><p class="text-sm text-slate-400">Business logic is separated from application code. Stored as YAML/JSON and versioned in Git.</p></div>
+                <div class="glass-panel p-6 border-l-4 border-emerald-500"><h3 class="font-bold text-white mb-2">Performance</h3><p class="text-sm text-slate-400">Rules are compiled into an <strong>Abstract Syntax Tree (AST)</strong> for O(1) execution speed.</p></div>
+            </div>
+            <div class="code-window shadow-2xl"><div class="bg-[#252526] px-4 py-2 border-b border-black text-slate-400">rules/procurement.yaml</div><div class="p-4"><pre><code class="language-yaml"># High Variance Check
+- id: "RULE_PRICE_VARIANCE"
+  priority: 100
+  condition:
+    and:
+      - field: "item.price"
+        operator: "gt"
+        reference: "contract.price * 1.05"
+      - field: "vendor.status"
+        operator: "eq"
+        value: "ACTIVE"
+  action:
+    type: "BLOCK"
+    reason: "Exceeds contract by > 5%"</code></pre></div></div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Technical Detail:</strong> กฎ (Rule) ไม่ใช่ Hard-coded แต่เป็น Configuration ที่โหลดเข้า Memory ตอน Start-up ทำให้การ Evaluate เร็วระดับ Microsecond และสามารถ Hot-reload ได้โดยไม่ต้อง Restart Service
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-7">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">06.</span> Graph Forensics Engine</h2>
+        <div class="w-full max-w-6xl grid grid-cols-2 gap-8 items-center">
+            <div class="glass-panel p-8 h-[400px] flex items-center justify-center relative bg-[#0f1115]"><div class="absolute inset-0 flex items-center justify-center opacity-30"><svg class="w-full h-full"><circle cx="50%" cy="50%" r="100" stroke="#475569" fill="none"/><circle cx="50%" cy="50%" r="150" stroke="#334155" fill="none"/></svg></div><div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-center"><div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg animate-pulse"><i class="fa-solid fa-network-wired"></i></div><div class="mt-2 text-xs font-bold text-red-400">Shared IP</div></div><div class="absolute top-[30%] left-[20%] text-center"><div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center border border-slate-500"><i class="fa-solid fa-store"></i></div><div class="text-[10px] mt-1">Vendor A</div></div><div class="absolute top-[30%] right-[20%] text-center"><div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center border border-slate-500"><i class="fa-solid fa-store"></i></div><div class="text-[10px] mt-1">Vendor B</div></div><div class="absolute bottom-[20%] left-[50%] transform -translate-x-1/2 text-center"><div class="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center border border-slate-500"><i class="fa-solid fa-user"></i></div><div class="text-[10px] mt-1">Employee</div></div></div>
+            <div class="space-y-6"><h3 class="text-xl font-bold text-white">Network Analysis Logic</h3><ul class="space-y-4 text-sm text-slate-400"><li class="flex gap-3"><i class="fa-solid fa-circle-nodes text-purple-500"></i> <strong>Hop Analysis:</strong> Detect indirect links (e.g., Vendor A -> Same Phone -> Vendor B).</li><li class="flex gap-3"><i class="fa-solid fa-people-arrows text-blue-500"></i> <strong>Community Detection:</strong> Identify clusters of vendors bidding together.</li><li class="flex gap-3"><i class="fa-solid fa-database text-emerald-500"></i> <strong>Tech:</strong> Neo4j / NetworkX running on dedicated GPU instances.</li></ul></div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Graph Algorithm:</strong> เราใช้ Neo4j ในการเก็บความสัมพันธ์ และรัน Algorithm เช่น 'Weakly Connected Components' เพื่อหา Vendor ที่มีความสัมพันธ์กัน (Collusion Ring) แม้จะไม่ได้เชื่อมโยงกันโดยตรง
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-8">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">07.</span> AI & RAG Architecture</h2>
+        <div class="w-full max-w-6xl h-[400px] glass-panel p-8 relative flex items-center justify-between">
+            <div class="text-center w-32"><i class="fa-solid fa-file-pdf text-4xl text-red-400 mb-2"></i><div class="font-bold text-sm">Documents</div><div class="text-[10px] text-slate-500">Contracts, POs</div></div>
+            <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+            <div class="text-center w-32 p-3 bg-slate-800 rounded border border-blue-500/50"><i class="fa-solid fa-scissors text-3xl text-blue-400 mb-2"></i><div class="font-bold text-sm">Chunking</div><div class="text-[10px] text-slate-500">PII Masking</div></div>
+            <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+            <div class="text-center w-32 p-3 bg-slate-800 rounded border border-purple-500/50 shadow-lg shadow-purple-900/20"><i class="fa-solid fa-layer-group text-3xl text-purple-400 mb-2"></i><div class="font-bold text-sm">Embeddings</div><div class="text-[10px] text-slate-500">Vector Store</div></div>
+            <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+            <div class="text-center w-32 p-3 bg-slate-800 rounded border border-emerald-500/50"><i class="fa-solid fa-robot text-3xl text-emerald-400 mb-2"></i><div class="font-bold text-sm">LLM Context</div><div class="text-[10px] text-slate-500">Grounded GenAI</div></div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Data Privacy:</strong> ข้อมูลส่วนบุคคล (PII) จะถูก Masking ก่อนส่งไปทำ Embedding และเราใช้เทคนิค <strong>RAG (Retrieval-Augmented Generation)</strong> เพื่อให้ AI ตอบคำถามจากเอกสารภายในเท่านั้น ป้องกัน Hallucination
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-9">
+        <h2 class="text-3xl font-bold mb-6 text-white"><span class="text-blue-500 mono">08.</span> Scalability Strategy</h2>
+        <div class="grid grid-cols-3 gap-8 w-full max-w-6xl">
+            <div class="tech-panel p-8 text-center hover:-translate-y-2 transition"><i class="fa-solid fa-server text-4xl text-blue-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Stateless Services</h3><p class="text-xs text-slate-400">Microservices architecture allows horizontal scaling (HPA) via Kubernetes.</p></div>
+            <div class="tech-panel p-8 text-center"><i class="fa-solid fa-database text-4xl text-emerald-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Read/Write Splitting</h3><p class="text-xs text-slate-400">CQRS pattern with Read Replicas for Analytics dashboards.</p></div>
+            <div class="tech-panel p-8 text-center"><i class="fa-solid fa-layer-group text-4xl text-amber-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Caching Layer</h3><p class="text-xs text-slate-400">Multi-level Redis caching for sub-millisecond access.</p></div>
+        </div>
+        <div class="mt-8 w-full max-w-4xl bg-slate-900 border border-slate-700 rounded-lg p-6 flex justify-between items-center"><div><div class="text-xs text-slate-500 uppercase font-bold">API Latency SLA</div><div class="text-3xl font-mono font-bold text-white">&lt; 200 ms</div><div class="text-xs text-slate-500">99th Percentile (P99)</div></div><div class="h-12 w-px bg-slate-700"></div><div><div class="text-xs text-slate-500 uppercase font-bold">Uptime SLA</div><div class="text-3xl font-mono font-bold text-emerald-400">99.95%</div><div class="text-xs text-slate-500">High Availability Setup</div></div><div class="h-12 w-px bg-slate-700"></div><div><div class="text-xs text-slate-500 uppercase font-bold">Disaster Recovery</div><div class="text-3xl font-mono font-bold text-blue-400">RPO &lt; 15m</div><div class="text-xs text-slate-500">Cross-Zone Replication</div></div></div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Performance:</strong> เราใช้สถาปัตยกรรมแบบ Stateless บน Kubernetes ที่สามารถ Scale Out ได้ทันทีเมื่อ Traffic พุ่งสูง (Peak Load) พร้อมระบบ Caching 2 ชั้นเพื่อลดภาระ Database
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-10">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">09.</span> DevSecOps Pipeline</h2>
+        <div class="w-full max-w-7xl flex justify-between items-center relative mb-8">
+            <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-700 -z-10"></div>
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded w-40 text-center"><i class="fa-brands fa-git-alt text-2xl text-orange-500 mb-2"></i><div class="font-bold text-xs">Commit</div></div>
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded w-40 text-center"><i class="fa-solid fa-vial text-2xl text-blue-500 mb-2"></i><div class="font-bold text-xs">Auto Test</div></div>
+            <div class="bg-slate-900 border border-red-500 p-4 rounded w-40 text-center shadow-lg shadow-red-900/20"><i class="fa-solid fa-bug-slash text-2xl text-red-500 mb-2"></i><div class="font-bold text-xs text-red-400">Sec Scan (SAST)</div></div>
+            <div class="bg-slate-900 border border-slate-600 p-4 rounded w-40 text-center"><i class="fa-brands fa-docker text-2xl text-cyan-500 mb-2"></i><div class="font-bold text-xs">Build Image</div></div>
+            <div class="bg-slate-900 border border-emerald-500 p-4 rounded w-40 text-center shadow-lg shadow-emerald-900/20"><i class="fa-solid fa-rocket text-2xl text-emerald-500 mb-2"></i><div class="font-bold text-xs text-emerald-400">Deploy (ArgoCD)</div></div>
+        </div>
+        <div class="insight-box w-full max-w-7xl">
+            <strong>Shift Left Security:</strong> เราฝังการตรวจสอบความปลอดภัย (SAST/DAST/Container Scan) เข้าไปในทุกขั้นตอนของ CI/CD เพื่อให้มั่นใจว่า Code ที่ Deploy ปลอดภัย 100%
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-11">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">10.</span> Observability & Monitoring</h2>
+        <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+            <div class="glass-panel p-6"><h3 class="text-lg font-bold mb-4 border-b border-slate-700 pb-2">The Stack</h3><ul class="space-y-3 text-sm text-slate-300"><li class="flex justify-between"><span>Metrics</span> <span class="mono text-slate-500">Prometheus</span></li><li class="flex justify-between"><span>Logs</span> <span class="mono text-slate-500">ELK Stack / Loki</span></li><li class="flex justify-between"><span>Tracing</span> <span class="mono text-slate-500">OpenTelemetry / Jaeger</span></li><li class="flex justify-between"><span>Alerts</span> <span class="mono text-slate-500">PagerDuty / Slack</span></li></ul></div>
+            <div class="bg-[#1e1e1e] border border-slate-700 rounded p-4 flex flex-col gap-2"><div class="text-[10px] text-slate-500">Grafana Dashboard Preview</div><div class="h-16 bg-slate-800 w-full rounded relative overflow-hidden"><svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none"><path d="M0,50 L20,40 L40,45 L60,20 L80,30 L100,10 L120,15 L140,5 L160,10 L300,30" fill="none" stroke="#10b981" stroke-width="2" /></svg></div><div class="h-16 bg-slate-800 w-full rounded relative overflow-hidden"><svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none"><path d="M0,60 L30,55 L60,50 L90,52 L120,20 L300,40" fill="none" stroke="#3b82f6" stroke-width="2" /></svg></div></div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Full Visibility:</strong> เราใช้ OpenTelemetry เพื่อทำ Distributed Tracing ทำให้สามารถติดตาม Request ได้ตั้งแต่ต้นจนจบ (End-to-End) และวิเคราะห์คอขวด (Bottleneck) ได้ทันที
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-12">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">11.</span> Deployment Models</h2>
+        <div class="grid grid-cols-3 gap-8 w-full max-w-7xl">
+            <div class="tech-panel p-8 text-center hover:border-blue-500 transition"><i class="fa-solid fa-cloud text-5xl text-blue-500 mb-6"></i><h3 class="text-xl font-bold text-white mb-2">SaaS</h3><p class="text-xs text-slate-400">Multi-tenant, Managed by TH8</p></div>
+            <div class="tech-panel p-8 text-center border-emerald-500 shadow-lg shadow-emerald-900/20 transform scale-105"><i class="fa-solid fa-network-wired text-5xl text-emerald-500 mb-6"></i><h3 class="text-xl font-bold text-white mb-2">Private Cloud</h3><p class="text-xs text-slate-400">Dedicated VPC, Custom VPN</p></div>
+            <div class="tech-panel p-8 text-center hover:border-purple-500 transition"><i class="fa-solid fa-server text-5xl text-purple-500 mb-6"></i><h3 class="text-xl font-bold text-white mb-2">On-Premise</h3><p class="text-xs text-slate-400">Air-gapped, Data Sovereignty</p></div>
+        </div>
+        <div class="insight-box w-full max-w-7xl">
+            <strong>Flexibility:</strong> TH8 รองรับทุกรูปแบบการติดตั้ง ไม่ว่าจะเป็น SaaS เพื่อความรวดเร็ว หรือ On-Premise สำหรับองค์กรที่มีนโยบาย Data Sovereignty ที่เข้มงวด (เช่น ธนาคาร)
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-13">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">12.</span> Data Schema & Entity Model</h2>
+        <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+            <div class="code-window shadow-2xl h-[400px]">
+                <div class="bg-[#252526] px-4 py-2 border-b border-black text-xs text-slate-400">schema/core.sql</div>
+                <div class="p-4 overflow-y-auto h-[360px]">
+<pre><code class="language-sql">CREATE TABLE transactions (
+  id UUID PRIMARY KEY,
+  erp_ref_id VARCHAR(64) INDEX,
+  vendor_id UUID REFERENCES vendors(id),
+  amount DECIMAL(18,2),
+  status VARCHAR(20),
+  risk_score FLOAT,
+  created_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY,
+  tx_id UUID REFERENCES transactions(id),
+  actor VARCHAR(100),
+  action VARCHAR(50),
+  payload JSONB, -- Stores full context
+  hash VARCHAR(64) -- Tamper-proof
+);</code></pre>
+                </div>
+            </div>
+            
+            <div class="flex flex-col justify-center gap-6">
+                <div class="glass-panel p-6">
+                    <h3 class="font-bold text-white mb-2"><i class="fa-solid fa-table-columns mr-2 text-blue-400"></i> Relational Core</h3>
+                    <p class="text-sm text-slate-400">Normalized schema for high-integrity financial records (ACID compliant).</p>
+                </div>
+                <div class="glass-panel p-6 border-l-4 border-purple-500">
+                    <h3 class="font-bold text-white mb-2"><i class="fa-solid fa-file-code mr-2 text-purple-400"></i> JSONB Flexibility</h3>
+                    <p class="text-sm text-slate-400">Store dynamic rule results and evidence traces without schema migration.</p>
+                </div>
+                <div class="glass-panel p-6 border-l-4 border-emerald-500">
+                    <h3 class="font-bold text-white mb-2"><i class="fa-solid fa-fingerprint mr-2 text-emerald-400"></i> Immutable Audit</h3>
+                    <p class="text-sm text-slate-400">Cryptographic hashing of logs ensures non-repudiation for compliance.</p>
+                </div>
+            </div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Hybrid Data Model:</strong> เราใช้ PostgreSQL ที่มีฟีเจอร์ JSONB เพื่อให้ได้ข้อดีของทั้ง Relational (ความถูกต้องของข้อมูล) และ NoSQL (ความยืดหยุ่นในการเก็บ Log ที่โครงสร้างไม่แน่นอน)
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-14">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">13.</span> API Specification (OpenAPI 3.0)</h2>
+        <div class="w-full max-w-6xl grid grid-cols-2 gap-12">
+            <div class="code-window shadow-2xl">
+                <div class="bg-[#2d2d2d] px-4 py-2 flex items-center gap-2 border-b border-black">
+                    <span class="text-xs text-slate-400 ml-2">api.th8.ai/docs</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center gap-4 bg-slate-800 p-3 rounded cursor-pointer hover:bg-slate-700 transition"><span class="bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded w-16 text-center">POST</span><span class="text-slate-300 text-sm font-mono">/v1/decision/evaluate</span><span class="text-xs text-slate-500 ml-auto">Check Transaction</span></div>
+                    <div class="flex items-center gap-4 bg-slate-800 p-3 rounded cursor-pointer hover:bg-slate-700 transition"><span class="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded w-16 text-center">GET</span><span class="text-slate-300 text-sm font-mono">/v1/policy/{id}</span><span class="text-xs text-slate-500 ml-auto">Fetch Rules</span></div>
+                    <div class="flex items-center gap-4 bg-slate-800 p-3 rounded cursor-pointer hover:bg-slate-700 transition"><span class="bg-amber-600 text-white text-[10px] font-bold px-2 py-1 rounded w-16 text-center">PUT</span><span class="text-slate-300 text-sm font-mono">/v1/config/thresholds</span><span class="text-xs text-slate-500 ml-auto">Update Config</span></div>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center space-y-6">
+                <h3 class="text-xl font-bold text-white">Developer Experience</h3>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-book-open text-blue-400"></i> Interactive Swagger UI</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-code text-purple-400"></i> Auto-generated SDKs (TS, Python, Java)</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-clock text-emerald-400"></i> Rate Limiting & Quota Management</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-server text-red-400"></i> Webhook Event Subscriptions</li>
+                </ul>
+            </div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Integration Friendly:</strong> เราเตรียม Swagger UI และ SDK ให้ทีม Developer ของท่านทำงานต่อง่ายที่สุด พร้อม Webhook สำหรับรับผลการตรวจสอบแบบ Real-time
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-15">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">14.</span> Authentication Flow</h2>
+        <div class="w-full max-w-6xl h-[450px] glass-panel p-8 relative flex items-center justify-between bg-[#0f1115]">
+            <div class="text-center w-32"><i class="fa-solid fa-laptop text-4xl text-slate-400 mb-2"></i><div class="font-bold text-sm">Client App</div></div>
+            <div class="flex-1 h-px bg-slate-600 relative mx-4"><div class="absolute top-[-20px] left-1/2 -translate-x-1/2 text-xs text-slate-400">1. Login Request</div></div>
+            <div class="text-center w-32 p-4 bg-slate-800 rounded border border-blue-500"><i class="fa-solid fa-shield-halved text-3xl text-blue-500 mb-2"></i><div class="font-bold text-sm text-white">Identity Provider</div><div class="text-[10px] text-slate-500">AD / Okta / Keycloak</div></div>
+            <div class="flex-1 h-px bg-slate-600 relative mx-4"><div class="absolute top-[-20px] left-1/2 -translate-x-1/2 text-xs text-slate-400">2. JWT Token</div></div>
+            <div class="text-center w-32 p-4 bg-slate-800 rounded border border-emerald-500"><i class="fa-solid fa-server text-3xl text-emerald-500 mb-2"></i><div class="font-bold text-sm text-white">API Gateway</div><div class="text-[10px] text-slate-500">Verify Signature</div></div>
+        </div>
+        <div class="mt-8 flex gap-8 text-sm text-slate-400">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> OAuth 2.0 / OIDC Standard</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Short-lived Access Tokens</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Service-to-Service mTLS</span>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Standard Auth:</strong> เรารองรับ OAuth 2.0 และ OIDC ซึ่งเป็นมาตรฐานโลก ทำให้สามารถเชื่อมต่อกับ AD/LDAP หรือ Okta ขององค์กรได้ทันทีโดยไม่ต้องสร้าง User ใหม่
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-16">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">15.</span> Tamper-Proof Audit Logging</h2>
+        <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
+            <div class="space-y-6">
+                <p class="text-slate-400 text-lg">
+                    Every decision and action is recorded in an immutable ledger. Designed for external auditors and forensic analysis.
+                </p>
+                <div class="glass-panel p-6 border-l-4 border-amber-500">
+                    <h4 class="font-bold text-white mb-2">Write-Once, Read-Many (WORM)</h4>
+                    <p class="text-sm text-slate-400">Logs are pushed to append-only storage (e.g., S3 Object Lock) to prevent modification.</p>
+                </div>
+                <div class="glass-panel p-6 border-l-4 border-blue-500">
+                    <h4 class="font-bold text-white mb-2">Chain of Custody</h4>
+                    <p class="text-sm text-slate-400">Each log entry contains a cryptographic hash of the previous entry, forming a blockchain-like structure.</p>
+                </div>
+            </div>
+            <div class="code-window shadow-2xl">
+                <div class="bg-[#252526] px-4 py-2 border-b border-black text-slate-400">// Log Entry Structure</div>
+                <div class="p-4">
+<pre><code class="language-json">{
+  "id": "log_001",
+  "timestamp": "2026-01-15T10:30:00Z",
+  "actor": "user_id_123",
+  "action": "APPROVE_OVERRIDE",
+  "resource": "PO-2026-991",
+  "prev_hash": "a1b2c3d4...", 
+  "signature": "e5f6g7h8..." 
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Compliance Ready:</strong> Log ของเราถูกออกแบบมาให้ป้องกันการแก้ไข (Tamper-proof) ด้วย Hashing Chain ซึ่งรองรับมาตรฐาน Audit ระดับธนาคาร
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-17">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">16.</span> Disaster Recovery (DR) Plan</h2>
+        <div class="w-full max-w-6xl grid grid-cols-3 gap-6">
+            <div class="tech-panel p-8 text-center"><i class="fa-solid fa-database text-4xl text-blue-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Database Replication</h3><p class="text-xs text-slate-400">Async streaming replication to Standby node in a different Availability Zone (AZ).</p></div>
+            <div class="tech-panel p-8 text-center"><i class="fa-solid fa-cloud-arrow-down text-4xl text-emerald-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Automated Backups</h3><p class="text-xs text-slate-400">Daily snapshots + WAL archiving (Point-in-Time Recovery enabled).</p></div>
+            <div class="tech-panel p-8 text-center"><i class="fa-solid fa-stopwatch text-4xl text-red-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">RTO / RPO Targets</h3><p class="text-xs text-slate-400">Recovery Time Objective < 4 Hours. Recovery Point Objective < 15 Minutes.</p></div>
+        </div>
+        <div class="mt-8 w-full max-w-4xl bg-slate-900 border border-slate-700 p-6 rounded-lg flex justify-between items-center"><div class="text-center w-1/2 border-r border-slate-700"><div class="text-xs font-bold text-slate-500 uppercase">Primary Region</div><div class="text-xl font-bold text-white mt-1">Singapore (AWS)</div></div><div class="text-center w-1/2"><div class="text-xs font-bold text-slate-500 uppercase">DR Region</div><div class="text-xl font-bold text-white mt-1">Tokyo (AWS)</div></div></div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Business Continuity:</strong> เรามีแผน DR ที่ชัดเจนด้วยการ Replicate ข้อมูลข้าม Region และสามารถทำ Point-in-Time Recovery ย้อนหลังได้ทุกวินาทีหากเกิดเหตุการณ์ Ransomware
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-18">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">17.</span> Performance Benchmarks</h2>
+        <div class="w-full max-w-5xl bg-slate-900 border border-slate-700 rounded-lg p-10 flex justify-between items-center shadow-2xl">
+            <div class="text-center"><div class="text-xs text-slate-500 uppercase font-bold mb-2">Throughput</div><div class="text-5xl font-mono font-bold text-white">12,500</div><div class="text-sm text-slate-400 mt-2">Req/Sec (Peak)</div></div>
+            <div class="h-20 w-px bg-slate-700"></div>
+            <div class="text-center"><div class="text-xs text-slate-500 uppercase font-bold mb-2">Latency (P99)</div><div class="text-5xl font-mono font-bold text-emerald-400">180ms</div><div class="text-sm text-slate-400 mt-2">End-to-End Processing</div></div>
+            <div class="h-20 w-px bg-slate-700"></div>
+            <div class="text-center"><div class="text-xs text-slate-500 uppercase font-bold mb-2">Uptime SLA</div><div class="text-5xl font-mono font-bold text-blue-400">99.95%</div><div class="text-sm text-slate-400 mt-2">High Availability</div></div>
+        </div>
+        <div class="insight-box w-full max-w-5xl mt-8">
+            <strong>Load Tested:</strong> ตัวเลขนี้มาจากการทำ Load Test บน Environment จริงด้วย k6 (AWS c5.4xlarge cluster) มั่นใจได้ว่าระบบจะไม่หน่วงการทำงานของ ERP
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-19">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">18.</span> Enterprise Support SLA</h2>
+        <div class="w-full max-w-5xl overflow-hidden rounded-lg border border-slate-700">
+            <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-slate-800 text-white uppercase text-xs"><tr><th class="px-6 py-4">Severity Level</th><th class="px-6 py-4">Description</th><th class="px-6 py-4">Response Time</th><th class="px-6 py-4">Resolution Target</th></tr></thead>
+                <tbody class="divide-y divide-slate-700 bg-slate-900/50">
+                    <tr><td class="px-6 py-4"><span class="bg-red-900/30 text-red-400 px-2 py-1 rounded font-bold text-xs border border-red-500/30">Sev-1 (Critical)</span></td><td class="px-6 py-4">System Down / Data Loss</td><td class="px-6 py-4 text-white font-bold">15 Mins</td><td class="px-6 py-4">4 Hours</td></tr>
+                    <tr><td class="px-6 py-4"><span class="bg-orange-900/30 text-orange-400 px-2 py-1 rounded font-bold text-xs border border-orange-500/30">Sev-2 (High)</span></td><td class="px-6 py-4">Major Feature Broken</td><td class="px-6 py-4 text-white font-bold">1 Hour</td><td class="px-6 py-4">8 Hours</td></tr>
+                    <tr><td class="px-6 py-4"><span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded font-bold text-xs border border-blue-500/30">Sev-3 (Medium)</span></td><td class="px-6 py-4">Minor Bug / UX Issue</td><td class="px-6 py-4 text-white font-bold">4 Hours</td><td class="px-6 py-4">3 Business Days</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="insight-box w-full max-w-5xl mt-8">
+            <strong>Commitment:</strong> เรามีทีม Technical Account Manager (TAM) ดูแลเฉพาะราย และมี Hotline 24/7 สำหรับเหตุการณ์วิกฤต (Sev-1)
+        </div>
+    </div>
+
+    <div class="slide items-center text-center" id="slide-20">
+        <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-600 shadow-xl"><i class="fa-solid fa-handshake text-5xl text-white"></i></div>
+        <h1 class="text-5xl font-bold mb-6 text-white">Engineering Partnership</h1>
+        <p class="text-xl text-slate-400 mb-12">Ready to integrate. Secure by design. Built for scale.</p>
+        <div class="flex gap-6 justify-center">
+            <button class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded shadow-lg transition flex items-center gap-2"><i class="fa-brands fa-github"></i> Request Architecture Doc</button>
+            <button class="bg-transparent border border-slate-500 hover:border-white text-slate-300 hover:text-white font-bold py-4 px-10 rounded transition">Schedule Tech Workshop</button>
+        </div>
+        <p class="mt-16 text-xs text-slate-600 mono">TH8 ENGINEERING | v3.0-stable</p>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        
+        function updateSlide() {
+            slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+            progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+            slideCounter.innerText = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(dir) {
+            const next = currentSlide + dir;
+            if (next >= 0 && next < slides.length) { currentSlide = next; updateSlide(); }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight') changeSlide(1);
+            if(e.key === 'ArrowLeft') changeSlide(-1);
+        });
+        updateSlide();
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 - Enterprise Decision Control (IT Standard 20 Slides)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* THEME */
+        body { 
+            font-family: 'Prompt', sans-serif; 
+            background-color: #0b0f19; /* Deep Enterprise Blue */
+            color: #f1f5f9; 
+            overflow: hidden; 
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* SLIDE SYSTEM */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            padding: 2rem 4rem;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+        }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+
+        /* COMPONENTS */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .tech-border {
+            border: 1px dashed rgba(71, 85, 105, 0.6);
+        }
+
+        .node-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* ANIMATION */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .pulse-ring { animation: pulse-ring 2s infinite; }
+
+        /* NAV */
+        .nav-controls {
+            position: fixed; bottom: 1.5rem; right: 2rem; z-index: 50;
+            display: flex; gap: 1rem; background: rgba(15, 23, 42, 0.95);
+            padding: 0.5rem 1.5rem; border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="fixed top-0 left-0 h-1 bg-red-600 transition-all duration-500 z-50" id="progressBar" style="width: 0%"></div>
+
+    <div class="nav-controls">
+        <button onclick="changeSlide(-1)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-chevron-left"></i></button>
+        <span id="slideCounter" class="font-mono text-sm pt-0.5 text-slate-300 w-16 text-center">1 / 20</span>
+        <button onclick="changeSlide(1)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="slide active items-center text-center" id="slide-1">
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-red-500/30 bg-red-900/20 text-red-400 text-sm font-bold tracking-widest uppercase mb-10">
+            <span class="w-2 h-2 rounded-full bg-red-500 pulse-ring"></span> Enterprise Grade Solution
+        </div>
+        <h1 class="text-7xl md:text-9xl font-bold leading-tight mb-6 tracking-tight">TH8<span class="text-red-500">.AI</span></h1>
+        <h2 class="text-3xl md:text-4xl text-slate-300 font-light mb-8">Decision Control Center</h2>
+        <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed border-l-2 border-slate-700 pl-6 md:border-none md:pl-0">
+            The Intelligence Layer for SAP/Oracle.<br>
+            <strong>Analyze. Detect. Control.</strong>
+        </p>
+        <div class="mt-12 flex justify-center gap-8 opacity-60">
+            <div class="flex items-center gap-2"><i class="fa-solid fa-server text-blue-500"></i> On-Premise / Cloud</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-lock text-emerald-500"></i> ISO 27001</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-code text-purple-500"></i> API-First</div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-2">
+        <h2 class="text-4xl font-bold mb-10">The Financial Reality</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl w-full items-center">
+            <div class="space-y-8">
+                <div class="glass-panel p-8 border-l-4 border-red-500">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Profit Leakage</span>
+                    <div class="text-6xl font-bold text-white mb-2">1.8%</div>
+                    <p class="text-slate-400">ของยอดซื้อรวม (Gross Spend) สูญหายไปในกระบวนการ P2P (Procure-to-Pay)</p>
+                </div>
+                <p class="text-lg text-slate-300">
+                    สำหรับองค์กรระดับพันล้าน ความเสียหายนี้คิดเป็นมูลค่ามหาศาล และมักถูกมองข้ามเพราะเป็น "Cost of Doing Business"
+                </p>
+            </div>
+            <div class="glass-panel p-8 flex items-center justify-center h-[400px]">
+                <canvas id="leakageChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-3">
+        <h2 class="text-4xl font-bold mb-10">Why ERP is Not Enough?</h2>
+        <p class="text-slate-400 mb-12 text-center max-w-2xl">ERP ถูกออกแบบมาเพื่อ "บันทึกข้อมูล" (System of Record) <br>ไม่ได้ออกแบบมาเพื่อ "จับผิด" (System of Intelligence)</p>
+        
+        <div class="grid grid-cols-3 gap-8 w-full max-w-6xl">
+            <div class="glass-panel p-8 text-center border-t-2 border-slate-600">
+                <i class="fa-solid fa-database text-4xl mb-4 text-slate-500"></i>
+                <h3 class="text-xl font-bold mb-2">Reactive</h3>
+                <p class="text-sm text-slate-400">ตรวจสอบย้อนหลัง (Post-Audit) เงินออกไปแล้วถึงรู้ปัญหา</p>
+            </div>
+            <div class="glass-panel p-8 text-center border-t-2 border-slate-600">
+                <i class="fa-solid fa-ruler-horizontal text-4xl mb-4 text-slate-500"></i>
+                <h3 class="text-xl font-bold mb-2">Static Rules</h3>
+                <p class="text-sm text-slate-400">กฎตายตัว ปรับเปลี่ยนยาก จับทุจริตที่ซับซ้อนไม่ได้</p>
+            </div>
+            <div class="glass-panel p-8 text-center border-t-2 border-slate-600">
+                <i class="fa-solid fa-eye-slash text-4xl mb-4 text-slate-500"></i>
+                <h3 class="text-xl font-bold mb-2">Internal Only</h3>
+                <p class="text-sm text-slate-400">มองเห็นแค่ข้อมูลภายในองค์กร ไม่เห็นความเสี่ยงภายนอก</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-4">
+        <h2 class="text-4xl font-bold mb-10">Threat Landscape (Thai Context)</h2>
+        <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+            <div class="glass-panel p-6 flex gap-4 items-start">
+                <div class="w-12 h-12 bg-red-900/30 rounded flex items-center justify-center shrink-0 text-red-500 text-xl"><i class="fa-solid fa-scissors"></i></div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">Split PO Evasion</h4>
+                    <p class="text-sm text-slate-400">การซอยบิลเพื่อเลี่ยงอำนาจอนุมัติ (Maverick Spend)</p>
+                </div>
+            </div>
+            <div class="glass-panel p-6 flex gap-4 items-start">
+                <div class="w-12 h-12 bg-amber-900/30 rounded flex items-center justify-center shrink-0 text-amber-500 text-xl"><i class="fa-solid fa-truck-fast"></i></div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">Phantom Logistics</h4>
+                    <p class="text-sm text-slate-400">ค่าขนส่งแฝง (Surcharges) ที่ไม่มีบิลจริง</p>
+                </div>
+            </div>
+            <div class="glass-panel p-6 flex gap-4 items-start">
+                <div class="w-12 h-12 bg-purple-900/30 rounded flex items-center justify-center shrink-0 text-purple-500 text-xl"><i class="fa-solid fa-users-slash"></i></div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">Bid Rigging (Collusion)</h4>
+                    <p class="text-sm text-slate-400">การฮั้วประมูลระหว่างคู่เทียบ หรือใช้ Ghost Vendor</p>
+                </div>
+            </div>
+            <div class="glass-panel p-6 flex gap-4 items-start">
+                <div class="w-12 h-12 bg-blue-900/30 rounded flex items-center justify-center shrink-0 text-blue-500 text-xl"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">Price Variance</h4>
+                    <p class="text-sm text-slate-400">ราคาสูงกว่าสัญญาหรือราคาตลาดโดยไม่มีเหตุผล</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center text-center" id="slide-5">
+        <h2 class="text-5xl font-bold mb-6">The Solution: TH8 DCC</h2>
+        <p class="text-xl text-slate-400 max-w-3xl mb-12">
+            ระบบปฏิบัติการที่วางทับ (Overlay) อยู่บน ERP เดิม เพื่อทำหน้าที่เป็น <br>
+            <strong>"Guardian Gate"</strong> ตรวจสอบทุกธุรกรรม 100%
+        </p>
+        <div class="relative w-full max-w-4xl h-[400px]">
+            <div class="absolute bottom-0 w-full h-24 bg-slate-800 rounded-lg flex items-center justify-center border border-slate-600">
+                <span class="text-slate-400 font-bold">Existing ERP (System of Record)</span>
+            </div>
+            <div class="absolute bottom-32 w-full h-40 glass-panel border-red-500/50 flex flex-col items-center justify-center z-10 shadow-[0_0_30px_rgba(220,38,38,0.2)]">
+                <span class="bg-red-600 text-white px-4 py-1 rounded-full text-sm font-bold -mt-8 mb-4">TH8 Intelligence Layer</span>
+                <div class="flex gap-12 text-center">
+                    <div><i class="fa-solid fa-brain text-3xl mb-2 text-white"></i><br>AI Analysis</div>
+                    <div><i class="fa-solid fa-gavel text-3xl mb-2 text-white"></i><br>Policy Control</div>
+                    <div><i class="fa-solid fa-project-diagram text-3xl mb-2 text-white"></i><br>Forensics</div>
+                </div>
+            </div>
+            <div class="absolute bottom-24 left-1/2 -translate-x-1/2 text-slate-500"><i class="fa-solid fa-arrow-up-long text-2xl"></i></div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-6">
+        <h2 class="text-4xl font-bold mb-8">4-Layer Agent Framework</h2>
+        <div class="flex flex-col gap-4 w-full max-w-5xl">
+            <div class="glass-panel p-5 border-l-8 border-red-500 flex items-center gap-6 group hover:bg-slate-800 transition">
+                <div class="w-10 h-10 bg-red-900/50 rounded-full flex items-center justify-center text-red-500 font-bold">4</div>
+                <div><h3 class="text-lg font-bold text-white">Strategic & Financial Guardrails</h3><p class="text-sm text-slate-400">Profit Protection Agent: คุมกำไรและแผนกลยุทธ์</p></div>
+            </div>
+            <div class="glass-panel p-5 border-l-8 border-blue-500 flex items-center gap-6 group hover:bg-slate-800 transition">
+                <div class="w-10 h-10 bg-blue-900/50 rounded-full flex items-center justify-center text-blue-500 font-bold">1</div>
+                <div><h3 class="text-lg font-bold text-white">Integrated Synergy</h3><p class="text-sm text-slate-400">Coordination Agent: เชื่อมต่อฝ่ายขาย-ผลิต-จัดซื้อ</p></div>
+            </div>
+            <div class="glass-panel p-5 border-l-8 border-emerald-500 flex items-center gap-6 group hover:bg-slate-800 transition">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-full flex items-center justify-center text-emerald-500 font-bold">2</div>
+                <div><h3 class="text-lg font-bold text-white">Autonomous Execution</h3><p class="text-sm text-slate-400">Operational Agent: ทำงาน Routine อัตโนมัติ</p></div>
+            </div>
+            <div class="glass-panel p-5 border-l-8 border-amber-500 flex items-center gap-6 group hover:bg-slate-800 transition">
+                <div class="w-10 h-10 bg-amber-900/50 rounded-full flex items-center justify-center text-amber-500 font-bold">3</div>
+                <div><h3 class="text-lg font-bold text-white">Customer Assurance</h3><p class="text-sm text-slate-400">Service Agent: แจ้งเตือนและดูแลลูกค้าเชิงรุก</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-7">
+        <h2 class="text-4xl font-bold mb-8">System Architecture</h2>
+        <div class="w-full max-w-6xl h-[500px] bg-[#0f1218] border border-slate-700 rounded-xl p-8 relative">
+            <div class="flex justify-between h-full">
+                <div class="w-1/4 flex flex-col gap-4 justify-center border-r border-slate-700 pr-4">
+                    <div class="text-xs text-slate-500 uppercase text-center">Data Sources</div>
+                    <div class="node-box">SAP / Oracle</div>
+                    <div class="node-box">E-Procurement</div>
+                    <div class="node-box">External API</div>
+                </div>
+                <div class="flex-1 flex flex-col justify-center px-8 relative">
+                    <div class="absolute inset-0 border-2 border-dashed border-red-900/50 rounded-xl m-4 pointer-events-none"></div>
+                    <div class="text-center mb-4 text-red-500 font-bold">TH8 Core Engine</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="node-box border-red-500/50">Ingestion (Kafka)</div>
+                        <div class="node-box border-red-500/50">Policy Engine</div>
+                        <div class="node-box border-red-500/50">Graph Database</div>
+                        <div class="node-box border-red-500/50">Vector Store (AI)</div>
+                    </div>
+                </div>
+                <div class="w-1/4 flex flex-col gap-4 justify-center border-l border-slate-700 pl-4">
+                    <div class="text-xs text-slate-500 uppercase text-center">Channels</div>
+                    <div class="node-box">Web Dashboard</div>
+                    <div class="node-box">Mobile App</div>
+                    <div class="node-box">LINE OA</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-8">
+        <h2 class="text-4xl font-bold mb-8">Secure Integration</h2>
+        <div class="grid grid-cols-2 gap-12 max-w-5xl w-full">
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold text-white">Seamless Connectivity</h3>
+                <ul class="space-y-4 text-slate-400">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-500"></i> <strong>API-First:</strong> RESTful / GraphQL APIs</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-500"></i> <strong>Standard Connectors:</strong> SAP RFC, Oracle JDBC</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-500"></i> <strong>Encryption:</strong> TLS 1.3 End-to-End</li>
+                </ul>
+            </div>
+            <div class="glass-panel p-8 font-mono text-sm">
+                <div class="text-xs text-slate-500 mb-2">// Example Integration Config</div>
+                <div class="text-blue-400">connector:</div>
+                <div class="pl-4 text-white">type: <span class="text-amber-400">SAP_S4HANA</span></div>
+                <div class="pl-4 text-white">auth_method: <span class="text-amber-400">OAUTH2</span></div>
+                <div class="pl-4 text-white">sync_mode: <span class="text-amber-400">REALTIME</span></div>
+                <div class="pl-4 text-white">endpoints:</div>
+                <div class="pl-8 text-slate-400">- /PurchaseOrders</div>
+                <div class="pl-8 text-slate-400">- /VendorMaster</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-9">
+        <h2 class="text-4xl font-bold mb-12">Operational Data Flow</h2>
+        <div class="flex gap-4 items-center w-full max-w-7xl justify-center">
+            <div class="w-60 h-64 glass-panel p-6 flex flex-col justify-center text-center relative hover:-translate-y-2 transition">
+                <div class="absolute top-4 left-4 text-xs text-slate-500 font-bold">01</div>
+                <i class="fa-solid fa-file-invoice text-3xl mb-4 text-slate-400"></i>
+                <h3 class="font-bold mb-2">PO Creation</h3>
+                <p class="text-xs text-slate-500">User creates PO in ERP</p>
+            </div>
+            <i class="fa-solid fa-arrow-right text-slate-600"></i>
+            <div class="w-60 h-64 glass-panel p-6 flex flex-col justify-center text-center relative border border-red-500/50 bg-red-900/10 hover:-translate-y-2 transition shadow-[0_0_20px_rgba(220,38,38,0.2)]">
+                <div class="absolute top-4 left-4 text-xs text-red-400 font-bold">02</div>
+                <i class="fa-solid fa-microchip text-3xl mb-4 text-red-500"></i>
+                <h3 class="font-bold mb-2 text-white">TH8 Analysis</h3>
+                <p class="text-xs text-red-200">AI Checks & Rules (< 1 sec)</p>
+            </div>
+            <i class="fa-solid fa-arrow-right text-slate-600"></i>
+            <div class="w-60 h-64 glass-panel p-6 flex flex-col justify-center text-center relative hover:-translate-y-2 transition">
+                <div class="absolute top-4 left-4 text-xs text-slate-500 font-bold">03</div>
+                <i class="fa-solid fa-traffic-light text-3xl mb-4 text-slate-400"></i>
+                <h3 class="font-bold mb-2">Decision</h3>
+                <p class="text-xs text-slate-500">Pass / Block / Review</p>
+            </div>
+            <i class="fa-solid fa-arrow-right text-slate-600"></i>
+            <div class="w-60 h-64 glass-panel p-6 flex flex-col justify-center text-center relative hover:-translate-y-2 transition">
+                <div class="absolute top-4 left-4 text-xs text-slate-500 font-bold">04</div>
+                <i class="fa-solid fa-check-double text-3xl mb-4 text-emerald-400"></i>
+                <h3 class="font-bold mb-2">Approval</h3>
+                <p class="text-xs text-slate-500">Final Execution</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-10">
+        <h2 class="text-4xl font-bold mb-6">Decision Intelligence View</h2>
+        <div class="w-full max-w-6xl h-[600px] bg-slate-900 border border-slate-700 rounded-xl overflow-hidden shadow-2xl relative flex">
+            <div class="w-64 border-r border-slate-700 bg-slate-800/50 flex flex-col p-4 space-y-3">
+                <div class="text-xs font-bold text-slate-500 uppercase">Inbox</div>
+                <div class="p-3 bg-slate-800 border-l-4 border-red-500 rounded"><div class="font-bold text-white">Ghost Vendor Inc.</div><div class="text-xs text-red-400">CRITICAL • ฿450k</div></div>
+                <div class="p-3 bg-slate-900/50 border-l-4 border-slate-600 rounded opacity-70"><div class="font-bold text-white">Office Supply</div><div class="text-xs text-slate-400">LOW • ฿20k</div></div>
+            </div>
+            <div class="flex-1 p-8 relative">
+                <div class="flex justify-between items-start mb-6">
+                    <div><h3 class="text-2xl font-bold text-white">PO-9921: Investigation</h3><p class="text-sm text-slate-500">Risk: Collusion Detected</p></div>
+                    <div class="text-right"><div class="text-3xl font-mono font-bold text-white">฿ 450,000</div></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="p-4 bg-slate-800 rounded border border-slate-700"><div class="font-bold text-red-400">Collusion Risk</div><div class="text-xs text-slate-400">Shared Bank Account</div></div>
+                    <div class="p-4 bg-slate-800 rounded border border-slate-700"><div class="font-bold text-white">Price Variance</div><div class="text-xs text-slate-400">+15% vs Market</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-11">
+        <h2 class="text-4xl font-bold mb-4">Advanced Tech: Graph Forensics</h2>
+        <div class="glass-panel p-10 w-full max-w-5xl relative flex items-center justify-center h-[450px] border border-slate-600">
+            <div class="absolute inset-0">
+                <svg class="w-full h-full pointer-events-none">
+                    <line x1="20%" y1="50%" x2="50%" y2="50%" stroke="#475569" stroke-width="2" />
+                    <line x1="80%" y1="50%" x2="50%" y2="50%" stroke="#475569" stroke-width="2" />
+                    <line x1="50%" y1="20%" x2="50%" y2="50%" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" class="flow-anim" />
+                </svg>
+            </div>
+            <div class="absolute left-[20%] top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10"><div class="node-box w-24 h-24 flex flex-col justify-center items-center"><i class="fa-solid fa-store text-3xl text-white mb-2"></i><span class="text-xs">Vendor A</span></div></div>
+            <div class="absolute right-[20%] top-1/2 transform translate-x-1/2 -translate-y-1/2 text-center z-10"><div class="node-box w-24 h-24 flex flex-col justify-center items-center"><i class="fa-solid fa-warehouse text-3xl text-white mb-2"></i><span class="text-xs">Vendor B</span></div></div>
+            <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-20"><div class="w-20 h-20 bg-red-900/80 rounded-full border-2 border-red-500 flex flex-col items-center justify-center text-white shadow-[0_0_30px_rgba(220,38,38,0.6)] animate-pulse"><i class="fa-solid fa-network-wired text-xl mb-1"></i><span class="text-[10px]">Shared IP</span></div></div>
+        </div>
+        <p class="mt-6 text-slate-400">Detecting hidden relationships (Collusion) that traditional rules miss.</p>
+    </div>
+
+    <div class="slide items-center" id="slide-12">
+        <h2 class="text-4xl font-bold mb-6">Agility: Policy as Code</h2>
+        <div class="grid grid-cols-2 gap-12 max-w-6xl w-full items-center">
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold text-white">Dynamic Rules Engine</h3>
+                <p class="text-slate-400">
+                    เปลี่ยนกฎระเบียบที่ซับซ้อนให้เป็น Code (YAML) ที่ตรวจสอบได้ (Auditable) และปรับเปลี่ยนได้ทันที (Hot-Reload)
+                </p>
+                <div class="flex gap-4"><div class="px-4 py-2 bg-slate-800 rounded border border-slate-600">Versioning (Git)</div><div class="px-4 py-2 bg-slate-800 rounded border border-slate-600">Instant Deploy</div></div>
+            </div>
+            <div class="bg-[#1e1e1e] rounded-xl shadow-2xl p-6 font-mono text-sm border border-slate-700">
+                <div class="text-slate-500 mb-2"># policy_v2.yaml</div>
+<pre class="text-slate-300">
+rules:
+  - id: CHECK_COLLUSION
+    risk: <span class="text-red-500">CRITICAL</span>
+    condition: 
+      shared_attr: ["bank", "phone"]
+    action: BLOCK_PAYMENT
+
+  - id: PRICE_CHECK
+    variance_limit: <span class="text-amber-400">3.0%</span>
+</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-13">
+        <h2 class="text-4xl font-bold mb-8">TH8 Copilot (RAG Architecture)</h2>
+        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="glass-panel p-6 h-[400px] flex flex-col justify-between">
+                <div class="flex justify-end"><div class="bg-slate-700 text-white px-4 py-2 rounded-lg rounded-tr-none text-sm">เคสนี้เสี่ยงยังไง?</div></div>
+                <div class="flex justify-start"><div class="bg-slate-800 border border-slate-600 text-slate-300 px-4 py-3 rounded-lg rounded-tl-none text-sm">พบความเสี่ยง 2 จุด:<br>1. ราคาเกินตลาด 15%<br>2. ที่อยู่ Vendor ตรงกับพนักงาน</div></div>
+                <div class="p-2 border-t border-slate-700"><input type="text" placeholder="Ask AI..." class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white"></div>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-2xl font-bold text-white">Retrieval-Augmented Generation</h3>
+                <p class="text-slate-400">AI ตอบคำถามโดยอ้างอิงจากข้อมูลจริงในองค์กร (Documents, Contracts, History) ไม่มีการมั่ว (No Hallucination)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-14">
+        <h2 class="text-4xl font-bold mb-6">Adaptive Learning Loop</h2>
+        <p class="text-slate-400 mb-10">ระบบฉลาดขึ้นทุกครั้งที่คุณใช้งาน</p>
+        <div class="flex gap-8 items-center justify-center max-w-5xl">
+            <div class="text-center w-64"><div class="node-box mb-4 bg-slate-800"><i class="fa-solid fa-robot text-3xl text-red-500"></i></div><div class="font-bold">1. AI Detects Risk</div></div>
+            <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+            <div class="text-center w-64"><div class="node-box mb-4 bg-slate-800 border-blue-500"><i class="fa-solid fa-user-check text-3xl text-blue-500"></i></div><div class="font-bold">2. Human Feedback</div><div class="text-xs text-slate-500">(Override with Reason)</div></div>
+            <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+            <div class="text-center w-64"><div class="node-box mb-4 bg-emerald-900/20 border-emerald-500"><i class="fa-solid fa-brain text-3xl text-emerald-500"></i></div><div class="font-bold">3. Model Retrains</div><div class="text-xs text-slate-500">Reduced False Positives</div></div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-15">
+        <h2 class="text-4xl font-bold mb-8">External Intelligence</h2>
+        <div class="grid grid-cols-2 gap-8 w-full max-w-5xl">
+            <div class="glass-panel p-8">
+                <h3 class="text-xl font-bold mb-4 text-red-400">Internal Data</h3>
+                <ul class="space-y-3 text-slate-300">
+                    <li><i class="fa-solid fa-database mr-2"></i> ERP Transactions</li>
+                    <li><i class="fa-solid fa-file-contract mr-2"></i> Vendor Master Data</li>
+                    <li><i class="fa-solid fa-history mr-2"></i> Historical Price</li>
+                </ul>
+            </div>
+            <div class="glass-panel p-8 border border-blue-500/30 bg-blue-900/10">
+                <h3 class="text-xl font-bold mb-4 text-blue-400">External Signals (New)</h3>
+                <ul class="space-y-3 text-slate-300">
+                    <li><i class="fa-solid fa-building-columns mr-2"></i> <strong>Gov Database:</strong> เช็คสถานะนิติบุคคล/กรรมการ</li>
+                    <li><i class="fa-solid fa-newspaper mr-2"></i> <strong>News Monitoring:</strong> ข่าวลบ/สถานะการเงิน</li>
+                    <li><i class="fa-solid fa-globe mr-2"></i> <strong>Sanction Lists:</strong> ตรวจสอบรายชื่อต้องห้ามโลก</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-16">
+        <h2 class="text-4xl font-bold mb-10">Bank-Grade Security</h2>
+        <div class="grid grid-cols-2 gap-12 max-w-6xl w-full items-center">
+            <div class="space-y-6">
+                <div class="flex items-center gap-4"><i class="fa-solid fa-lock text-emerald-500 text-2xl"></i> <div><strong class="block text-white">Zero Trust Architecture</strong>Validate every request, verify every identity.</div></div>
+                <div class="flex items-center gap-4"><i class="fa-solid fa-key text-emerald-500 text-2xl"></i> <div><strong class="block text-white">Encryption</strong>AES-256 (At Rest) & TLS 1.3 (In Transit).</div></div>
+                <div class="flex items-center gap-4"><i class="fa-solid fa-user-shield text-emerald-500 text-2xl"></i> <div><strong class="block text-white">RBAC & SSO</strong>Integration with AD/LDAP/Okta.</div></div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="node-box">ISO 27001</div>
+                <div class="node-box">PDPA Compliant</div>
+                <div class="node-box">OWASP Top 10</div>
+                <div class="node-box">SOC 2 Type II</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-17">
+        <h2 class="text-4xl font-bold mb-8">Control from Anywhere</h2>
+        <div class="grid grid-cols-2 gap-12 max-w-5xl items-center">
+            <div>
+                <h3 class="text-2xl font-bold text-white mb-4">Mobile Approval</h3>
+                <p class="text-slate-400 mb-6">ผู้บริหารสามารถอนุมัติหรือปฏิเสธเคสสำคัญผ่าน <strong>LINE OA</strong> หรือ Mobile App ได้ทันที</p>
+                <div class="flex gap-4">
+                    <div class="p-3 bg-slate-800 rounded border border-slate-700 text-center w-32"><i class="fa-brands fa-line text-2xl text-green-500 mb-1"></i><div class="text-xs">LINE Notify</div></div>
+                    <div class="p-3 bg-slate-800 rounded border border-slate-700 text-center w-32"><i class="fa-solid fa-mobile-screen text-2xl text-blue-500 mb-1"></i><div class="text-xs">Native App</div></div>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="phone-mockup shadow-2xl relative">
+                    <div class="phone-notch"></div>
+                    <div class="w-full h-full bg-slate-100 flex flex-col pt-8">
+                        <div class="bg-[#06c755] p-4 text-white font-bold flex items-center gap-2 shadow"><i class="fa-solid fa-angle-left"></i> TH8 Guardian</div>
+                        <div class="p-4 space-y-3 bg-slate-200 flex-1">
+                            <div class="bg-white p-3 rounded-xl rounded-tl-none shadow-sm max-w-[85%] text-xs text-slate-800">
+                                <strong>🚨 Critical Risk Alert</strong><br>PO-9921 (Ghost Vendor)<br>Risk: Collusion
+                            </div>
+                            <div class="flex gap-2 w-[85%]"><button class="flex-1 bg-white text-red-500 font-bold py-2 rounded border">Reject</button><button class="flex-1 bg-white text-slate-700 font-bold py-2 rounded border">View</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-18">
+        <h2 class="text-4xl font-bold mb-10">Why TH8? (Comparison)</h2>
+        <div class="w-full max-w-6xl glass-panel p-8">
+            <table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-slate-600"><th class="py-4 px-6 text-slate-400 w-1/3">Feature</th><th class="py-4 px-6 text-slate-500 font-bold w-1/3 text-center">Traditional ERP</th><th class="py-4 px-6 text-white font-bold w-1/3 text-center bg-red-900/20 border-t-4 border-red-600">TH8</th></tr></thead>
+                <tbody class="text-sm">
+                    <tr class="border-b border-slate-700/50"><td class="py-4 px-6 text-white font-bold">Timing</td><td class="py-4 px-6 text-center text-slate-500">Post-Audit</td><td class="py-4 px-6 text-center text-emerald-400 font-bold">Pre-Audit</td></tr>
+                    <tr class="border-b border-slate-700/50"><td class="py-4 px-6 text-white font-bold">Flexibility</td><td class="py-4 px-6 text-center text-slate-500">Hard-coded</td><td class="py-4 px-6 text-center text-white">Dynamic (5 mins)</td></tr>
+                    <tr class="border-b border-slate-700/50"><td class="py-4 px-6 text-white font-bold">Scope</td><td class="py-4 px-6 text-center text-slate-500">Internal Only</td><td class="py-4 px-6 text-center text-white">Internal + External</td></tr>
+                    <tr class="border-b border-slate-700/50"><td class="py-4 px-6 text-white font-bold">Detection</td><td class="py-4 px-6 text-center text-slate-500">Simple Rules</td><td class="py-4 px-6 text-center text-white">AI Graph Forensics</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="slide items-center" id="slide-19">
+        <h2 class="text-4xl font-bold mb-8">ROI Calculator</h2>
+        <div class="w-full max-w-4xl glass-panel p-10 border-t-4 border-emerald-500">
+            <div class="mb-10">
+                <div class="flex justify-between items-end mb-4"><label class="text-slate-400 font-bold">Annual Spend</label><span class="text-4xl font-mono text-white" id="spendVal">1,000 MB</span></div>
+                <input type="range" min="100" max="10000" step="100" value="1000" class="w-full h-2 bg-slate-700 rounded-lg cursor-pointer" id="spendSlider">
+            </div>
+            <div class="grid grid-cols-3 gap-8 text-center divide-x divide-slate-700">
+                <div><div class="text-xs text-slate-500 uppercase mb-2">Leakage (1.8%)</div><div class="text-3xl font-bold text-red-500 font-mono" id="leakVal">18 MB</div></div>
+                <div><div class="text-xs text-slate-500 uppercase mb-2">Recovery (50%)</div><div class="text-3xl font-bold text-white font-mono" id="recoverVal">9 MB</div></div>
+                <div><div class="text-xs text-slate-500 uppercase mb-2">ROI</div><div class="text-3xl font-bold text-emerald-400 font-mono">>400%</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide items-center text-center" id="slide-20">
+        <h1 class="text-6xl font-bold mb-8">Start Your Journey</h1>
+        <div class="flex justify-center gap-8 mb-12">
+            <div class="w-48 p-4 border border-slate-600 rounded text-center"><div class="font-bold text-white mb-1">Week 1-2</div><div class="text-xs text-slate-400">X-Ray Audit</div></div>
+            <div class="w-48 p-4 border border-slate-600 rounded text-center"><div class="font-bold text-white mb-1">Week 3-4</div><div class="text-xs text-slate-400">Integration</div></div>
+            <div class="w-48 p-4 border border-slate-600 rounded text-center"><div class="font-bold text-white mb-1">Week 6</div><div class="text-xs text-slate-400">Go-Live</div></div>
+        </div>
+        <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-5 px-16 rounded-full text-xl shadow-[0_0_30px_rgba(220,38,38,0.6)] transition transform hover:scale-105 mb-12">Schedule POC Demo</button>
+        <p class="text-xs text-slate-600">© 2026 TH8.AI | Enterprise Decision Control</p>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        
+        function updateSlide() {
+            slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+            progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+            slideCounter.innerText = `${currentSlide + 1} / ${slides.length}`;
+            if (currentSlide === 1) initLeakageChart();
+        }
+
+        function changeSlide(dir) {
+            const next = currentSlide + dir;
+            if (next >= 0 && next < slides.length) { currentSlide = next; updateSlide(); }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight') changeSlide(1);
+            if(e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        // ROI Logic
+        const slider = document.getElementById('spendSlider');
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            document.getElementById('spendVal').innerText = val.toLocaleString() + ' MB';
+            document.getElementById('leakVal').innerText = (val * 0.018).toFixed(1) + ' MB';
+            document.getElementById('recoverVal').innerText = (val * 0.018 * 0.5).toFixed(1) + ' MB';
+        });
+
+        // Chart
+        Chart.defaults.font.family = "'Prompt', sans-serif";
+        Chart.defaults.color = '#94a3b8';
+        function initLeakageChart() {
+            if(window.leakChart) return;
+            const ctx = document.getElementById('leakageChart').getContext('2d');
+            window.leakChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Safe Spend', 'Leakage (1.8%)'], datasets: [{ data: [98.2, 1.8], backgroundColor: ['#1e293b', '#ef4444'], borderWidth: 0 }] }, options: { cutout: '75%', plugins: { legend: { position: 'bottom' } } } });
+        }
+
+        updateSlide();
+    </script>
+</body>
+</html>

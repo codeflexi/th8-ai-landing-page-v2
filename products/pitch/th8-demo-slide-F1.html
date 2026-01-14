@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 Decision Center - Product Tour</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; overflow: hidden; background: #0f172a; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Smooth Scroll Behavior */
+        #ui-container {
+            scroll-behavior: smooth;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Spotlight Effect Classes */
+        .spotlight-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            z-index: 40;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .highlight-zone {
+            position: relative;
+            z-index: 50;
+            box-shadow: 0 0 0 4px #ef4444, 0 0 50px rgba(239, 68, 68, 0.3);
+            border-radius: 1rem;
+            background: white;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .blur-zone {
+            filter: blur(2px);
+            opacity: 0.4;
+            transform: scale(0.98);
+            pointer-events: none;
+        }
+
+        /* --- UPDATED: Floating Explain Card (Compact & Left Aligned) --- */
+        .explainer-card {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;  /* ชิดซ้าย */
+            width: 380px; /* ลดขนาดความกว้างให้กระทัดรัด */
+            max-width: 90vw;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 6px solid #ef4444;
+            padding: 1.25rem; /* ลด padding */
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px); /* Animation slide-up only */
+            transition: all 0.5s ease;
+        }
+        .explainer-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Step Indicators */
+        .step-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #cbd5e1; transition: all 0.3s;
+        }
+        .step-dot.active { width: 18px; background: #ef4444; border-radius: 4px; }
+    </style>
+</head>
+<body class="text-slate-900 h-screen w-screen relative">
+
+    <div id="ui-viewport" class="w-full h-full overflow-hidden flex items-center justify-center bg-slate-900 p-4 md:p-8">
+        
+        <div id="ui-container" class="w-full max-w-[1600px] h-full bg-slate-50 rounded-2xl shadow-2xl overflow-y-auto relative origin-top">
+            
+            <div class="min-h-screen grid grid-cols-1 lg:grid-cols-12">
+                <aside class="lg:col-span-2 bg-slate-900 text-white px-5 py-6 hidden lg:block">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="h-10 w-10 rounded-xl bg-red-600 flex items-center justify-center font-extrabold text-lg">TH8</div>
+                        <div class="leading-tight">
+                            <div class="font-bold">Decision Center</div>
+                            <div class="text-[10px] text-slate-400">Intelligence View</div>
+                        </div>
+                    </div>
+                    <nav class="space-y-1 text-sm opacity-60">
+                        <div class="px-3 py-2 bg-white/10 rounded-lg">Inbox</div>
+                        <div class="px-3 py-2">Portfolio</div>
+                        <div class="px-3 py-2">Reports</div>
+                    </nav>
+                </aside>
+
+                <main class="lg:col-span-10 px-6 py-8 space-y-6">
+                    
+                    <header class="flex justify-between items-end pb-4 border-b border-slate-200">
+                        <div>
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Intelligence View</div>
+                            <h1 class="text-3xl font-extrabold text-slate-900">Portfolio & Case Deep Dive</h1>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-500 uppercase font-bold">Total Exposure</div>
+                            <div class="text-2xl font-mono font-bold text-slate-900">THB 48.3M</div>
+                        </div>
+                    </header>
+
+                    <div class="grid grid-cols-12 gap-6">
+                        
+                        <div id="tour-portfolio" class="col-span-4 space-y-4 transition-all duration-500">
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                                <input class="w-full text-sm outline-none" placeholder="🔍 Search Case ID..." value="CASE-PO-2026-3629">
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                                <div class="p-4 bg-rose-50 border-l-4 border-rose-500">
+                                    <div class="flex justify-between">
+                                        <span class="text-xs font-bold text-slate-600">CASE-PO-2026-3629</span>
+                                        <span class="text-xs font-bold text-rose-600">CRITICAL</span>
+                                    </div>
+                                    <div class="font-bold mt-1">Bad Supplier Ltd.</div>
+                                    <div class="text-xs text-slate-500 mt-1">IT Equipment • 387,500 THB</div>
+                                </div>
+                                <div class="p-4 border-t border-slate-100 opacity-60">
+                                    <div class="flex justify-between">
+                                        <span class="text-xs font-bold text-slate-600">CASE-PO-OVT-006</span>
+                                        <span class="text-xs font-bold text-amber-600">HIGH</span>
+                                    </div>
+                                    <div class="font-bold mt-1">OVALTINE-TH</div>
+                                </div>
+                                <div class="p-4 border-t border-slate-100 opacity-60">
+                                    <div class="flex justify-between">
+                                        <span class="text-xs font-bold text-slate-600">CASE-PO-DEMO-01</span>
+                                        <span class="text-xs font-bold text-emerald-600">LOW</span>
+                                    </div>
+                                    <div class="font-bold mt-1">S.Khonkaen</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-span-8 space-y-6">
+                            
+                            <div id="tour-story" class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 transition-all duration-500">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-500 uppercase">Decision Story</div>
+                                        <h2 class="text-2xl font-extrabold text-slate-900">Why this case is CRITICAL</h2>
+                                    </div>
+                                    <div class="bg-amber-100 text-amber-800 px-3 py-1 rounded-lg text-xs font-bold border border-amber-200">
+                                        Rec: ESCALATE (COO)
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="p-3 border border-slate-200 rounded-xl bg-slate-50">
+                                        <div class="text-[10px] uppercase font-bold text-slate-500 mb-2">Risk Drivers</div>
+                                        <div class="flex items-center gap-2 text-sm font-bold text-rose-700">
+                                            <span class="w-2 h-2 rounded-full bg-rose-600"></span> Vendor Blacklisted
+                                        </div>
+                                        <div class="flex items-center gap-2 text-sm font-bold text-amber-600 mt-1">
+                                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> > 200k Threshold
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border border-slate-200 rounded-xl">
+                                        <div class="text-[10px] uppercase font-bold text-slate-500 mb-2">Business Impact</div>
+                                        <div class="text-sm font-semibold">Exposure: 387,500 THB</div>
+                                        <div class="text-xs text-slate-500">Compliance Risk: High</div>
+                                    </div>
+                                    <div class="p-3 border border-slate-200 rounded-xl bg-slate-900 text-white">
+                                        <div class="text-[10px] uppercase font-bold text-slate-400 mb-2">Suggestion</div>
+                                        <div class="text-sm font-bold">Hold & Verify</div>
+                                        <div class="text-xs text-slate-400 mt-1">Check contract clause 4.2</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tour-evidence" class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 transition-all duration-500">
+                                <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
+                                    <div>
+                                        <div class="text-xs font-bold text-slate-500 uppercase">Evidence Panel (RAG)</div>
+                                        <h3 class="text-lg font-bold">Evidence that backs the decision</h3>
+                                    </div>
+                                    <span class="text-xs bg-slate-100 px-2 py-1 rounded">6 links</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="border border-slate-200 rounded-xl p-4 hover:border-blue-400 cursor-pointer group">
+                                        <div class="flex justify-between">
+                                            <span class="text-xs font-bold text-slate-500">CONTRACT</span>
+                                            <span class="text-xs text-blue-600 font-bold group-hover:underline">OPEN ↗</span>
+                                        </div>
+                                        <div class="font-bold text-sm mt-1">Master Contract 2026</div>
+                                        <div class="text-xs text-slate-500">Clause 4.2 • Pricing Validity</div>
+                                    </div>
+                                    <div class="border border-slate-200 rounded-xl p-4 hover:border-rose-400 cursor-pointer group">
+                                        <div class="flex justify-between">
+                                            <span class="text-xs font-bold text-slate-500">VENDOR DB</span>
+                                            <span class="text-xs text-rose-600 font-bold group-hover:underline">OPEN ↗</span>
+                                        </div>
+                                        <div class="font-bold text-sm mt-1">Bad Supplier Ltd.</div>
+                                        <div class="text-xs text-rose-600 font-mono">Status: BLACKLISTED</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tour-trace" class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 transition-all duration-500">
+                                <div class="mb-4">
+                                    <div class="text-xs font-bold text-slate-500 uppercase">Decision Trace</div>
+                                    <h3 class="text-lg font-bold">Rule Logic & Logic Path</h3>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="text-amber-600 font-bold">⚠ RULE HIT: VENDOR_BLACKLIST_CHECK</span>
+                                            <span class="bg-rose-100 text-rose-800 text-[10px] px-2 rounded-full font-bold">CRITICAL</span>
+                                        </div>
+                                        <div class="grid grid-cols-3 gap-2 text-xs">
+                                            <div class="bg-white p-2 rounded border border-amber-100">
+                                                <div class="text-slate-400">Condition</div>
+                                                <div class="font-mono">status == "BLACKLISTED"</div>
+                                            </div>
+                                            <div class="bg-white p-2 rounded border border-amber-100">
+                                                <div class="text-slate-400">Actual Value</div>
+                                                <div class="font-mono text-rose-600 font-bold">"BLACKLISTED"</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white border border-slate-100 rounded-xl p-3 opacity-60">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-emerald-600 font-bold">✓ RULE PASSED: SLA_RISK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tour-timeline" class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 transition-all duration-500">
+                                <div class="mb-4">
+                                    <div class="text-xs font-bold text-slate-500 uppercase">Audit Timeline</div>
+                                    <h3 class="text-lg font-bold">Every step is an event</h3>
+                                </div>
+                                <div class="flex justify-between items-center relative">
+                                    <div class="absolute top-1/2 w-full h-0.5 bg-slate-100 -z-10"></div>
+                                    <div class="text-center">
+                                        <div class="w-3 h-3 bg-slate-800 rounded-full mx-auto mb-2"></div>
+                                        <div class="text-[10px] font-mono">Start</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-3 h-3 bg-amber-500 rounded-full mx-auto mb-2"></div>
+                                        <div class="text-[10px] font-mono">Eval</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-3 h-3 bg-rose-600 rounded-full mx-auto mb-2 shadow-lg shadow-rose-200"></div>
+                                        <div class="text-[10px] font-mono">Risk</div>
+                                    </div>
+                                    <div class="text-center opacity-50">
+                                        <div class="w-3 h-3 bg-slate-300 rounded-full mx-auto mb-2"></div>
+                                        <div class="text-[10px] font-mono">Action</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tour-action" class="grid grid-cols-3 gap-4 transition-all duration-500">
+                                <div class="col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                                    <div class="text-xs font-bold text-slate-500 uppercase">Human Decision</div>
+                                    <h3 class="text-lg font-bold mb-3">Approve or Reject</h3>
+                                    <textarea class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm h-20 mb-3" placeholder="Reason is mandatory..."></textarea>
+                                    <div class="flex gap-2">
+                                        <button class="flex-1 py-2 bg-white border border-slate-200 rounded-lg font-bold text-sm hover:bg-slate-50">Reject</button>
+                                        <a href="th8-demo-slide-F2.html" class="flex-1 text-center py-2 bg-slate-900 text-white rounded-lg font-bold text-sm shadow hover:bg-black">Approve</a>
+                                         
+                                    </div>
+                                </div>
+                                <div class="col-span-1 bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-center">
+                                    <div class="text-xs font-bold text-slate-400 uppercase">Governed By</div>
+                                    <div class="font-mono font-bold text-sm mt-1">PROCUREMENT-001</div>
+                                    <div class="text-xs bg-slate-200 inline-block px-2 rounded mt-1">v3.1</div>
+                                    <div class="mt-4 text-[10px] text-slate-400">
+                                        Policy is versioned & immutable
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="spotlight-overlay opacity-0"></div>
+
+    <div id="explainer" class="explainer-card">
+        <div class="flex justify-between items-start mb-2">
+            <h2 id="exp-title" class="text-lg font-bold text-slate-800 leading-tight">Title</h2>
+            <div id="step-counter" class="text-[10px] font-mono text-slate-400 mt-1">1/7</div>
+        </div>
+        <p id="exp-desc" class="text-slate-600 text-xs leading-relaxed mb-4">Description goes here.</p>
+        
+        <div class="flex justify-between items-center">
+            <div id="dots-container" class="flex gap-1.5">
+                </div>
+            <div class="flex gap-2">
+                <button onclick="prevStep()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:bg-slate-100 transition-colors">Back</button>
+                <button onclick="nextStep()" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white shadow hover:bg-black hover:scale-105 transition-all">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const steps = [
+            {
+                id: null, // Full View
+                title: "Decision Intelligence View",
+                desc: "หน้า Dashboard สำหรับผู้บริหาร (COO/CFO) เพื่อดูภาพรวม Exposure และเคสเร่งด่วนแบบ Real-time แทนการรอ Report สิ้นเดือน"
+            },
+            {
+                id: "tour-portfolio",
+                title: "Portfolio & Inbox",
+                desc: "รวมทุก Case ที่ต้องตัดสินใจ ระบบจัด Priority (Critical, High, Medium) ให้ท่านโฟกัสสิ่งที่สำคัญที่สุดก่อนเสมอ"
+            },
+            {
+                id: "tour-story",
+                title: "The Decision Story",
+                desc: "ระบบสรุป Risk Drivers เป็นภาษาธุรกิจ เช่น 'Vendor ติด Blacklist' หรือ 'ยอดเงินเกิน Threshold' ให้เข้าใจง่ายทันที"
+            },
+            {
+                id: "tour-evidence",
+                title: "Evidence Panel",
+                desc: "คลิกเดียวเปิดดูหลักฐานได้ทันที (Contract Clause, Vendor History) ระบบดึงเอกสารที่เกี่ยวข้องมารอไว้ให้แล้ว"
+            },
+            {
+                id: "tour-trace",
+                title: "Decision Trace",
+                desc: "ความโปร่งใสระดับ Audit-grade ดู Logic เบื้องหลังได้ว่า Rule ข้อไหนทำงาน Condition คืออะไร และค่าจริงคืออะไร"
+            },
+            {
+                id: "tour-timeline",
+                title: "Audit Timeline",
+                desc: "ทุกขั้นตอนถูกบันทึกเป็น Event ตั้งแต่เริ่มรันข้อมูล จนถึงการประเมินความเสี่ยง เพื่อการตรวจสอบย้อนหลัง 100%"
+            },
+            {
+                id: "tour-action",
+                title: "Human Action & Policy",
+                desc: "การตัดสินใจขั้นสุดท้าย (Approve/Reject) ต้องใส่เหตุผลเสมอ โดยมี Policy Code (v3.1) คอยกำกับอยู่ด้านข้าง"
+            }
+        ];
+
+        let currentStep = 0;
+        const uiContainer = document.getElementById('ui-container');
+        const overlay = document.getElementById('overlay');
+        const explainer = document.getElementById('explainer');
+
+        function init() {
+            const dotsContainer = document.getElementById('dots-container');
+            steps.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `step-dot ${i === 0 ? 'active' : ''}`;
+                dotsContainer.appendChild(dot);
+            });
+            updateView();
+            setTimeout(() => explainer.classList.add('active'), 500);
+        }
+
+        function updateView() {
+            const step = steps[currentStep];
+            document.getElementById('exp-title').innerText = step.title;
+            document.getElementById('exp-desc').innerText = step.desc;
+            document.getElementById('step-counter').innerText = `${currentStep + 1} / ${steps.length}`;
+
+            document.querySelectorAll('.step-dot').forEach((d, i) => {
+                d.className = `step-dot ${i === currentStep ? 'active' : ''}`;
+            });
+
+            document.querySelectorAll('.highlight-zone').forEach(el => {
+                el.classList.remove('highlight-zone');
+                el.classList.add('blur-zone');
+            });
+
+            if (step.id) {
+                overlay.classList.remove('opacity-0');
+                const target = document.getElementById(step.id);
+                if (target) {
+                    target.classList.remove('blur-zone');
+                    target.classList.add('highlight-zone');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }
+            } else {
+                overlay.classList.add('opacity-0');
+                document.querySelectorAll('.blur-zone').forEach(el => el.classList.remove('blur-zone'));
+                uiContainer.scrollTop = 0;
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateView();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateView();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextStep();
+            if (e.key === 'ArrowLeft') prevStep();
+        });
+
+        init();
+    </script>
+</body>
+</html>

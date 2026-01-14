@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 Enterprise AI - Decision Control Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; overflow: hidden; background: #0b0f19; color: #e2e8f0; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+
+        /* Smooth Transitions */
+        .transition-all-custom { transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        /* Glow Effects */
+        .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
+        .glow-text { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+
+        /* Highlight Zone */
+        .highlight-zone {
+            z-index: 50;
+            position: relative;
+            box-shadow: 0 0 0 2px #ef4444, 0 0 40px rgba(239, 68, 68, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 12px;
+            transform: scale(1.02);
+            transition: all 0.4s ease-out;
+        }
+        
+        .blur-zone {
+            filter: blur(3px) grayscale(0.6);
+            opacity: 0.3;
+            transform: scale(0.98);
+            pointer-events: none;
+            transition: all 0.4s ease-out;
+        }
+
+        /* Explainer Card Animation */
+        .explainer-card {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 380px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1.25rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        .explainer-card.active { opacity: 1; transform: translateY(0); }
+
+        /* Step Dots */
+        .step-dot { width: 6px; height: 6px; border-radius: 50%; background: #475569; transition: all 0.3s; }
+        .step-dot.active { width: 24px; background: #ef4444; border-radius: 4px; }
+
+        /* AI Typing Effect */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="h-screen w-screen relative">
+
+    <div id="ui-viewport" class="w-full h-full flex items-center justify-center p-4">
+        
+        <div id="ui-container" class="w-full max-w-[1600px] h-[95vh] bg-[#0f172a] rounded-3xl border border-slate-700 shadow-2xl flex overflow-hidden relative">
+            
+            <aside class="w-20 lg:w-64 bg-[#0b0f19] border-r border-slate-800 flex flex-col justify-between py-6 z-20">
+                <div>
+                    <div class="px-6 mb-10 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-800 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-red-900/50">TH8</div>
+                        <div class="hidden lg:block">
+                            <div class="font-bold text-white tracking-wide">ENTERPRISE</div>
+                            <div class="text-[10px] text-slate-400 font-mono">v3.0.1 PRO</div>
+                        </div>
+                    </div>
+                    <nav class="space-y-2 px-3">
+                        <div class="flex items-center gap-4 px-3 py-3 bg-red-600/10 text-red-400 rounded-xl border border-red-600/20 cursor-pointer">
+                            <i class="fa-solid fa-layer-group"></i> <span class="hidden lg:block font-medium">Decision Center</span>
+                        </div>
+                        <div class="flex items-center gap-4 px-3 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl cursor-pointer transition">
+                            <i class="fa-solid fa-chart-pie"></i> <span class="hidden lg:block font-medium">Analytics</span>
+                        </div>
+                        <div class="flex items-center gap-4 px-3 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl cursor-pointer transition">
+                            <i class="fa-solid fa-network-wired"></i> <span class="hidden lg:block font-medium">Graph Forensics</span>
+                        </div>
+                    </nav>
+                </div>
+                <div class="px-6">
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 hidden lg:block">
+                        <div class="text-xs text-slate-500 uppercase font-bold mb-2">Savings YTD</div>
+                        <div class="text-2xl font-mono text-emerald-400 font-bold">฿45.2M</div>
+                        <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-emerald-500 w-[75%] h-full rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="flex-1 flex flex-col relative bg-[#0f172a] overflow-hidden">
+                
+                <header class="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-[#0f172a]/90 backdrop-blur z-10">
+                    <div class="flex items-center gap-4">
+                        <h1 class="text-xl font-bold text-white">Case Investigation</h1>
+                        <span class="px-2 py-0.5 bg-slate-800 text-slate-400 text-xs rounded border border-slate-700 font-mono">ID: PO-2026-3629</span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-2 text-xs font-mono text-emerald-400">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> SAP CONNECTED
+                        </div>
+                        <div class="flex items-center gap-3 pl-6 border-l border-slate-800">
+                            <div class="text-right hidden sm:block">
+                                <div class="text-xs text-slate-400">Chief Operating Officer</div>
+                                <div class="text-sm font-bold text-white">Nattapong M.</div>
+                            </div>
+                            <div class="w-9 h-9 bg-slate-700 rounded-full border border-slate-600 flex items-center justify-center text-xs">NM</div>
+                        </div>
+                    </div>
+                </header>
+
+                <div id="scroll-content" class="flex-1 overflow-y-auto p-8 scroll-smooth">
+                    <div class="max-w-6xl mx-auto space-y-6 pb-20">
+
+                        <div id="tour-roi" class="grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all-custom">
+                            <div class="lg:col-span-2 bg-slate-800/50 border border-slate-700 rounded-2xl p-6 relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                                    <i class="fa-solid fa-triangle-exclamation text-8xl text-red-500"></i>
+                                </div>
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-xs font-bold border border-red-500/30 glow-red">CRITICAL RISK</span>
+                                            <span class="text-slate-400 text-xs"><i class="fa-regular fa-clock"></i> SLA: 4h left</span>
+                                        </div>
+                                        <h2 class="text-2xl font-bold text-white mb-1">Bad Supplier Ltd.</h2>
+                                        <p class="text-slate-400 text-sm">PO for High-End IT Equipment (Server Racks)</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500 font-bold uppercase">Exposure Amount</div>
+                                        <div class="text-3xl font-mono font-bold text-white">฿387,500</div>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <div class="flex justify-between text-xs mb-2">
+                                        <span class="text-red-400 font-bold">Risk Score: 92/100</span>
+                                        <span class="text-slate-500">Threshold: 80</span>
+                                    </div>
+                                    <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-gradient-to-r from-orange-500 to-red-600 w-[92%] h-full rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-emerald-900/20 to-slate-800 border border-emerald-500/30 rounded-2xl p-6 flex flex-col justify-center relative overflow-hidden">
+                                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl"></div>
+                                <div class="text-xs text-emerald-400 font-bold uppercase mb-1">Potential Savings</div>
+                                <div class="text-4xl font-mono font-bold text-white mb-2">฿58,125</div>
+                                <div class="text-xs text-slate-400">
+                                    หาก Reject เคสนี้ ท่านจะประหยัดได้ 15% เมื่อเทียบกับราคาตลาด (Market Benchmark)
+                                </div>
+                                <button class="mt-4 w-full py-2 bg-emerald-500/10 border border-emerald-500/50 hover:bg-emerald-500/20 text-emerald-400 rounded-lg text-xs font-bold transition">
+                                    See Price Analysis
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            
+                            <div id="tour-ai" class="lg:col-span-1 bg-slate-800/50 border border-slate-700 rounded-2xl p-0 flex flex-col h-[400px] transition-all-custom relative">
+                                <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/80 rounded-t-2xl">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-[10px] text-white shadow-lg shadow-indigo-500/50"><i class="fa-solid fa-robot"></i></div>
+                                        <span class="font-bold text-sm text-white">TH8 Copilot</span>
+                                    </div>
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                </div>
+                                <div class="flex-1 p-4 overflow-y-auto space-y-4 text-xs">
+                                    <div class="flex gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-indigo-500/20 flex-shrink-0 flex items-center justify-center text-indigo-400 text-[10px]"><i class="fa-solid fa-robot"></i></div>
+                                        <div class="bg-slate-700/50 p-3 rounded-r-xl rounded-bl-xl text-slate-300 border border-slate-600/50">
+                                            ผมพบความผิดปกติ 3 จุดครับ: <br>
+                                            1. Vendor นี้อยู่ใน Blacklist <br>
+                                            2. ราคาสูงกว่าตลาด 15% <br>
+                                            3. มีความสัมพันธ์ซ่อนเร้นกับพนักงาน
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3 flex-row-reverse">
+                                        <div class="w-6 h-6 rounded-full bg-slate-600 flex-shrink-0 flex items-center justify-center text-white text-[10px]">NM</div>
+                                        <div class="bg-indigo-600/20 p-3 rounded-l-xl rounded-br-xl text-indigo-100 border border-indigo-500/30">
+                                            ขอรายละเอียดเรื่องราคาหน่อย
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-indigo-500/20 flex-shrink-0 flex items-center justify-center text-indigo-400 text-[10px]"><i class="fa-solid fa-robot"></i></div>
+                                        <div class="bg-slate-700/50 p-3 rounded-r-xl rounded-bl-xl text-slate-300 border border-slate-600/50 typing-cursor">
+                                            ได้ครับ จากข้อมูล Historical Data...
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-3 border-t border-slate-700">
+                                    <input type="text" placeholder="Ask AI regarding this case..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                </div>
+                            </div>
+
+                            <div id="tour-price" class="lg:col-span-2 bg-slate-800/50 border border-slate-700 rounded-2xl p-6 transition-all-custom flex flex-col">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-chart-line text-blue-400 mr-2"></i>Price Benchmark Analysis</h3>
+                                    <span class="text-xs text-slate-500">Unit: THB / Item</span>
+                                </div>
+                                <div class="flex-1 relative w-full h-full">
+                                    <canvas id="priceChart"></canvas>
+                                </div>
+                                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+                                    <div class="p-2 bg-slate-700/30 rounded border border-slate-700">
+                                        <div class="text-[10px] text-slate-500">Contract Price</div>
+                                        <div class="text-sm font-bold text-white">฿320,000</div>
+                                    </div>
+                                    <div class="p-2 bg-red-900/20 rounded border border-red-900/50">
+                                        <div class="text-[10px] text-red-400">This PO Price</div>
+                                        <div class="text-sm font-bold text-red-400">฿387,500</div>
+                                    </div>
+                                    <div class="p-2 bg-emerald-900/20 rounded border border-emerald-900/50">
+                                        <div class="text-[10px] text-emerald-400">Market Avg</div>
+                                        <div class="text-sm font-bold text-emerald-400">฿329,000</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tour-graph" class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 transition-all-custom">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="font-bold text-white text-lg"><i class="fa-solid fa-diagram-project text-purple-400 mr-2"></i>Hidden Relationship Graph</h3>
+                                    <p class="text-xs text-slate-400">AI ตรวจพบความสัมพันธ์ที่น่าสงสัย (Conflict of Interest)</p>
+                                </div>
+                                <span class="bg-purple-500/20 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-500/50">
+                                    Confidence: 98%
+                                </span>
+                            </div>
+                            
+                            <div class="relative h-64 w-full bg-[#0b0f19] rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center">
+                                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                                    <line x1="30%" y1="50%" x2="50%" y2="50%" stroke="#475569" stroke-width="2" />
+                                    <line x1="50%" y1="50%" x2="70%" y2="30%" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" class="animate-pulse" />
+                                    <line x1="50%" y1="50%" x2="70%" y2="70%" stroke="#475569" stroke-width="2" />
+                                </svg>
+                                
+                                <div class="absolute left-[30%] top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                                    <div class="w-12 h-12 rounded-full bg-slate-700 border-2 border-white flex items-center justify-center text-xl shadow-lg">🏢</div>
+                                    <div class="mt-2 text-xs font-bold text-white bg-slate-800 px-2 py-1 rounded">Bad Supplier</div>
+                                </div>
+                                
+                                <div class="absolute left-[50%] top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                                    <div class="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-500 flex items-center justify-center text-lg shadow-lg">📄</div>
+                                    <div class="mt-2 text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded">Tax ID: X999</div>
+                                </div>
+
+                                <div class="absolute left-[70%] top-[30%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                                    <div class="w-12 h-12 rounded-full bg-red-900/50 border-2 border-red-500 flex items-center justify-center text-xl shadow-lg shadow-red-500/20 animate-bounce">👤</div>
+                                    <div class="mt-2 text-xs font-bold text-red-400 bg-slate-900 border border-red-900 px-2 py-1 rounded">Purchase Mgr.</div>
+                                    <div class="absolute -top-8 bg-red-600 text-white text-[10px] px-2 py-1 rounded shadow">Same Address!</div>
+                                </div>
+
+                                <div class="absolute left-[70%] top-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                                    <div class="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-500 flex items-center justify-center text-lg">📁</div>
+                                    <div class="mt-2 text-xs text-slate-400 bg-slate-900 px-2 py-1 rounded">Prev Contract</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tour-action" class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 transition-all-custom">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                <div class="md:col-span-3">
+                                    <h3 class="font-bold text-white mb-2">Decision & Feedback</h3>
+                                    <textarea class="w-full h-24 bg-[#0b0f19] border border-slate-600 rounded-xl p-4 text-sm text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition" placeholder="ระบุเหตุผลในการตัดสินใจ (Required)..."></textarea>
+                                </div>
+                                <div class="md:col-span-1 flex flex-col gap-3 justify-end">
+                                    <button class="w-full py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition">Reject</button>
+                                    <button class="w-full py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-900/50 hover:scale-105 transition transform">
+                                        Block Vendor
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-xs text-slate-500">
+                                    <i class="fa-solid fa-gavel"></i> Governed by: <span class="text-slate-300 font-mono">PROCUREMENT-POLICY-V3.1</span>
+                                </div>
+                                <div class="text-xs text-slate-500">Auto-sync to SAP S/4HANA</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="overlay" class="fixed inset-0 bg-[#0b0f19]/80 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-500"></div>
+
+    <div id="explainer" class="explainer-card">
+        <div class="flex justify-between items-start mb-2">
+            <h2 id="exp-title" class="text-lg font-bold text-white leading-tight">Title</h2>
+            <div id="step-counter" class="text-[10px] font-mono text-slate-400 mt-1">1/6</div>
+        </div>
+        <p id="exp-desc" class="text-slate-300 text-xs leading-relaxed mb-4 font-light">Description.</p>
+        
+        <div class="flex justify-between items-center">
+            <div id="dots-container" class="flex gap-1.5"></div>
+            <div class="flex gap-2">
+                <button onclick="prevStep()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white hover:bg-white/10 transition-colors">Back</button>
+                <button onclick="nextStep()" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-900 shadow hover:scale-105 transition-all">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CHART CONFIG ---
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(239, 68, 68, 0.5)'); // Red
+        gradient.addColorStop(1, 'rgba(239, 68, 68, 0.0)');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Contract Price', 'Market Avg', 'This PO (Risk)'],
+                datasets: [{
+                    label: 'Unit Price (THB)',
+                    data: [320000, 329000, 387500],
+                    backgroundColor: ['#334155', '#10b981', '#ef4444'], // Slate, Emerald, Red
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    barThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: false, 
+                        min: 250000,
+                        grid: { color: '#1e293b' },
+                        ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono' } }
+                    },
+                    x: { 
+                        grid: { display: false },
+                        ticks: { color: '#e2e8f0', font: { family: 'Prompt' } }
+                    }
+                }
+            }
+        });
+
+        // --- TOUR STEPS CONFIG ---
+        const steps = [
+            {
+                id: null,
+                title: "Enterprise Command Center",
+                desc: "Dashboard ที่ออกแบบมาเพื่อ 'การตัดสินใจ' โดยเฉพาะ ไม่ใช่แค่ดู Report. แสดงยอด Savings แบบ Real-time และสถานะการเชื่อมต่อ SAP เพื่อความมั่นใจของ IT"
+            },
+            {
+                id: "tour-roi",
+                title: "Instant ROI Calculation",
+                desc: "สิ่งแรกที่ผู้บริหารต้องเห็น: 'เคสนี้เสี่ยงเท่าไหร่' และ 'ถ้า Reject จะประหยัดเงินได้เท่าไหร่' (Potential Savings) คำนวณให้เห็นตัวเลขชัดเจนทันที"
+            },
+            {
+                id: "tour-ai",
+                title: "TH8 AI Copilot",
+                desc: "เปลี่ยนจากการอ่าน Log ยากๆ มาเป็นการ 'แชท' กับ AI. ท่านสามารถถามว่า 'ทำไมเคสนี้ถึงผิดปกติ?' ระบบจะสรุปประเด็นสำคัญให้อ่านง่ายๆ ภายใน 3 บรรทัด"
+            },
+            {
+                id: "tour-price",
+                title: "Price Benchmark",
+                desc: "เปรียบเทียบราคาซื้อครั้งนี้ (สีแดง) กับราคาตลาด (สีเขียว) และราคาตามสัญญา (สีเทา) ให้เห็นส่วนต่างชัดเจน เพื่อใช้เป็นหลักฐานในการต่อรอง"
+            },
+            {
+                id: "tour-graph",
+                title: "Hidden Relationship (Forensics)",
+                desc: "ฟีเจอร์ไม้ตาย: AI ตรวจพบความสัมพันธ์ที่ซ่อนอยู่ เช่น 'ที่อยู่ของ Vendor' ตรงกับ 'ที่อยู่ของพนักงานจัดซื้อ' ซึ่งการดูเอกสารปกติไม่มีทางเห็น"
+            },
+            {
+                id: "tour-action",
+                title: "Action & SAP Sync",
+                desc: "ตัดสินใจ (Reject/Block) พร้อมใส่เหตุผล ระบบจะส่งคำสั่งไป Block Vendor ใน SAP S/4HANA ทันที ไม่ต้องรอ Manual Process"
+            }
+        ];
+
+        let currentStep = 0;
+        const uiContainer = document.getElementById('scroll-content'); // Scroll inside main area
+        const overlay = document.getElementById('overlay');
+        const explainer = document.getElementById('explainer');
+
+        function init() {
+            const dotsContainer = document.getElementById('dots-container');
+            steps.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `step-dot ${i === 0 ? 'active' : ''}`;
+                dotsContainer.appendChild(dot);
+            });
+            
+            updateView();
+            setTimeout(() => explainer.classList.add('active'), 500);
+        }
+
+        function updateView() {
+            const step = steps[currentStep];
+            
+            // Text Update
+            document.getElementById('exp-title').innerText = step.title;
+            document.getElementById('exp-desc').innerText = step.desc;
+            document.getElementById('step-counter').innerText = `${currentStep + 1} / ${steps.length}`;
+
+            // Dots Update
+            document.querySelectorAll('.step-dot').forEach((d, i) => {
+                d.className = `step-dot ${i === currentStep ? 'active' : ''}`;
+            });
+
+            // Highlight Logic
+            document.querySelectorAll('.highlight-zone').forEach(el => {
+                el.classList.remove('highlight-zone');
+                el.classList.add('blur-zone');
+            });
+
+            if (step.id) {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                const target = document.getElementById(step.id);
+                if (target) {
+                    target.classList.remove('blur-zone');
+                    target.classList.add('highlight-zone');
+                    
+                    // Smooth Scroll to element
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                document.querySelectorAll('.blur-zone').forEach(el => el.classList.remove('blur-zone'));
+                uiContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateView();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateView();
+            }
+        }
+
+        // Keyboard Nav
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextStep();
+            if (e.key === 'ArrowLeft') prevStep();
+        });
+
+        init();
+    </script>
+</body>
+</html>

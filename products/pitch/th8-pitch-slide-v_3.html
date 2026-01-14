@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH8 - Enterprise Decision Intelligence (v3)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #020617; color: white; overflow: hidden; } /* Darker bg */
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Slide Basics */
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            padding: 2rem 4rem;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .slide.active { display: flex; flex-direction: column; opacity: 1; z-index: 10; }
+        
+        /* Glassmorphism Panels */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4); /* Slate-800 with opacity */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-panel-light {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Neon Glows */
+        .neon-text-red { text-shadow: 0 0 10px rgba(239, 68, 68, 0.7); }
+        .neon-border-red { box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.5); }
+        
+        /* Nav Controls */
+        .nav-controls {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 2rem;
+            z-index: 50;
+            display: flex;
+            gap: 1rem;
+            background: rgba(2, 6, 23, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nav-btn {
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+        .nav-btn:hover { color: white; }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .animate-pulse-glow { animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #ef4444;
+            cursor: pointer;
+            margin-top: -10px; 
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-100">
+
+    <div class="fixed top-0 left-0 h-1 bg-red-600 transition-all duration-500 z-50" id="progressBar" style="width: 0%"></div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="changeSlide(-1)">❮</button>
+        <span id="slideCounter" class="text-sm font-mono pt-0.5">1 / 11</span>
+        <button class="nav-btn" onclick="changeSlide(1)">❯</button>
+    </div>
+
+    <div class="slide active justify-center items-center text-center relative overflow-hidden" id="slide-1">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div class="z-10 relative space-y-8 animate-float">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-500/30 bg-red-950/30 text-red-400 text-sm font-bold tracking-widest uppercase mb-4">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Enterprise Intelligence
+            </div>
+            
+            <h1 class="text-7xl md:text-9xl font-bold leading-none tracking-tight">
+                TH8<span class="text-red-600">.AI</span>
+            </h1>
+            
+            <h2 class="text-2xl md:text-4xl text-slate-400 font-light">
+                Decision Control Center <span class="text-slate-600">v3</span>
+            </h2>
+
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                The "Missing Intelligence Layer" for SAP & Oracle.<br>
+                Stop 1.8% Profit Leakage with <span class="text-white font-semibold">AI Forensics</span> & <span class="text-white font-semibold">Policy-as-Code</span>.
+            </p>
+
+            <div class="flex justify-center gap-8 mt-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="flex items-center gap-2"><img src="https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" class="h-8 invert"> <span class="text-xs">Compatible</span></div>
+                <div class="flex items-center gap-2"><img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="h-6 invert"> <span class="text-xs">Ready</span></div>
+                <div class="flex items-center gap-2 border-l border-slate-700 pl-8"><span class="text-xs font-mono">ISO 27001<br>Secured</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center" id="slide-2">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h3 class="text-red-500 font-bold uppercase tracking-widest mb-4">The Silent Leakage</h3>
+                <h2 class="text-5xl font-bold leading-tight mb-6">
+                    While you watch this,<br>
+                    <span class="text-slate-500">money is leaking.</span>
+                </h2>
+                <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                    Research shows <strong>1.8% of Gross Spend</strong> is lost to operational inefficiencies like Split POs, Duplicate Payments, and Maverick Buying.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-6 border-l-4 border-red-500">
+                        <div class="text-4xl font-bold text-white mb-1">1.8%</div>
+                        <div class="text-xs text-slate-400 uppercase">Avg. Spend Leakage</div>
+                    </div>
+                    <div class="glass-panel p-6 border-l-4 border-amber-500">
+                        <div class="text-4xl font-bold text-white mb-1">45M+</div>
+                        <div class="text-xs text-slate-400 uppercase">Loss per 10B Revenue</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative glass-panel p-8 h-[400px] flex flex-col items-center justify-center text-center">
+                <div class="text-6xl mb-4">🕳️</div>
+                <h3 class="text-xl font-bold text-white">Cumulative Leakage Year-to-Date</h3>
+                <div class="text-sm text-slate-500 mb-6">Based on standard enterprise run rate</div>
+                
+                <div class="text-6xl font-mono font-bold text-red-500 tabular-nums neon-text-red" id="leakageCounter">
+                    10,452,100
+                </div>
+                <div class="text-sm text-red-400 mt-2 animate-pulse">
+                    + ฿ 125.50 leaking every second
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center" id="slide-3">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold">The "Neural Layer" Architecture</h2>
+            <p class="text-slate-400 mt-4">ไม่ใช่การเปลี่ยนระบบ (Replace) แต่คือการเสริมสมอง (Augment)</p>
+        </div>
+
+        <div class="relative max-w-6xl mx-auto w-full h-[500px] flex items-center justify-center">
+            
+            <div class="absolute bottom-0 w-full md:w-3/4 h-32 glass-panel flex items-center justify-center z-10 border-slate-700">
+                <div class="text-center opacity-50">
+                    <div class="text-2xl font-bold text-slate-400">System of Record (ERP)</div>
+                    <div class="text-sm text-slate-600">SAP / Oracle / Microsoft / Legacy DB</div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-24 w-full md:w-3/4 h-48 glass-panel border-red-500/50 bg-red-900/10 z-20 flex items-center justify-around neon-border-red">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🔍</div>
+                    <div class="font-bold text-white">100% Audit</div>
+                    <div class="text-xs text-red-300">Every Transaction</div>
+                </div>
+                <div class="flex-1 h-px bg-red-500/30 mx-4 relative">
+                    <div class="absolute top-1/2 left-0 w-2 h-2 bg-red-500 rounded-full -mt-1 animate-ping"></div>
+                </div>
+                <div class="text-center transform scale-125">
+                    <div class="text-4xl mb-2">🧠</div>
+                    <div class="font-bold text-white text-xl">Decision Engine</div>
+                    <div class="text-xs text-red-300">AI + Policy Code</div>
+                </div>
+                <div class="flex-1 h-px bg-red-500/30 mx-4 relative">
+                    <div class="absolute top-1/2 right-0 w-2 h-2 bg-red-500 rounded-full -mt-1 animate-ping"></div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🕸️</div>
+                    <div class="font-bold text-white">Graph Forensics</div>
+                    <div class="text-xs text-red-300">Hidden Links</div>
+                </div>
+            </div>
+
+            <div class="absolute top-24 w-full md:w-1/2 flex justify-between px-12 z-30">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-emerald-500 rounded-full mx-auto flex items-center justify-center text-xl font-bold text-black mb-2">CFO</div>
+                    <div class="glass-panel-light px-4 py-2 text-xs rounded-full">Real-time Control</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full mx-auto flex items-center justify-center text-xl font-bold text-black mb-2">PO</div>
+                    <div class="glass-panel-light px-4 py-2 text-xs rounded-full">Smart Assist</div>
+                </div>
+            </div>
+
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                <div class="absolute bottom-10 left-1/3 w-1 h-1 bg-white rounded-full animate-[float_3s_infinite]"></div>
+                <div class="absolute bottom-10 left-1/2 w-1 h-1 bg-white rounded-full animate-[float_4s_infinite_1s]"></div>
+                <div class="absolute bottom-10 right-1/3 w-1 h-1 bg-white rounded-full animate-[float_5s_infinite_0.5s]"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+        <div class="flex justify-between items-end mb-6">
+            <div>
+                <h3 class="text-red-500 font-bold uppercase text-sm">Product Experience</h3>
+                <h2 class="text-3xl font-bold">More than a Dashboard: <span class="text-blue-400">AI Copilot</span></h2>
+            </div>
+            <div class="hidden md:block">
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded text-xs">GenAI Powered</span>
+            </div>
+        </div>
+
+        <div class="flex-grow grid grid-cols-12 gap-6 h-[60vh]">
+            
+            <div class="col-span-8 bg-slate-900 rounded-xl border border-slate-700 p-4 flex flex-col gap-4">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h4 class="font-bold">Case #PO-2026-991</h4>
+                    <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs font-bold">CRITICAL RISK</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-slate-800 p-3 rounded-lg">
+                        <div class="text-xs text-slate-500">Vendor</div>
+                        <div class="font-bold">Bad Supplier Ltd.</div>
+                        <div class="text-xs text-red-400 mt-1">⚠ Blacklisted</div>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded-lg">
+                        <div class="text-xs text-slate-500">Amount</div>
+                        <div class="font-bold">387,500 THB</div>
+                        <div class="text-xs text-amber-400 mt-1">⚠ > 15% vs Market</div>
+                    </div>
+                </div>
+                <div class="flex-grow bg-slate-800/50 rounded-lg p-3 relative overflow-hidden">
+                     <div class="absolute inset-0 flex items-center justify-center">
+                        <svg width="300" height="200" class="opacity-50">
+                            <line x1="150" y1="100" x2="50" y2="150" stroke="#ef4444" stroke-width="2" />
+                            <line x1="150" y1="100" x2="250" y2="150" stroke="#475569" stroke-width="2" />
+                            <circle cx="150" cy="100" r="20" fill="#ef4444" /> <circle cx="50" cy="150" r="15" fill="#3b82f6" /> <text x="130" y="70" fill="white" font-size="10">Vendor</text>
+                            <text x="20" y="180" fill="white" font-size="10">Procurement Mgr</text>
+                        </svg>
+                        <div class="absolute bg-black/80 px-3 py-1 text-xs text-red-400 border border-red-500 rounded">
+                            ⚠ Conflict of Interest Detected
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <div class="col-span-4 bg-slate-800 rounded-xl border border-blue-500/30 flex flex-col relative overflow-hidden">
+                <div class="bg-blue-900/20 p-3 border-b border-blue-500/20 flex items-center gap-2">
+                    <span class="text-xl">🤖</span>
+                    <span class="font-bold text-sm">TH8 Copilot</span>
+                </div>
+                <div class="flex-grow p-4 space-y-4 text-sm overflow-y-auto">
+                    <div class="bg-slate-700/50 p-3 rounded-r-xl rounded-bl-xl text-slate-300">
+                        ผมพบความเสี่ยง 2 จุดในเคสนี้ครับ:
+                        <br>1. Vendor อยู่ใน Blacklist
+                        <br>2. มีความสัมพันธ์ส่วนตัวกับพนักงานจัดซื้อ (ที่อยู่เดียวกัน)
+                    </div>
+                    <div class="flex justify-end">
+                        <div class="bg-blue-600 p-3 rounded-l-xl rounded-br-xl text-white">
+                            ขอหลักฐานหน่อย
+                        </div>
+                    </div>
+                    <div class="bg-slate-700/50 p-3 rounded-r-xl rounded-bl-xl text-slate-300">
+                        <span class="text-xs text-blue-400 block mb-1">Retrieving Documents...</span>
+                        นี่ครับ: <a href="#" class="text-blue-400 underline">CompanyReg.pdf</a> และ <a href="#" class="text-blue-400 underline">EmployeeRecord.pdf</a> แสดงที่อยู่ตรงกัน
+                    </div>
+                </div>
+                <div class="p-3 bg-slate-900 border-t border-slate-700">
+                    <input type="text" placeholder="Ask follow up..." class="w-full bg-slate-800 rounded px-3 py-2 text-sm focus:outline-none border border-slate-700">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center" id="slide-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full max-w-6xl mx-auto">
+            <div>
+                <h3 class="text-emerald-500 font-bold uppercase tracking-widest mb-4">Enterprise Ready</h3>
+                <h2 class="text-4xl font-bold mb-6">Security & Integration<br>First Approach</h2>
+                <p class="text-slate-400 mb-8">
+                    เราเข้าใจดีว่าข้อมูลการเงินคือหัวใจสำคัญ TH8 จึงออกแบบมาให้ปลอดภัยสูงสุด และเชื่อมต่อได้โดยไม่ต้องรื้อระบบเดิม
+                </p>
+                
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4">
+                        <div class="bg-slate-800 p-3 rounded-lg"><span class="text-xl">🔒</span></div>
+                        <div>
+                            <h4 class="font-bold text-white">Bank-Grade Security</h4>
+                            <p class="text-sm text-slate-500">ISO 27001 Certified, End-to-End Encryption, และรองรับ On-Premise / Private Cloud</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="bg-slate-800 p-3 rounded-lg"><span class="text-xl">🔌</span></div>
+                        <div>
+                            <h4 class="font-bold text-white">Plug & Play Connectors</h4>
+                            <p class="text-sm text-slate-500">API เชื่อมต่อสำเร็จรูปสำหรับ SAP S/4HANA, Oracle ERP, และ Microsoft Dynamics 365</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="glass-panel p-6 flex flex-col items-center justify-center hover:bg-slate-800 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" class="h-10 invert opacity-70 mb-2">
+                    <span class="text-xs text-slate-500">Certified Partner</span>
+                </div>
+                <div class="glass-panel p-6 flex flex-col items-center justify-center hover:bg-slate-800 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" class="h-6 invert opacity-70 mb-2">
+                    <span class="text-xs text-slate-500">Integration Ready</span>
+                </div>
+                <div class="glass-panel p-6 flex flex-col items-center justify-center hover:bg-slate-800 transition">
+                    <div class="text-2xl font-bold text-white mb-2">PDPA</div>
+                    <span class="text-xs text-slate-500">Compliant</span>
+                </div>
+                <div class="glass-panel p-6 flex flex-col items-center justify-center hover:bg-slate-800 transition">
+                    <div class="text-2xl font-bold text-white mb-2">SOC2</div>
+                    <span class="text-xs text-slate-500">Type II Ready</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center" id="slide-6">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-bold">Calculate Your ROI</h2>
+            <p class="text-slate-400 mt-2">ลองประเมินผลกำไรที่จะได้คืนมา (Recovery Potential)</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto w-full glass-panel p-8 border-t-4 border-emerald-500">
+            
+            <div class="mb-12">
+                <label class="block text-sm font-bold text-slate-400 mb-4 flex justify-between">
+                    <span>Annual External Spend (ยอดจัดซื้อต่อปี)</span>
+                    <span class="text-white text-xl" id="spendDisplay">1,000 MB</span>
+                </label>
+                <input type="range" min="100" max="10000" step="100" value="1000" class="w-full" id="spendSlider">
+                <div class="flex justify-between text-xs text-slate-500 mt-2">
+                    <span>100 MB</span>
+                    <span>10,000 MB</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-8 text-center divide-x divide-slate-700">
+                <div>
+                    <div class="text-sm text-slate-400 mb-2">Estimated Leakage (1.8%)</div>
+                    <div class="text-3xl font-bold text-red-400" id="leakageDisplay">18.0 MB</div>
+                    <div class="text-xs text-slate-600 mt-1">เงินที่รั่วไหล/ปี</div>
+                </div>
+                <div>
+                    <div class="text-sm text-slate-400 mb-2">Conservative Recovery (50%)</div>
+                    <div class="text-4xl font-bold text-white neon-text-red" id="recoveryDisplay">9.0 MB</div>
+                    <div class="text-xs text-slate-600 mt-1">เงินสดที่ได้คืนทันที</div>
+                </div>
+                <div>
+                    <div class="text-sm text-slate-400 mb-2">ROI (Year 1)</div>
+                    <div class="text-3xl font-bold text-emerald-400" id="roiDisplay">450%</div>
+                    <div class="text-xs text-slate-600 mt-1">ความคุ้มค่าการลงทุน</div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-700 text-center">
+                <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
+                    Start POC to Verify This Number
+                </button>
+                <p class="text-xs text-slate-500 mt-3">
+                    *Based on industry average leakage rate of 1.8% (Food & Retail Sector)
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center" id="slide-7">
+        <div class="text-center mb-10">
+            <h2 class="text-4xl font-bold">Proven Success</h2>
+            <p class="text-slate-400 mt-2">ผลลัพธ์จริงจากผู้นำอุตสาหกรรมในไทย</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div class="glass-panel p-8 hover:bg-slate-800 transition duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center font-bold text-black text-xl">R</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Retail Chain Giant</h4>
+                        <div class="text-xs text-slate-400">Top 3 in Thailand • 500+ Branches</div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="text-xs text-slate-500 uppercase">Challenge</div>
+                        <p class="text-sm text-slate-300">Duplicate Payments เนื่องจาก Invoice มหาศาล และ Code สินค้าซ้ำซ้อน</p>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 uppercase">TH8 Solution</div>
+                        <p class="text-sm text-slate-300">AI Semantic Match จับคู่สินค้าและ Vendor ที่ชื่อคล้ายกัน</p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-700">
+                        <div class="text-3xl font-bold text-emerald-400">฿ 12.5M</div>
+                        <div class="text-xs text-slate-500">Recovered in 3 Months</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 hover:bg-slate-800 transition duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center font-bold text-black text-xl">M</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Food Manufacturer</h4>
+                        <div class="text-xs text-slate-400">Export Leader • 5 Factories</div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="text-xs text-slate-500 uppercase">Challenge</div>
+                        <p class="text-sm text-slate-300">Maverick Buying สาขาต่างจังหวัดซื้อของแพงกว่าราคาส่วนกลาง</p>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 uppercase">TH8 Solution</div>
+                        <p class="text-sm text-slate-300">Price Variance Policy บล็อก PO ที่ราคาสูงกว่า Contract 3%</p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-700">
+                        <div class="text-3xl font-bold text-emerald-400">-8.5%</div>
+                        <div class="text-xs text-slate-500">Reduction in Cost of Goods</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center" id="slide-8">
+        <div class="text-center mb-10">
+            <h2 class="text-4xl font-bold">Fast-Track Implementation</h2>
+            <p class="text-slate-400 mt-2">ติดตั้งเสร็จภายใน 6 สัปดาห์ ด้วยทีมงานมืออาชีพ</p>
+        </div>
+        <div class="max-w-5xl mx-auto w-full">
+            <div class="grid grid-cols-4 gap-4 text-center">
+                <div class="glass-panel p-6 border-t-4 border-slate-500">
+                    <div class="text-2xl font-bold mb-2">Wk 1-2</div>
+                    <div class="text-sm font-bold text-slate-300 mb-2">Discovery (X-Ray)</div>
+                    <p class="text-xs text-slate-500">วิเคราะห์ข้อมูลย้อนหลัง ประเมินมูลค่าความเสียหาย (Free Assessment)</p>
+                </div>
+                <div class="glass-panel p-6 border-t-4 border-blue-500">
+                    <div class="text-2xl font-bold mb-2">Wk 3-4</div>
+                    <div class="text-sm font-bold text-slate-300 mb-2">Integration</div>
+                    <p class="text-xs text-slate-500">เชื่อมต่อ API กับ ERP และ Config Policy (YAML)</p>
+                </div>
+                <div class="glass-panel p-6 border-t-4 border-amber-500">
+                    <div class="text-2xl font-bold mb-2">Wk 5</div>
+                    <div class="text-sm font-bold text-slate-300 mb-2">Shadow Mode</div>
+                    <p class="text-xs text-slate-500">รันระบบคู่ขนานเพื่อตรวจสอบความแม่นยำ (Fine-tuning)</p>
+                </div>
+                <div class="glass-panel p-6 border-t-4 border-emerald-500 bg-emerald-900/10">
+                    <div class="text-2xl font-bold mb-2">Wk 6</div>
+                    <div class="text-sm font-bold text-emerald-400 mb-2">Go-Live</div>
+                    <p class="text-xs text-slate-500">เริ่มระบบ Full Control ป้องกันเงินรั่วไหล 100%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide justify-center items-center text-center" id="slide-9">
+        <div class="space-y-8 animate-float">
+            <h2 class="text-5xl md:text-7xl font-bold leading-tight">
+                Stop the Leakage.<br>
+                <span class="text-red-600">Start Controlling.</span>
+            </h2>
+            
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto">
+                Turn your data into your best defense.
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-6 justify-center mt-12">
+                <button class="bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-12 rounded-full text-xl shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all transform hover:scale-105">
+                    Schedule POC Demo
+                </button>
+            </div>
+
+            <div class="mt-12 flex justify-center gap-8 text-slate-500 text-sm">
+                <div>✓ No Upfront Cost for POC</div>
+                <div>✓ Read-Only Access Safe</div>
+                <div>✓ Result in 7 Days</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Slide Navigation
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const counter = document.getElementById('slideCounter');
+        
+        function updateSlide() {
+            slides.forEach((s, i) => {
+                if (i === currentSlide) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+            progressBar.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+            counter.innerText = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(dir) {
+            const next = currentSlide + dir;
+            if (next >= 0 && next < slides.length) {
+                currentSlide = next;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        // Leakage Counter Animation
+        setInterval(() => {
+            const counterEl = document.getElementById('leakageCounter');
+            let val = parseInt(counterEl.innerText.replace(/,/g, ''));
+            val += 125; // Simulated leakage increment
+            counterEl.innerText = val.toLocaleString();
+        }, 1000);
+
+        // ROI Calculator Logic
+        const slider = document.getElementById('spendSlider');
+        const spendDisplay = document.getElementById('spendDisplay');
+        const leakageDisplay = document.getElementById('leakageDisplay');
+        const recoveryDisplay = document.getElementById('recoveryDisplay');
+        
+        slider.addEventListener('input', (e) => {
+            const spend = parseInt(e.target.value);
+            spendDisplay.innerText = `${spend.toLocaleString()} MB`;
+            
+            const leakage = spend * 0.018; // 1.8%
+            leakageDisplay.innerText = `${leakage.toFixed(1)} MB`;
+            
+            const recovery = leakage * 0.5; // 50% recovery
+            recoveryDisplay.innerText = `${recovery.toFixed(1)} MB`;
+        });
+
+        // Init
+        updateSlide();
+    </script>
+</body>
+</html>

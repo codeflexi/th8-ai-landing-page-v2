@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TH8 - Enterprise Decision Control (v7 AI Agent)</title>
+    <title>TH8 - Enterprise Decision Control (Guardian Edition)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -94,7 +94,7 @@
 
     <div class="nav-controls">
         <button onclick="changeSlide(-1)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-chevron-left"></i></button>
-        <span id="slideCounter" class="font-mono text-sm pt-0.5 text-slate-300 w-16 text-center">1 / 21</span>
+        <span id="slideCounter" class="font-mono text-sm pt-0.5 text-slate-300 w-16 text-center">1 / 20</span>
         <button onclick="changeSlide(1)" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
 
@@ -327,7 +327,7 @@
         </div>
     </div>
 
-    <div class="slide items-center text-center" id="slide-7">
+    <div class="slide items-center" id="slide-7">
         <h2 class="text-5xl font-bold mb-6">TH8 Decision Control Center</h2>
         <p class="text-xl text-slate-400 text-center max-w-3xl mb-12">
             ระบบปฏิบัติการที่วางทับ (Overlay) อยู่บน ERP เดิม เพื่อทำหน้าที่เป็น <br>
@@ -366,73 +366,6 @@
     </div>
 
     <div class="slide items-center" id="slide-8">
-        <h2 class="text-4xl font-bold mb-4">The 4-Layer Agent Framework</h2>
-        <p class="text-slate-400 mb-10 text-center">
-            From Silos to Synergy: ไม่ใช่แค่ทำงานแทน แต่คือการ "บริหารจัดการ" ทั้งองค์กร
-        </p>
-
-        <div class="flex flex-col gap-4 w-full max-w-5xl">
-            
-            <div class="glass-panel p-6 border-l-8 border-red-500 relative overflow-hidden group hover:bg-slate-800 transition">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fa-solid fa-chess-king text-6xl"></i></div>
-                <div class="flex items-center gap-6">
-                    <div class="w-12 h-12 bg-red-900/50 rounded-full flex items-center justify-center text-red-500 text-xl font-bold border border-red-500/30">4</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Strategic & Financial Guardrails <span class="text-red-400 text-sm ml-2">(The Guardian)</span></h3>
-                        <p class="text-slate-400 mt-1">
-                            <i class="fa-solid fa-check-circle text-red-500 mr-2"></i>
-                            <strong>Profit Protection:</strong> เฝ้าระวังกำไร (Profit Leakage) และควบคุมทุกการตัดสินใจให้ตรงตามแผนแม่บท
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-panel p-6 border-l-8 border-blue-500 relative overflow-hidden group hover:bg-slate-800 transition">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fa-solid fa-diagram-project text-6xl"></i></div>
-                <div class="flex items-center gap-6">
-                    <div class="w-12 h-12 bg-blue-900/50 rounded-full flex items-center justify-center text-blue-500 text-xl font-bold border border-blue-500/30">1</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Integrated Synergy <span class="text-blue-400 text-sm ml-2">(The Connector)</span></h3>
-                        <p class="text-slate-400 mt-1">
-                            <i class="fa-solid fa-check-circle text-blue-500 mr-2"></i>
-                            <strong>Alignment:</strong> เชื่อมต่อฝ่ายขาย-ผลิต-จัดซื้อ ให้เห็นข้อมูลชุดเดียวกัน (One Truth) แบบ Real-time
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-panel p-6 border-l-8 border-emerald-500 relative overflow-hidden group hover:bg-slate-800 transition">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fa-solid fa-gears text-6xl"></i></div>
-                <div class="flex items-center gap-6">
-                    <div class="w-12 h-12 bg-emerald-900/50 rounded-full flex items-center justify-center text-emerald-500 text-xl font-bold border border-emerald-500/30">2</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Autonomous Execution <span class="text-emerald-400 text-sm ml-2">(The Doer)</span></h3>
-                        <p class="text-slate-400 mt-1">
-                            <i class="fa-solid fa-check-circle text-emerald-500 mr-2"></i>
-                            <strong>Efficiency:</strong> จัดการงาน Routine และเอกสารมหาศาลแทนคน ลด Error เหลือ 0%
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-panel p-6 border-l-8 border-amber-500 relative overflow-hidden group hover:bg-slate-800 transition">
-                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fa-solid fa-headset text-6xl"></i></div>
-                <div class="flex items-center gap-6">
-                    <div class="w-12 h-12 bg-amber-900/50 rounded-full flex items-center justify-center text-amber-500 text-xl font-bold border border-amber-500/30">3</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Customer Assurance <span class="text-amber-400 text-sm ml-2">(The Ambassador)</span></h3>
-                        <p class="text-slate-400 mt-1">
-                            <i class="fa-solid fa-check-circle text-amber-500 mr-2"></i>
-                            <strong>Trust:</strong> แจ้งเตือนปัญหาและแก้ไขให้ลูกค้าก่อนที่เขาจะรู้ตัว (Proactive Service)
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="slide items-center" id="slide-9">
         <h2 class="text-4xl font-bold mb-8">The Overlay Architecture</h2>
         
         <div class="relative w-full max-w-6xl h-[550px] bg-[#0b1120] border border-slate-700 rounded-3xl p-8 flex flex-col justify-between shadow-2xl">
@@ -492,7 +425,7 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-10">
+    <div class="slide items-center" id="slide-9">
         <h2 class="text-4xl font-bold mb-12">Speed & Accuracy Flow</h2>
         <div class="flex gap-6 items-center w-full max-w-7xl justify-center">
             <div class="w-64 h-72 glass-panel p-6 flex flex-col justify-center text-center relative hover:-translate-y-2 transition duration-300">
@@ -542,7 +475,7 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-11">
+    <div class="slide items-center" id="slide-10">
         <h2 class="text-4xl font-bold mb-6">The Intelligence View</h2>
         <p class="text-slate-400 mb-8 text-center">Dashboard ที่ออกแบบมาเพื่อ "การตัดสินใจ" ไม่ใช่แค่การดูรายงาน</p>
         
@@ -621,7 +554,7 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-12">
+    <div class="slide items-center" id="slide-11">
         <h2 class="text-4xl font-bold mb-6">Explainable Decisions</h2>
         <p class="text-slate-400 mb-10 text-center max-w-2xl">
             ระบบอธิบายเหตุผล (Context) ให้ผู้บริหารเข้าใจในภาษาธุรกิจ<br>
@@ -676,7 +609,7 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-13">
+    <div class="slide items-center" id="slide-12">
         <h2 class="text-4xl font-bold mb-4">Evidence at Fingertips</h2>
         <p class="text-slate-400 mb-10 text-center">
             ระบบดึง "หลักฐาน" (Evidence) มารอไว้ให้แล้ว คลิกเดียวเจอ ไม่ต้องค้นแฟ้ม
@@ -718,9 +651,9 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-14">
+    <div class="slide items-center" id="slide-13">
         <h2 class="text-4xl font-bold mb-8">TH8 Copilot: ถาม-ตอบ ข้อมูลเชิงลึก</h2>
-        <p class="text-slate-400 mb-8">เปลี่ยนจากการอ่าน Report ยากๆ ให้เป็นการสนทนาที่เข้าใจง่าย</p>
+        <p class="text-slate-400 mb-8">เปลี่ยนการอ่าน Report ยากๆ ให้เป็นการสนทนาที่เข้าใจง่าย</p>
         
         <div class="w-full max-w-3xl glass-panel p-0 overflow-hidden relative border border-slate-600 shadow-2xl">
             <div class="bg-slate-800 p-4 border-b border-slate-600 flex items-center gap-3">
@@ -756,7 +689,7 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-15">
+    <div class="slide items-center" id="slide-14">
         <h2 class="text-4xl font-bold mb-4">Inside the "Graph Forensics"</h2>
         <p class="text-slate-400 mb-10 text-center">
             เทคโนโลยีเบื้องหลังการตรวจจับเครือข่ายทุจริต (Fraud Ring)
@@ -821,7 +754,7 @@
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-16">
+    <div class="slide items-center" id="slide-15">
         <h2 class="text-4xl font-bold mb-6">Technical Agility: Policy as Code</h2>
         <p class="text-slate-400 mb-8 text-center max-w-2xl">
             เปลี่ยน "ระเบียบกระดาษ" ให้เป็น "Code" (YAML)<br>
@@ -883,7 +816,7 @@ rules:
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-17">
+    <div class="slide items-center" id="slide-16">
         <h2 class="text-4xl font-bold mb-10">Win-Win for Everyone</h2>
         <p class="text-slate-400 mb-8">TH8 ไม่ใช่ภาระ แต่คือ "ตัวช่วย" ของทุกฝ่าย</p>
 
@@ -938,7 +871,7 @@ rules:
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-18">
+    <div class="slide items-center" id="slide-17">
         <h2 class="text-4xl font-bold mb-12">Digital Maturity Transformation</h2>
         
         <div class="grid grid-cols-2 w-full max-w-6xl rounded-2xl overflow-hidden border border-slate-700 shadow-2xl">
@@ -982,7 +915,7 @@ rules:
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-19">
+    <div class="slide items-center" id="slide-18">
         <h2 class="text-4xl font-bold mb-12">6 Weeks to Go-Live</h2>
         <p class="text-slate-400 mb-10">กระบวนการติดตั้งที่รวดเร็วและไม่กระทบการทำงาน (Low Risk)</p>
         
@@ -1034,7 +967,7 @@ rules:
         </div>
     </div>
 
-    <div class="slide items-center" id="slide-20">
+    <div class="slide items-center" id="slide-19">
         <h2 class="text-4xl font-bold mb-8">Calculate Your ROI</h2>
         <p class="text-slate-400 mb-8">ประเมินผลตอบแทนการลงทุนเบื้องต้น</p>
         
@@ -1071,7 +1004,7 @@ rules:
         </div>
     </div>
 
-    <div class="slide items-center text-center" id="slide-21">
+    <div class="slide items-center text-center" id="slide-20">
         <div class="inline-block p-4 border border-red-500/50 rounded-full mb-8 animate-pulse">
             <i class="fa-solid fa-shield-cat text-4xl text-red-500"></i>
         </div>
@@ -1084,8 +1017,8 @@ rules:
             ปกป้องกำไรและพนักงานของคุณ ด้วยเทคโนโลยี Decision Control ที่ทันสมัยที่สุด
         </p>
         
-          <a href="th8-demo-slide-F1.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-5 px-16 rounded-full text-xl shadow-[0_0_30px_rgba(220,38,38,0.6)] transition transform hover:scale-105 mb-16">
-             Screen Demo 1
+        <a href="th8-demo-slide-F1.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-5 px-16 rounded-full text-xl shadow-[0_0_30px_rgba(220,38,38,0.6)] transition transform hover:scale-105 mb-16">
+             Screen Demo1
         </a>
 
         <div class="flex gap-12 text-slate-500 text-sm font-mono border-t border-slate-800 pt-8">

@@ -122,8 +122,11 @@
         </div>
         <h1 class="text-7xl md:text-9xl font-bold leading-tight mb-6 tracking-tight text-white">TH8 <span class="text-slate-600">//</span> CORE</h1>
         <h2 class="text-3xl md:text-4xl text-slate-300 font-light mb-8 font-mono">Security • Scalability • Compliance</h2>
-        <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed border-l-4 border-blue-500 pl-6 text-left">
-            สถาปัตยกรรม <strong>Microservices</strong> บนพื้นฐาน <strong>Zero Trust Security</strong><br>
+       
+         <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed border-l-4 border-blue-500 pl-6 text-left">
+            สถาปัตยกรรม <strong>Enterprise AI</strong> ที่ให้ความสำคัญสูงสุดกับ <br>
+            <strong>"Data Privacy"</strong> และ <strong>"Reliability"</strong>
+            <br>
             รองรับการเชื่อมต่อ SAP/Oracle แบบ High Throughput & Low Latency
         </p>
         <div class="mt-12 insight-box max-w-xl mx-auto border-none bg-slate-800/50 text-center">
@@ -328,8 +331,209 @@
         </div>
     </div>
 
+       <div class="slide items-center" id="slide-9">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">09.</span> AI Guardrails Framework</h2>
+        <div class="w-full max-w-6xl h-[500px] border border-slate-700 bg-[#0f1115] rounded-xl relative overflow-hidden flex flex-col justify-center items-center">
+            
+            <div class="flex items-center gap-6 w-full px-12 z-10">
+                <div class="w-1/4 p-6 glass-panel border-t-4 border-amber-500 flex flex-col items-center">
+                    <div class="text-amber-500 font-bold mb-2 text-sm uppercase">1. Input Rail</div>
+                    <i class="fa-solid fa-filter text-3xl text-slate-400 mb-4"></i>
+                    <ul class="text-xs text-slate-300 space-y-2 w-full">
+                        <li class="flex justify-between"><span>PII Masking</span> <i class="fa-solid fa-check text-green-500"></i></li>
+                        <li class="flex justify-between"><span>Prompt Injection</span> <i class="fa-solid fa-check text-green-500"></i></li>
+                        <li class="flex justify-between"><span>Topic Check</span> <i class="fa-solid fa-check text-green-500"></i></li>
+                    </ul>
+                </div>
+
+                <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+
+                <div class="w-1/4 p-6 bg-slate-800 rounded-lg border border-blue-500/50 flex flex-col items-center shadow-lg shadow-blue-900/20">
+                    <div class="text-blue-400 font-bold mb-2 text-sm uppercase">2. LLM Core</div>
+                    <i class="fa-solid fa-brain text-4xl text-white mb-4 animate-pulse"></i>
+                    <div class="text-xs text-center text-slate-400">Reasoning &<br>Context Processing</div>
+                </div>
+
+                <i class="fa-solid fa-arrow-right text-slate-600 text-2xl"></i>
+
+                <div class="w-1/4 p-6 glass-panel border-t-4 border-emerald-500 flex flex-col items-center">
+                    <div class="text-emerald-500 font-bold mb-2 text-sm uppercase">3. Output Rail</div>
+                    <i class="fa-solid fa-shield-cat text-3xl text-slate-400 mb-4"></i>
+                    <ul class="text-xs text-slate-300 space-y-2 w-full">
+                        <li class="flex justify-between"><span>Fact Check</span> <i class="fa-solid fa-check text-green-500"></i></li>
+                        <li class="flex justify-between"><span>Hallucination</span> <i class="fa-solid fa-check text-green-500"></i></li>
+                        <li class="flex justify-between"><span>Format Valid</span> <i class="fa-solid fa-check text-green-500"></i></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-900/10 to-transparent pointer-events-none"></div>
+        </div>
+        <div class="insight-box w-full max-w-6xl">
+            <strong>Safety First:</strong> เราใช้ "NeMo Guardrails" และ Custom Logic เพื่อกรองข้อมูลทั้งขาเข้า (Input) และขาออก (Output) มั่นใจได้ว่า AI จะไม่ตอบคำถามนอกเรื่อง และข้อมูลส่วนบุคคลจะไม่หลุดไปถึง Model
+        </div>
+    </div>
+
+
+  <div class="slide items-center" id="slide-11">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">10.</span> Data Privacy Assurance</h2>
+        <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
+            
+            <div class="space-y-8">
+                <div class="flex gap-6 items-start">
+                    <div class="w-16 h-16 bg-red-900/20 rounded-lg flex items-center justify-center border border-red-500/30 flex-shrink-0">
+                        <i class="fa-solid fa-user-lock text-3xl text-red-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">No Model Training</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            ข้อมูลของท่าน <strong>"จะไม่ถูกนำไปใช้ Train"</strong> Public Model ของ OpenAI, Anthropic หรือ Google โดยเด็ดขาด เราใช้ Enterprise API Agreement ที่มีการระบุข้อตกลง Zero Retention
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 items-start">
+                    <div class="w-16 h-16 bg-blue-900/20 rounded-lg flex items-center justify-center border border-blue-500/30 flex-shrink-0">
+                        <i class="fa-solid fa-network-wired text-3xl text-blue-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Isolated Environment</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            ระบบรันอยู่ใน <strong>Private VPC</strong> ที่แยกขาดจากลูกค้าอื่น (Single-Tenant Option Available) ข้อมูล Vector Database ถูกเข้ารหัสและเก็บไว้ใน Infrastructure ของท่านเอง
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 border-l-4 border-emerald-500 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fa-solid fa-certificate text-9xl text-white"></i></div>
+                <h3 class="text-2xl font-bold text-white mb-6">Security Compliance</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-check-circle text-emerald-500"></i> Data Encryption at Rest (AES-256)</li>
+                    <li class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-check-circle text-emerald-500"></i> Data Encryption in Transit (TLS 1.3)</li>
+                    <li class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-check-circle text-emerald-500"></i> PII Redaction Pipeline</li>
+                    <li class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-check-circle text-emerald-500"></i> Audit Log Retention 10 Years</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+ <div class="slide items-center" id="slide-12">
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">11.</span> Maintainable AI Architecture</h2>
+        <div class="grid grid-cols-3 gap-6 w-full max-w-7xl">
+            
+            <div class="tech-panel p-6 hover:bg-slate-800/50 transition duration-300">
+                <i class="fa-solid fa-layer-group text-4xl text-purple-400 mb-4"></i>
+                <h3 class="text-lg font-bold text-white mb-2">Model Agnostic</h3>
+                <p class="text-xs text-slate-400 mb-4">
+                    ระบบออกแบบมาให้เป็น "Modular AI" สามารถสลับ Model (เช่น GPT-4 เป็น Claude 3 หรือ Llama 3) ได้ผ่าน Config เพียงบรรทัดเดียว ไม่ต้องแก้ Code
+                </p>
+                <div class="flex gap-2 text-[10px] uppercase font-bold text-slate-500">
+                    <span class="bg-slate-700 px-2 py-1 rounded">OpenAI</span>
+                    <span class="bg-slate-700 px-2 py-1 rounded">Anthropic</span>
+                    <span class="bg-slate-700 px-2 py-1 rounded">Local LLM</span>
+                </div>
+            </div>
+
+            <div class="tech-panel p-6 hover:bg-slate-800/50 transition duration-300">
+                <i class="fa-solid fa-binoculars text-4xl text-emerald-400 mb-4"></i>
+                <h3 class="text-lg font-bold text-white mb-2">Centralized Observability</h3>
+                <p class="text-xs text-slate-400 mb-4">
+                    รวม Logs, Metrics, และ AI Tracing (LangSmith/LangFuse) ไว้ใน Dashboard เดียว ทีมงานสามารถ Debug ปัญหา Hallucination หรือ Latency ได้ในคลิกเดียว
+                </p>
+                <div class="h-1 bg-emerald-500/20 rounded w-full overflow-hidden">
+                    <div class="h-full bg-emerald-500 w-2/3"></div>
+                </div>
+            </div>
+
+            <div class="tech-panel p-6 hover:bg-slate-800/50 transition duration-300">
+                <i class="fa-solid fa-code-branch text-4xl text-blue-400 mb-4"></i>
+                <h3 class="text-lg font-bold text-white mb-2">Version Control for Prompts</h3>
+                <p class="text-xs text-slate-400 mb-4">
+                    Prompt ไม่ใช่แค่ String ใน Code แต่คือ Asset ที่มีการทำ Versioning, A/B Testing และ Rollback ได้ทันทีหาก Model ใหม่ทำงานไม่ตรงตามต้องการ
+                </p>
+                <div class="font-mono text-[10px] text-slate-500 bg-black p-2 rounded">
+                    v1.0.2 -> <span class="text-green-500">v1.1.0 (Active)</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="insight-box w-full max-w-7xl">
+            <strong>Future Proof:</strong> เพราะโลก AI เปลี่ยนแปลงทุกสัปดาห์ Architecture ของเราจึงออกแบบมาให้ <strong>"ยืดหยุ่น"</strong> พร้อมรับ Model ใหม่ๆ และ Maintain ง่ายในระยะยาว
+        </div>
+    </div>
+
+   <div class="slide items-center" id="slide-13">
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">12.</span> Agile Development Methodology</h2>
+        <div class="w-full max-w-6xl relative">
+            <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-700 -z-10 transform -translate-y-1/2"></div>
+            
+            <div class="flex justify-between items-center">
+                
+                <div class="flex flex-col items-center group">
+                    <div class="w-20 h-20 bg-slate-900 border-2 border-blue-500 rounded-full flex items-center justify-center shadow-lg shadow-blue-900/40 z-10 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-comments text-3xl text-blue-500"></i>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <h4 class="font-bold text-white text-lg">Discovery</h4>
+                        <p class="text-xs text-slate-400 mt-2 w-32">Requirement & <br>Feedback Loop</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center group">
+                    <div class="w-20 h-20 bg-slate-900 border-2 border-purple-500 rounded-full flex items-center justify-center shadow-lg shadow-purple-900/40 z-10 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-code text-3xl text-purple-500"></i>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <h4 class="font-bold text-white text-lg">Sprint Dev</h4>
+                        <p class="text-xs text-slate-400 mt-2 w-32">2-Week Sprints <br>with Jira Tracking</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center group">
+                    <div class="w-20 h-20 bg-slate-900 border-2 border-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-orange-900/40 z-10 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-vial text-3xl text-orange-500"></i>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <h4 class="font-bold text-white text-lg">QA & UAT</h4>
+                        <p class="text-xs text-slate-400 mt-2 w-32">Automated Test <br>& User Verify</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center group">
+                    <div class="w-20 h-20 bg-slate-900 border-2 border-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-900/40 z-10 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-rocket text-3xl text-emerald-500"></i>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <h4 class="font-bold text-white text-lg">Deploy</h4>
+                        <p class="text-xs text-slate-400 mt-2 w-32">CI/CD Pipeline <br>& Monitoring</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 w-full max-w-4xl mt-16">
+            <div class="bg-slate-800/50 p-4 rounded border border-slate-700 flex items-center gap-4">
+                <i class="fa-solid fa-rotate text-2xl text-blue-400"></i>
+                <div>
+                    <strong class="text-white block">Flexible Scope</strong>
+                    <span class="text-xs text-slate-400">ปรับเปลี่ยน Requirement ได้ตาม Business Value ในแต่ละ Sprint</span>
+                </div>
+            </div>
+            <div class="bg-slate-800/50 p-4 rounded border border-slate-700 flex items-center gap-4">
+                <i class="fa-solid fa-eye text-2xl text-emerald-400"></i>
+                <div>
+                    <strong class="text-white block">Transparency</strong>
+                    <span class="text-xs text-slate-400">ลูกค้าเห็น Progress ผ่าน Board (Jira/ClickUp) ได้ตลอดเวลา</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="slide items-center" id="slide-10">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">09.</span> DevSecOps Pipeline</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">13.</span> DevSecOps Pipeline</h2>
         <div class="w-full max-w-7xl flex justify-between items-center relative mb-8">
             <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-700 -z-10"></div>
             <div class="bg-slate-900 border border-slate-600 p-4 rounded w-40 text-center"><i class="fa-brands fa-git-alt text-2xl text-orange-500 mb-2"></i><div class="font-bold text-xs">Commit</div></div>
@@ -344,7 +548,7 @@
     </div>
 
     <div class="slide items-center" id="slide-11">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">10.</span> Observability & Monitoring</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">14.</span> Observability & Monitoring</h2>
         <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
             <div class="glass-panel p-6"><h3 class="text-lg font-bold mb-4 border-b border-slate-700 pb-2">The Stack</h3><ul class="space-y-3 text-sm text-slate-300"><li class="flex justify-between"><span>Metrics</span> <span class="mono text-slate-500">Prometheus</span></li><li class="flex justify-between"><span>Logs</span> <span class="mono text-slate-500">ELK Stack / Loki</span></li><li class="flex justify-between"><span>Tracing</span> <span class="mono text-slate-500">OpenTelemetry / Jaeger</span></li><li class="flex justify-between"><span>Alerts</span> <span class="mono text-slate-500">PagerDuty / Slack</span></li></ul></div>
             <div class="bg-[#1e1e1e] border border-slate-700 rounded p-4 flex flex-col gap-2"><div class="text-[10px] text-slate-500">Grafana Dashboard Preview</div><div class="h-16 bg-slate-800 w-full rounded relative overflow-hidden"><svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none"><path d="M0,50 L20,40 L40,45 L60,20 L80,30 L100,10 L120,15 L140,5 L160,10 L300,30" fill="none" stroke="#10b981" stroke-width="2" /></svg></div><div class="h-16 bg-slate-800 w-full rounded relative overflow-hidden"><svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none"><path d="M0,60 L30,55 L60,50 L90,52 L120,20 L300,40" fill="none" stroke="#3b82f6" stroke-width="2" /></svg></div></div>
@@ -355,7 +559,7 @@
     </div>
 
     <div class="slide items-center" id="slide-12">
-        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">11.</span> Deployment Models</h2>
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">15.</span> Deployment Models</h2>
         <div class="grid grid-cols-3 gap-8 w-full max-w-7xl">
             <div class="tech-panel p-8 text-center hover:border-blue-500 transition"><i class="fa-solid fa-cloud text-5xl text-blue-500 mb-6"></i><h3 class="text-xl font-bold text-white mb-2">SaaS</h3><p class="text-xs text-slate-400">Multi-tenant, Managed by TH8</p></div>
             <div class="tech-panel p-8 text-center border-emerald-500 shadow-lg shadow-emerald-900/20 transform scale-105"><i class="fa-solid fa-network-wired text-5xl text-emerald-500 mb-6"></i><h3 class="text-xl font-bold text-white mb-2">Private Cloud</h3><p class="text-xs text-slate-400">Dedicated VPC, Custom VPN</p></div>
@@ -367,7 +571,7 @@
     </div>
 
     <div class="slide items-center" id="slide-13">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">12.</span> Data Schema & Entity Model</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">16.</span> Data Schema & Entity Model</h2>
         <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
             <div class="code-window shadow-2xl h-[400px]">
                 <div class="bg-[#252526] px-4 py-2 border-b border-black text-xs text-slate-400">schema/core.sql</div>
@@ -414,7 +618,7 @@ CREATE TABLE audit_logs (
     </div>
 
     <div class="slide items-center" id="slide-14">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">13.</span> API Specification (OpenAPI 3.0)</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">17.</span> API Specification (OpenAPI 3.0)</h2>
         <div class="w-full max-w-6xl grid grid-cols-2 gap-12">
             <div class="code-window shadow-2xl">
                 <div class="bg-[#2d2d2d] px-4 py-2 flex items-center gap-2 border-b border-black">
@@ -442,7 +646,7 @@ CREATE TABLE audit_logs (
     </div>
 
     <div class="slide items-center" id="slide-15">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">14.</span> Authentication Flow</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">18.</span> Authentication Flow</h2>
         <div class="w-full max-w-6xl h-[450px] glass-panel p-8 relative flex items-center justify-between bg-[#0f1115]">
             <div class="text-center w-32"><i class="fa-solid fa-laptop text-4xl text-slate-400 mb-2"></i><div class="font-bold text-sm">Client App</div></div>
             <div class="flex-1 h-px bg-slate-600 relative mx-4"><div class="absolute top-[-20px] left-1/2 -translate-x-1/2 text-xs text-slate-400">1. Login Request</div></div>
@@ -461,7 +665,7 @@ CREATE TABLE audit_logs (
     </div>
 
     <div class="slide items-center" id="slide-16">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">15.</span> Tamper-Proof Audit Logging</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">19.</span> Tamper-Proof Audit Logging</h2>
         <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
             <div class="space-y-6">
                 <p class="text-slate-400 text-lg">
@@ -497,7 +701,7 @@ CREATE TABLE audit_logs (
     </div>
 
     <div class="slide items-center" id="slide-17">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">16.</span> Disaster Recovery (DR) Plan</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">20.</span> Disaster Recovery (DR) Plan</h2>
         <div class="w-full max-w-6xl grid grid-cols-3 gap-6">
             <div class="tech-panel p-8 text-center"><i class="fa-solid fa-database text-4xl text-blue-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Database Replication</h3><p class="text-xs text-slate-400">Async streaming replication to Standby node in a different Availability Zone (AZ).</p></div>
             <div class="tech-panel p-8 text-center"><i class="fa-solid fa-cloud-arrow-down text-4xl text-emerald-500 mb-4"></i><h3 class="text-lg font-bold text-white mb-2">Automated Backups</h3><p class="text-xs text-slate-400">Daily snapshots + WAL archiving (Point-in-Time Recovery enabled).</p></div>
@@ -510,7 +714,7 @@ CREATE TABLE audit_logs (
     </div>
 
     <div class="slide items-center" id="slide-18">
-        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">17.</span> Performance Benchmarks</h2>
+        <h2 class="text-3xl font-bold mb-8 text-white"><span class="text-blue-500 mono">21.</span> Performance Benchmarks</h2>
         <div class="w-full max-w-5xl bg-slate-900 border border-slate-700 rounded-lg p-10 flex justify-between items-center shadow-2xl">
             <div class="text-center"><div class="text-xs text-slate-500 uppercase font-bold mb-2">Throughput</div><div class="text-5xl font-mono font-bold text-white">12,500</div><div class="text-sm text-slate-400 mt-2">Req/Sec (Peak)</div></div>
             <div class="h-20 w-px bg-slate-700"></div>
@@ -524,7 +728,7 @@ CREATE TABLE audit_logs (
     </div>
 
     <div class="slide items-center" id="slide-19">
-        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">18.</span> Enterprise Support SLA</h2>
+        <h2 class="text-3xl font-bold mb-10 text-white"><span class="text-blue-500 mono">22.</span> Enterprise Support SLA</h2>
         <div class="w-full max-w-5xl overflow-hidden rounded-lg border border-slate-700">
             <table class="w-full text-left text-sm text-slate-400">
                 <thead class="bg-slate-800 text-white uppercase text-xs"><tr><th class="px-6 py-4">Severity Level</th><th class="px-6 py-4">Description</th><th class="px-6 py-4">Response Time</th><th class="px-6 py-4">Resolution Target</th></tr></thead>
